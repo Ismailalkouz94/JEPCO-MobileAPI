@@ -52,7 +52,7 @@ public class AppConfig {
         return transactionManager;
     }
 
-//    @Bean
+    @Bean
     public Properties getHibernateProperties() {
 
         Properties props = new Properties();
