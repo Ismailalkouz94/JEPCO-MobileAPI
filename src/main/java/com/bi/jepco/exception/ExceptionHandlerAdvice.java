@@ -5,19 +5,23 @@
  */
 package com.bi.jepco.exception;
 
+import com.bi.jepco.config.MessageBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 /**
  *
- * @author LENOVO
+ * @author abdallah dabbas
  */
 @ControllerAdvice
 public class ExceptionHandlerAdvice {
 
     @ExceptionHandler(ResourceException.class)
-    public ResponseEntity handleException(ResourceException e) {
-        return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
+    public ResponseEntity<MessageBody> handleException(ResourceException exception) {
+        MessageBody messageBody = MessageBody.getInstance();
+        messageBody.setStatus("error");
+        messageBody.setKey(exception.getMessage());
+        return new ResponseEntity<>(messageBody, exception.getHttpStatus());
     }
 }

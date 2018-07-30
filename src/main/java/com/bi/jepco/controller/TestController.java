@@ -1,5 +1,6 @@
 package com.bi.jepco.controller;
 
+import com.bi.jepco.config.MessageBody;
 import com.bi.jepco.exception.ResourceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +16,17 @@ public class TestController {
     private TestService testService;
 
     /*---get all tests---*/
+
     @GetMapping("/test")
-    public ResponseEntity<?> list() {
+    public ResponseEntity<MessageBody> list() {
         testService.list();
         if (true) {
             throw new ResourceException(HttpStatus.NOT_FOUND, "We were unable to find the specified resource.");
         }
-        return ResponseEntity.ok().body("connected success to jepco mobile api.");
+        MessageBody messageBody = MessageBody.getInstance();
+        messageBody.setStatus("success");
+        messageBody.setBody(testService.list());
+        return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 
 }

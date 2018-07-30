@@ -10,12 +10,18 @@ package com.bi.jepco.config;
  * @author abdallah dabbas
  */
 public class MessageBody {
-    
+
+    private static MessageBody messageBody = null;
+
     private String status;
-    
+
     private String key;
-    
-    private String body;
+
+    private Object body;
+
+    private MessageBody() {
+
+    }
 
     public String getStatus() {
         return status;
@@ -33,11 +39,19 @@ public class MessageBody {
         this.key = key;
     }
 
-    public String getBody() {
+    public Object getBody() {
         return body;
     }
 
-    public void setBody(String body) {
+    public void setBody(Object body) {
         this.body = body;
+    }
+
+    public static MessageBody getInstance() {
+        if (messageBody == null) {
+            messageBody = new MessageBody();
+        }
+
+        return messageBody;
     }
 }

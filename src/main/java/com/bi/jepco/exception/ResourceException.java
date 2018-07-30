@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 
 /**
  *
- * @author LENOVO
+ * @author abdallah dabbas
  */
 public class ResourceException extends RuntimeException {
 
