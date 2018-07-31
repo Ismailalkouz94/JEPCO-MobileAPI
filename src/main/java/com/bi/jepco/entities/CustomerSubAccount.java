@@ -20,6 +20,10 @@ public class CustomerSubAccount {
     @Column(name = "CUS_SUB_CREATION_DATE")
     private LocalDateTime creationDate;
 
+    @ManyToOne
+    @JoinColumn(name = "CUS_SUB_PRO_ID")
+    private CustomerProfile customerProfile;
+
     public Long getId() {
         return id;
     }
@@ -50,6 +54,14 @@ public class CustomerSubAccount {
 
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public CustomerProfile getCustomerProfile() {
+        return customerProfile;
+    }
+
+    public void setCustomerProfile(CustomerProfile customerProfile) {
+        this.customerProfile = customerProfile;
     }
 
     @Override

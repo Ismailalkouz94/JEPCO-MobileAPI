@@ -8,22 +8,22 @@ public class SmsVerification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "SMS_ID" , updatable = false, nullable = false)
+    @Column(name = "SMS_VER_ID" , updatable = false, nullable = false)
     private Long id;
 
-    @Column(name = "SMS_CODE")
+    @Column(name = "SMS_VER_CODE")
     private String code;
 
-    @Column(name = "SMS_MOBILE_NUMBER")
+    @Column(name = "SMS_VER_MOBILE_NUMBER")
     private String mobileNumber;
 
-    @Column(name = "SMS_STATUS")
+    @Column(name = "SMS_VER_STATUS")
     private Integer status;
 
-    @Column(name = "SMS_CREATION_DATE")
+    @Column(name = "SMS_VER_CREATION_DATE")
     private LocalDateTime creationDate;
 
-    @Column(name = "SMS_EXPIRATION_DATE")
+    @Column(name = "SMS_VER_EXPIRATION_DATE")
     private LocalDateTime expirationDate;
 
     public Long getId() {

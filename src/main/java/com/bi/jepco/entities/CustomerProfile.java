@@ -14,19 +14,19 @@ public class CustomerProfile {
     @Column(name = "CUS_PRO_NATIONAL_NUMBER")
     private String nationalNumber;
 
-    @Column(name = "CUS_FIRST_NAME")
+    @Column(name = "CUS_PRO_FIRST_NAME")
     private String firstName;
 
-    @Column(name = "CUS_LAST_NAME")
+    @Column(name = "CUS_PRO_LAST_NAME")
     private String lastName;
 
-    @Column(name = "CUS_MOBILE_NUMBER")
+    @Column(name = "CUS_PRO_MOBILE_NUMBER")
     private String mobileNumber;
 
-    @Column(name = "CUS_STATUS")
+    @Column(name = "CUS_PRO_STATUS")
     private Integer status;
 
-    @Column(name = "CUS_CREATION_DATE")
+    @Column(name = "CUS_PRO_CREATION_DATE")
     private LocalDateTime creationDate;
 
     public Long getId() {
