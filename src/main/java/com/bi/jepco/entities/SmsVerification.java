@@ -1,5 +1,7 @@
 package com.bi.jepco.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -22,12 +24,15 @@ public class SmsVerification {
     private Integer status;
 
     @Column(name = "SMS_VER_CREATION_DATE")
+    @JsonIgnore
     private LocalDateTime creationDate;
 
     @Column(name = "SMS_VER_EXPIRATION_DATE")
+    @JsonIgnore
     private LocalDateTime expirationDate;
 
     @Column(name = "SMS_VER_USED_DATE")
+    @JsonIgnore
     private LocalDateTime usedDate;
 
     public Long getId() {

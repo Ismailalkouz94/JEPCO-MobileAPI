@@ -15,9 +15,17 @@ public class CustomerProfileDaoImp implements CustomerProfileDao {
    private SessionFactory sessionFactory;
 
    @Override
-   public Long save(CustomerProfile customerProfile) {
+   public CustomerProfile save(CustomerProfile customerProfile) {
       sessionFactory.getCurrentSession().save(customerProfile);
-      return customerProfile.getId();
+      return customerProfile;
+   }
+
+   @Override
+   public CustomerProfile find(String nationalNumber) {
+      return (CustomerProfile) sessionFactory.getCurrentSession().createQuery("from CustomerProfile cusPro" +
+              " where cusPro.nationalNumber =: nationalNumber")
+              .setParameter("nationalNumber",nationalNumber)
+              .uniqueResult();
    }
 
 }

@@ -6,6 +6,7 @@ import com.bi.jepco.entities.CustomerProfile;
 
 public interface CustomerProfileDao {
 
-   public Long save(CustomerProfile customerProfile);
+   public CustomerProfile save(CustomerProfile customerProfile);
+   public CustomerProfile find(String nationalNumber);
 
 }

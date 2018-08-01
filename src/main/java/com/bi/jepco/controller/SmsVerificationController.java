@@ -36,7 +36,7 @@ public class SmsVerificationController {
 
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
-        messageBody.setKey("create_profile_success");
+        messageBody.setKey("create_sms_success");
         messageBody.setBody(smsVerification);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }

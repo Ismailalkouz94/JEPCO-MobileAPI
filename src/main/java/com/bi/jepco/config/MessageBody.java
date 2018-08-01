@@ -52,6 +52,8 @@ public class MessageBody {
             messageBody = new MessageBody();
         }
 
+        messageBody.setBody(null);
+
         return messageBody;
     }
 }

@@ -6,5 +6,5 @@ import com.bi.jepco.entities.CustomerProfile;
 
 public interface CustomerProfileService {
 
-   public Long save(CustomerProfile customerProfile);
+   public CustomerProfile create(CustomerProfile customerProfile);
 }

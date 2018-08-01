@@ -1,6 +1,7 @@
 package com.bi.jepco.utils;
 
 import com.bi.jepco.controller.SmsVerificationController;
+import com.bi.jepco.entities.CustomerSubAccount;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -45,4 +46,19 @@ public class Utils {
                 countryCode.replaceAll("[^0-9]", "").replaceAll("^0*", "") +
                 number.replaceAll("[^0-9]", "");
     }
+
+
+    public static CustomerSubAccount initFileNumberTokens(CustomerSubAccount customerSubAccount){
+
+        String fileNumber = customerSubAccount.getFileNumber();
+
+        customerSubAccount.setCity(fileNumber.substring(0,2));
+        customerSubAccount.setRound(fileNumber.substring(2 , 3));
+        customerSubAccount.setDept(fileNumber.substring(3,5));
+        customerSubAccount.setColl(fileNumber.substring(5 , 7));
+        customerSubAccount.setCons(fileNumber.substring( 7));
+
+        return customerSubAccount;
+    }
+
 }

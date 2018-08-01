@@ -1,7 +1,11 @@
 package com.bi.jepco.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "CUSTOMER_PROFILE")
@@ -28,15 +32,25 @@ public class CustomerProfile {
     private Integer status;
 
     @Column(name = "CUS_PRO_CREATION_DATE")
+    @JsonIgnore
     private LocalDateTime creationDate;
+
+    @Transient
+    @JsonIgnore
+    private String code;
+
+    @Transient
+    @JsonIgnore
+    private String fileNumber;
+
+    @Transient
+    private List<CustomerSubAccount> customerSubAccountList;
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) { this.id = id; }
 
     public String getNationalNumber() {
         return nationalNumber;
@@ -85,6 +99,22 @@ public class CustomerProfile {
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
+
+    @JsonIgnore
+    public String getCode() { return code; }
+
+    @JsonProperty
+    public void setCode(String code) { this.code = code; }
+
+    @JsonIgnore
+    public String getFileNumber() { return fileNumber; }
+
+    @JsonProperty
+    public void setFileNumber(String fileNumber) { this.fileNumber = fileNumber; }
+
+    public List<CustomerSubAccount> getCustomerSubAccountList() { return customerSubAccountList; }
+
+    public void setCustomerSubAccountList(List<CustomerSubAccount> customerSubAccountList) { this.customerSubAccountList = customerSubAccountList; }
 
     @Override
     public int hashCode() {

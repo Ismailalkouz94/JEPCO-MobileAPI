@@ -1,5 +1,7 @@
 package com.bi.jepco.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -34,11 +36,17 @@ public class CustomerSubAccount {
     private String alias;
 
     @Column(name = "CUS_SUB_CREATION_DATE")
+    @JsonIgnore
     private LocalDateTime creationDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CUS_SUB_PRO_ID")
+    @JsonIgnore
     private CustomerProfile customerProfile;
+
+    @Transient
+    @JsonIgnore
+    private Long customerProfileId;
 
     public Long getId() {
         return id;
@@ -91,6 +99,10 @@ public class CustomerSubAccount {
     public CustomerProfile getCustomerProfile() { return customerProfile; }
 
     public void setCustomerProfile(CustomerProfile customerProfile) { this.customerProfile = customerProfile; }
+
+    public Long getCustomerProfileId() { return customerProfileId; }
+
+    public void setCustomerProfileId(Long customerProfileId) { this.customerProfileId = customerProfileId; }
 
     @Override
     public int hashCode() {
