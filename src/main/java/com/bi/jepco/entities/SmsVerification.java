@@ -3,7 +3,8 @@ package com.bi.jepco.entities;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity(name = "SMS_VERIFICATION")
+@Entity
+@Table(name = "SMS_VERIFICATION")
 public class SmsVerification {
 
     @Id
@@ -11,13 +12,13 @@ public class SmsVerification {
     @Column(name = "SMS_VER_ID" , updatable = false, nullable = false)
     private Long id;
 
-    @Column(name = "SMS_VER_CODE")
+    @Column(name = "SMS_VER_CODE" ,nullable = false ,length = 4)
     private String code;
 
-    @Column(name = "SMS_VER_MOBILE_NUMBER")
+    @Column(name = "SMS_VER_MOBILE_NUMBER" ,nullable = false ,length = 14)
     private String mobileNumber;
 
-    @Column(name = "SMS_VER_STATUS")
+    @Column(name = "SMS_VER_STATUS" ,length = 1)
     private Integer status;
 
     @Column(name = "SMS_VER_CREATION_DATE")
@@ -25,6 +26,9 @@ public class SmsVerification {
 
     @Column(name = "SMS_VER_EXPIRATION_DATE")
     private LocalDateTime expirationDate;
+
+    @Column(name = "SMS_VER_USED_DATE")
+    private LocalDateTime usedDate;
 
     public Long getId() {
         return id;
@@ -73,6 +77,10 @@ public class SmsVerification {
     public void setExpirationDate(LocalDateTime expirationDate) {
         this.expirationDate = expirationDate;
     }
+
+    public LocalDateTime getUsedDate() { return usedDate; }
+
+    public void setUsedDate(LocalDateTime usedDate) { this.usedDate = usedDate; }
 
     @Override
     public int hashCode() {

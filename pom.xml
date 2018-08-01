@@ -15,8 +15,12 @@
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <springframework.version>5.0.7.RELEASE</springframework.version>
         <hibernate.version>5.3.3.Final</hibernate.version>
+        <log4j.version>1.2.17</log4j.version>
+        <oracle.driver.version>12.1.0.1</oracle.driver.version>
+        <jackson.version>2.9.6</jackson.version>
+        <javax.validation>2.0.1.Final</javax.validation>
     </properties>
-     
+
 
     <dependencies> 
         <!-- Spring -->
@@ -57,12 +61,17 @@
             <version>${hibernate.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
 
         <!-- Oracle Driver -->
         <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc7</artifactId>
-            <version>12.1.0.1</version>
+            <version>${oracle.driver.version}</version>
         </dependency>
         
         <!-- Servlet Dependency -->
@@ -79,6 +88,7 @@
             <artifactId>hibernate-c3p0</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
+
         <!-- c3p0 -->
         <dependency>
             <groupId>com.mchange</groupId>
@@ -90,21 +100,48 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.9.6</version>
+            <version>${jackson.version}</version>
         </dependency>
         
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.9.6</version>
+            <version>${jackson.version}</version>
         </dependency>
         
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.9.6</version>
+            <version>${jackson.version}</version>
         </dependency>
- 
+
+        <!-- Google Phonenumber -->
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>libphonenumber</artifactId>
+            <version>8.9.10</version>
+        </dependency>
+
+        <!-- Log4j -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+        <!-- Javax validation -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${javax.validation}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

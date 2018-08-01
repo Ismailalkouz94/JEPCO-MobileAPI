@@ -3,7 +3,8 @@ package com.bi.jepco.entities;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity(name = "CUSTOMER_PROFILE")
+@Entity
+@Table(name = "CUSTOMER_PROFILE")
 public class CustomerProfile {
 
     @Id
@@ -11,19 +12,19 @@ public class CustomerProfile {
     @Column(name = "CUS_PRO_ID" , updatable = false, nullable = false)
     private Long id;
 
-    @Column(name = "CUS_PRO_NATIONAL_NUMBER")
+    @Column(name = "CUS_PRO_NATIONAL_NUMBER" ,nullable = false ,unique = true ,length = 10)
     private String nationalNumber;
 
-    @Column(name = "CUS_PRO_FIRST_NAME")
+    @Column(name = "CUS_PRO_FIRST_NAME" ,nullable = false ,length = 30)
     private String firstName;
 
-    @Column(name = "CUS_PRO_LAST_NAME")
+    @Column(name = "CUS_PRO_LAST_NAME" ,nullable = false ,length = 30)
     private String lastName;
 
-    @Column(name = "CUS_PRO_MOBILE_NUMBER")
+    @Column(name = "CUS_PRO_MOBILE_NUMBER" ,nullable = false ,length = 14)
     private String mobileNumber;
 
-    @Column(name = "CUS_PRO_STATUS")
+    @Column(name = "CUS_PRO_STATUS" , length = 1)
     private Integer status;
 
     @Column(name = "CUS_PRO_CREATION_DATE")

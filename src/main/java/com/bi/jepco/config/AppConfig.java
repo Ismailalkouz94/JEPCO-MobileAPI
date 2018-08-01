@@ -12,6 +12,8 @@ import static org.hibernate.cfg.AvailableSettings.PASS;
 import static org.hibernate.cfg.AvailableSettings.SHOW_SQL;
 import static org.hibernate.cfg.AvailableSettings.URL;
 import static org.hibernate.cfg.AvailableSettings.USER;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -31,6 +33,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     , @ComponentScan("com.bi.jepco.service.impl")
     , @ComponentScan("com.bi.jepco.exception")})
 public class AppConfig {
+
+    private static final Logger logger = Logger.getLogger(AppConfig.class);
 
     @Autowired
     private Environment env;
