@@ -2,7 +2,6 @@ package com.bi.jepco.controller;
 
 import com.bi.jepco.config.MessageBody;
 import com.bi.jepco.entities.CustomerProfile;
-import com.bi.jepco.entities.SmsVerification;
 import com.bi.jepco.exception.ResourceException;
 import com.bi.jepco.service.CustomerProfileService;
 import com.bi.jepco.service.SmsVerificationService;
@@ -28,7 +27,6 @@ public class CustomerProfileController {
     @PostMapping("/profile/create")
     public ResponseEntity<MessageBody> createProfile(@RequestBody  CustomerProfile customerProfile) {
 
-        System.out.println(">>>>>>>>> "+customerProfile.getCode());
         if(customerProfile.getNationalNumber() == null
                 || customerProfile.getNationalNumber().isEmpty()
                 || customerProfile.getFirstName() == null
@@ -40,10 +38,9 @@ public class CustomerProfileController {
                 || customerProfile.getCode() == null
                 || customerProfile.getCode().isEmpty()
                 || customerProfile.getFileNumber() == null
-                || customerProfile.getFileNumber().isEmpty()){
+                || customerProfile.getFileNumber().length() != 13){
             throw new ResourceException(HttpStatus.BAD_REQUEST , "Validation_error");
         }
-
 
         customerProfile = customerProfileService.create(customerProfile);
         MessageBody messageBody = MessageBody.getInstance();

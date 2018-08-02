@@ -1,12 +1,9 @@
 package com.bi.jepco.controller;
 
 import com.bi.jepco.config.MessageBody;
-import com.bi.jepco.entities.CustomerProfile;
 import com.bi.jepco.entities.CustomerSubAccount;
 import com.bi.jepco.exception.ResourceException;
-import com.bi.jepco.service.CustomerProfileService;
 import com.bi.jepco.service.CustomerSubAccountService;
-import com.bi.jepco.service.SmsVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +21,12 @@ public class CustomerSubAccountController {
     @PostMapping("/sub/create")
     public ResponseEntity<MessageBody> createSub(@RequestBody CustomerSubAccount customerSubAccount) {
 
-        if(customerSubAccount.getAlias() == null
+        if(customerSubAccount.getNationalNumber() == null
+                || customerSubAccount.getNationalNumber().isEmpty()
+                || customerSubAccount.getAlias() == null
                 || customerSubAccount.getAlias().isEmpty()
                 || customerSubAccount.getFileNumber() == null
-                || customerSubAccount.getFileNumber().isEmpty()){
+                || customerSubAccount.getFileNumber().length() != 13){
             throw new ResourceException(HttpStatus.BAD_REQUEST , "Validation_error");
         }
 
@@ -42,11 +41,15 @@ public class CustomerSubAccountController {
     @DeleteMapping("/sub/delete")
     public ResponseEntity<MessageBody> deleteSub(@RequestBody CustomerSubAccount customerSubAccount) {
 
-        customerSubAccount = customerSubAccountService.create(customerSubAccount);
+        if(customerSubAccount.getId() == null
+                || customerSubAccount.getId() == 0){
+            throw new ResourceException(HttpStatus.BAD_REQUEST , "Validation_error");
+        }
+        customerSubAccountService.delete(customerSubAccount);
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
         messageBody.setKey("delete_sub_success");
-        messageBody.setBody(customerSubAccount);
+        messageBody.setBody("");
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 

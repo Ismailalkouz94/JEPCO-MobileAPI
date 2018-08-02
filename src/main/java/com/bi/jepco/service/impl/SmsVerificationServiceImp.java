@@ -1,11 +1,7 @@
 package com.bi.jepco.service.impl;
 
-import com.bi.jepco.controller.SmsVerificationController;
-import com.bi.jepco.dao.CustomerProfileDao;
 import com.bi.jepco.dao.SmsVerificationDao;
-import com.bi.jepco.entities.CustomerProfile;
 import com.bi.jepco.entities.SmsVerification;
-import com.bi.jepco.service.CustomerProfileService;
 import com.bi.jepco.service.SmsVerificationService;
 import com.bi.jepco.utils.Utils;
 import org.apache.log4j.Logger;

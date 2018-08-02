@@ -11,5 +11,8 @@ public interface CustomerSubAccountDao {
 
    public CustomerSubAccount create(CustomerSubAccount customerSubAccount);
    public List<CustomerSubAccount> find(CustomerProfile customerProfile);
+   public CustomerSubAccount find(Long id);
+   public CustomerSubAccount find(CustomerProfile customerProfile, String fileNumber);
    public CustomerSubAccount update(CustomerSubAccount customerSubAccount);
+   public void delete(CustomerSubAccount customerSubAccount);
 }

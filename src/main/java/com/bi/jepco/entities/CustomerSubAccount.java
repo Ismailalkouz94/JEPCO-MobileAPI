@@ -1,6 +1,7 @@
 package com.bi.jepco.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -46,7 +47,7 @@ public class CustomerSubAccount {
 
     @Transient
     @JsonIgnore
-    private Long customerProfileId;
+    private String nationalNumber;
 
     public Long getId() {
         return id;
@@ -100,9 +101,11 @@ public class CustomerSubAccount {
 
     public void setCustomerProfile(CustomerProfile customerProfile) { this.customerProfile = customerProfile; }
 
-    public Long getCustomerProfileId() { return customerProfileId; }
+    @JsonIgnore
+    public String getNationalNumber() { return nationalNumber; }
 
-    public void setCustomerProfileId(Long customerProfileId) { this.customerProfileId = customerProfileId; }
+    @JsonProperty
+    public void setNationalNumber(String nationalNumber) { this.nationalNumber = nationalNumber; }
 
     @Override
     public int hashCode() {

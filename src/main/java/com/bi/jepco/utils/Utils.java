@@ -1,6 +1,5 @@
 package com.bi.jepco.utils;
 
-import com.bi.jepco.controller.SmsVerificationController;
 import com.bi.jepco.entities.CustomerSubAccount;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;

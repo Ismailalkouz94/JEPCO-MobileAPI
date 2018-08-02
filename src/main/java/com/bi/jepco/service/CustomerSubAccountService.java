@@ -11,4 +11,5 @@ public interface CustomerSubAccountService {
    public CustomerSubAccount create(CustomerSubAccount customerSubAccount);
    public List<CustomerSubAccount> find(CustomerProfile customerProfile);
    public CustomerSubAccount update(CustomerSubAccount customerSubAccount);
+   public void delete(CustomerSubAccount customerSubAccount);
 }

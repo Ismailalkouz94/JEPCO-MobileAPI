@@ -9,7 +9,6 @@ import com.bi.jepco.entities.CustomerProfile;
 import com.bi.jepco.entities.CustomerSubAccount;
 import com.bi.jepco.entities.SmsVerification;
 import com.bi.jepco.exception.ResourceException;
-import com.bi.jepco.service.CustomerSubAccountService;
 import com.bi.jepco.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -80,8 +79,6 @@ public class CustomerProfileServiceImp implements CustomerProfileService {
       }else{
          //update current customer profile
          currentCustomerProfile.setMobileNumber(customerProfile.getMobileNumber());
-         currentCustomerProfile.setFirstName(customerProfile.getFirstName());
-         currentCustomerProfile.setLastName(customerProfile.getLastName());
 
          List<CustomerSubAccount> customerSubAccounts = customerSubAccountDao.find(currentCustomerProfile);
 
