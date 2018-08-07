@@ -5,18 +5,17 @@ import com.bi.jepco.entities.SmsVerification;
 import com.bi.jepco.exception.ResourceException;
 import com.bi.jepco.service.SmsVerificationService;
 import com.bi.jepco.utils.Utils;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@CrossOrigin
 @RestController
 public class SmsVerificationController {
-
-    private static final Logger logger = Logger.getLogger(SmsVerificationController.class);
 
     @Autowired
     private SmsVerificationService smsVerificationService;
@@ -26,11 +25,20 @@ public class SmsVerificationController {
     public ResponseEntity<MessageBody> createSms(@RequestBody SmsVerification smsVerification) {
 
         if(smsVerification.getMobileNumber()== null
-                || smsVerification.getMobileNumber().isEmpty()) {
-            throw new ResourceException(HttpStatus.BAD_REQUEST , "mobile_empty");
+                || smsVerification.getMobileNumber().isEmpty()
+                || smsVerification.getFileNumber() == null
+                || smsVerification.getFileNumber().isEmpty()
+                || smsVerification.getFileNumber().length() != 13) {
+            throw new ResourceException(HttpStatus.BAD_REQUEST , "validation_error");
         }
 
-        smsVerification.setMobileNumber(Utils.formatE164("+962",smsVerification.getMobileNumber()));
+        String mobileValidator = Utils.formatE164("+962",smsVerification.getMobileNumber());
+
+        if(mobileValidator.equals("0")){
+            throw new ResourceException(HttpStatus.BAD_REQUEST , "invalid_mobile");
+        }
+
+        smsVerification.setMobileNumber(mobileValidator);
 
         smsVerification = smsVerificationService.create(smsVerification);
 

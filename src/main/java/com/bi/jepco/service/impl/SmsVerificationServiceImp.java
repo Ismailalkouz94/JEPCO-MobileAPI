@@ -1,11 +1,15 @@
 package com.bi.jepco.service.impl;
 
+import com.bi.jepco.dao.BillmfDao;
 import com.bi.jepco.dao.SmsVerificationDao;
+import com.bi.jepco.entities.Billmf;
+import com.bi.jepco.entities.CustomerSubAccount;
 import com.bi.jepco.entities.SmsVerification;
+import com.bi.jepco.exception.ResourceException;
 import com.bi.jepco.service.SmsVerificationService;
 import com.bi.jepco.utils.Utils;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,14 +20,28 @@ import java.time.LocalDateTime;
 @Transactional
 public class SmsVerificationServiceImp implements SmsVerificationService {
 
-    private static final Logger logger = Logger.getLogger(SmsVerificationServiceImp.class);
 
     @Autowired
    private SmsVerificationDao smsVerificationDao;
 
+    @Autowired
+    private BillmfDao billmfDao;
+
 
    @Override
    public SmsVerification create(SmsVerification smsVerification) {
+
+       CustomerSubAccount customerSubAccount = new CustomerSubAccount();
+
+       customerSubAccount.setFileNumber(smsVerification.getFileNumber());
+
+       Utils.initFileNumberTokens(customerSubAccount);
+
+       Billmf billmf = billmfDao.find(customerSubAccount);
+
+       if(billmf == null){
+           throw new ResourceException(HttpStatus.NOT_FOUND,"file_no_not_found");
+       }
 
        SmsVerification currentSmsVerification = smsVerificationDao.find(smsVerification.getMobileNumber(),1);
 

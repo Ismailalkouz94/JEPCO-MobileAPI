@@ -1,13 +1,15 @@
 package com.bi.jepco.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "SMS_VERIFICATION")
-public class SmsVerification {
+public class SmsVerification implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -34,6 +36,10 @@ public class SmsVerification {
     @Column(name = "SMS_VER_USED_DATE")
     @JsonIgnore
     private LocalDateTime usedDate;
+
+    @Transient
+    @JsonIgnore
+    private String fileNumber;
 
     public Long getId() {
         return id;
@@ -86,6 +92,12 @@ public class SmsVerification {
     public LocalDateTime getUsedDate() { return usedDate; }
 
     public void setUsedDate(LocalDateTime usedDate) { this.usedDate = usedDate; }
+
+    @JsonIgnore
+    public String getFileNumber() { return fileNumber; }
+
+    @JsonProperty
+    public void setFileNumber(String fileNumber) { this.fileNumber = fileNumber; }
 
     @Override
     public int hashCode() {

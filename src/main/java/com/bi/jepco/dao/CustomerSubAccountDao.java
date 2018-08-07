@@ -2,7 +2,6 @@ package com.bi.jepco.dao;
 
 import com.bi.jepco.entities.CustomerProfile;
 import com.bi.jepco.entities.CustomerSubAccount;
-import com.bi.jepco.entities.SmsVerification;
 
 import java.util.List;
 

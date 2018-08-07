@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "CUSTOMER_SUB_ACCOUNT")
-public class CustomerSubAccount {
+public class CustomerSubAccount implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -18,20 +19,20 @@ public class CustomerSubAccount {
     @Column(name = "CUS_SUB_FILE_NUMBER" ,nullable = false ,length = 13)
     private String fileNumber;
 
-    @Column(name = "CUS_SUB_CITY" ,nullable = false ,length = 2)
-    private String city;
+    @Column(name = "CUS_SUB_CITY" ,nullable = false ,length = 2 , columnDefinition="NUMBER(2)")
+    private Integer city;
 
-    @Column(name = "CUS_SUB_ROUND" ,nullable = false ,length = 1)
-    private String round;
+    @Column(name = "CUS_SUB_ROUND" ,nullable = false ,length = 1 , columnDefinition="NUMBER(1)")
+    private Integer round;
 
-    @Column(name = "CUS_SUB_DEPT" ,nullable = false ,length = 2)
-    private String dept;
+    @Column(name = "CUS_SUB_DEPT" ,nullable = false ,length = 2 , columnDefinition="NUMBER(2)")
+    private Integer dept;
 
-    @Column(name = "CUS_SUB_COLL" ,nullable = false ,length = 2)
-    private String coll;
+    @Column(name = "CUS_SUB_COLL" ,nullable = false ,length = 2 , columnDefinition="NUMBER(2)")
+    private Integer coll;
 
-    @Column(name = "CUS_SUB_CONS" ,nullable = false ,length = 6)
-    private String cons;
+    @Column(name = "CUS_SUB_CONS" ,nullable = false ,length = 6 , columnDefinition="NUMBER(6)")
+    private Integer cons;
 
     @Column(name = "CUS_SUB_ALIAS")
     private String alias;
@@ -61,25 +62,25 @@ public class CustomerSubAccount {
 
     public void setFileNumber(String fileNumber) { this.fileNumber = fileNumber; }
 
-    public String getCity() { return city; }
+    public Integer getCity() { return city; }
 
-    public void setCity(String city) { this.city = city; }
+    public void setCity(Integer city) { this.city = city; }
 
-    public String getRound() { return round; }
+    public Integer getRound() { return round; }
 
-    public void setRound(String round) { this.round = round; }
+    public void setRound(Integer round) { this.round = round; }
 
-    public String getDept() { return dept; }
+    public Integer getDept() { return dept; }
 
-    public void setDept(String dept) { this.dept = dept; }
+    public void setDept(Integer dept) { this.dept = dept; }
 
-    public String getColl() { return coll; }
+    public Integer getColl() { return coll; }
 
-    public void setColl(String coll) { this.coll = coll; }
+    public void setColl(Integer coll) { this.coll = coll; }
 
-    public String getCons() { return cons; }
+    public Integer getCons() { return cons; }
 
-    public void setCons(String cons) { this.cons = cons; }
+    public void setCons(Integer cons) { this.cons = cons; }
 
     public String getAlias() {
         return alias;

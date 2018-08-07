@@ -1,17 +1,13 @@
 package com.bi.jepco.utils;
 
 import com.bi.jepco.entities.CustomerSubAccount;
-import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
-import org.apache.log4j.Logger;
 
 import java.security.SecureRandom;
 import java.util.Random;
 
 public class Utils {
-
-    private static final Logger logger = Logger.getLogger(Utils.class);
 
 
     public static String randomNumber(int length) {
@@ -36,14 +32,15 @@ public class Utils {
             Phonenumber.PhoneNumber parsedNumber = util.parse(number,
                     util.getRegionCodeForCountryCode(parsedCountryCode));
 
-            return util.format(parsedNumber, PhoneNumberUtil.PhoneNumberFormat.E164);
-        } catch (NumberParseException | NumberFormatException npe) {
-            logger.debug("Exception", npe);
-        }
+            boolean validationFlag = PhoneNumberUtil.getInstance().isValidNumber(parsedNumber);
 
-        return "+"                                                     +
-                countryCode.replaceAll("[^0-9]", "").replaceAll("^0*", "") +
-                number.replaceAll("[^0-9]", "");
+            if(!validationFlag){
+                throw new Exception();
+            }
+            return util.format(parsedNumber, PhoneNumberUtil.PhoneNumberFormat.E164);
+        } catch (Exception ex) {
+            return "0";
+        }
     }
 
 
@@ -51,11 +48,11 @@ public class Utils {
 
         String fileNumber = customerSubAccount.getFileNumber();
 
-        customerSubAccount.setCity(fileNumber.substring(0,2));
-        customerSubAccount.setRound(fileNumber.substring(2 , 3));
-        customerSubAccount.setDept(fileNumber.substring(3,5));
-        customerSubAccount.setColl(fileNumber.substring(5 , 7));
-        customerSubAccount.setCons(fileNumber.substring( 7));
+        customerSubAccount.setCity(Integer.parseInt(fileNumber.substring(0,2)));
+        customerSubAccount.setRound(Integer.parseInt(fileNumber.substring(2 , 3)));
+        customerSubAccount.setDept(Integer.parseInt(fileNumber.substring(3,5)));
+        customerSubAccount.setColl(Integer.parseInt(fileNumber.substring(5 , 7)));
+        customerSubAccount.setCons(Integer.parseInt(fileNumber.substring( 7)));
 
         return customerSubAccount;
     }

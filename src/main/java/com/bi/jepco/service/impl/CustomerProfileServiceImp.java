@@ -1,10 +1,13 @@
 package com.bi.jepco.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.bi.jepco.dao.BillmfDao;
 import com.bi.jepco.dao.CustomerSubAccountDao;
 import com.bi.jepco.dao.SmsVerificationDao;
+import com.bi.jepco.entities.Billmf;
 import com.bi.jepco.entities.CustomerProfile;
 import com.bi.jepco.entities.CustomerSubAccount;
 import com.bi.jepco.entities.SmsVerification;
@@ -31,8 +34,19 @@ public class CustomerProfileServiceImp implements CustomerProfileService {
    @Autowired
    private SmsVerificationDao smsVerificationDao;
 
+   @Autowired
+   private BillmfDao billmfDao;
+
    @Override
    public CustomerProfile create(CustomerProfile customerProfile) {
+
+      String mobileValidator = Utils.formatE164("+962",customerProfile.getMobileNumber());
+
+      if(mobileValidator.equals("0")){
+         throw new ResourceException(HttpStatus.BAD_REQUEST , "invalid_mobile");
+      }
+
+      customerProfile.setMobileNumber(mobileValidator);
 
       SmsVerification smsVerification = smsVerificationDao.find(customerProfile.getMobileNumber(),1);
 
@@ -68,6 +82,12 @@ public class CustomerProfileServiceImp implements CustomerProfileService {
 
          Utils.initFileNumberTokens(customerSubAccount);
 
+         Billmf billmf = billmfDao.find(customerSubAccount);
+
+         if(billmf == null){
+            throw new ResourceException(HttpStatus.NOT_FOUND,"file_no_not_found");
+         }
+
          customerSubAccount.setCustomerProfile(customerProfile);
 
          customerSubAccount.setCreationDate(LocalDateTime.now());
@@ -75,6 +95,12 @@ public class CustomerProfileServiceImp implements CustomerProfileService {
          customerSubAccount.setAlias(customerProfile.getFirstName() + " " + customerProfile.getLastName());
 
          customerSubAccountDao.create(customerSubAccount);
+
+         List<CustomerSubAccount> customerSubAccountsList = new ArrayList<>();
+
+         customerSubAccountsList.add(customerSubAccount);
+
+         currentCustomerProfile.setCustomerSubAccountList(customerSubAccountsList);
 
       }else{
          //update current customer profile
@@ -86,6 +112,21 @@ public class CustomerProfileServiceImp implements CustomerProfileService {
 
          customerProfile = currentCustomerProfile;
       }
+      return customerProfile;
+   }
+
+   @Override
+   public CustomerProfile find(String nationalNumber) {
+      CustomerProfile customerProfile = customerProfileDao.find(nationalNumber);
+
+      if(customerProfile == null){
+         throw new ResourceException(HttpStatus.NOT_FOUND, "profile_not_found");
+      }
+
+      List<CustomerSubAccount> customerSubAccountList = customerSubAccountDao.find(customerProfile);
+
+      customerProfile.setCustomerSubAccountList(customerSubAccountList);
+
       return customerProfile;
    }
 

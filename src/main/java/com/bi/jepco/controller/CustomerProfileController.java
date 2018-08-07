@@ -7,13 +7,10 @@ import com.bi.jepco.service.CustomerProfileService;
 import com.bi.jepco.service.SmsVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
-import java.time.LocalDateTime;
-
+@CrossOrigin
 @RestController
 public class CustomerProfileController {
 
@@ -46,6 +43,22 @@ public class CustomerProfileController {
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
         messageBody.setKey("create_profile_success");
+        messageBody.setBody(customerProfile);
+        return new ResponseEntity<>(messageBody, HttpStatus.OK);
+    }
+
+    @GetMapping("/profile/{nationalNumber}")
+    public ResponseEntity<MessageBody> getProfile(@PathVariable String nationalNumber) {
+
+        if(nationalNumber == null
+                || nationalNumber.isEmpty()){
+            throw new ResourceException(HttpStatus.BAD_REQUEST , "Validation_error");
+        }
+
+        CustomerProfile customerProfile = customerProfileService.find(nationalNumber);
+        MessageBody messageBody = MessageBody.getInstance();
+        messageBody.setStatus("success");
+        messageBody.setKey("find_profile_success");
         messageBody.setBody(customerProfile);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }

@@ -1,6 +1,5 @@
 package com.bi.jepco.service;
 
-import com.bi.jepco.entities.CustomerProfile;
 import com.bi.jepco.entities.SmsVerification;
 
 

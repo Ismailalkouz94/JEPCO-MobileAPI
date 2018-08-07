@@ -4,12 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "CUSTOMER_PROFILE")
-public class CustomerProfile {
+public class CustomerProfile implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
