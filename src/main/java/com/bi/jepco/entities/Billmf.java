@@ -1,215 +1,279 @@
 package com.bi.jepco.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import java.util.List;
+import javax.persistence.*;
 
-/**
- *
- * @author LENOVO
- */
+
 @Entity
 @Table(name = "BILLMF")
 public class Billmf implements Serializable {
 
     @EmbeddedId
+    @JsonIgnore
     protected BillmfPK billmfPK;
 
+    @JsonIgnore
     @Column(name = "M_CITY_NO_AL")
     private Integer mCityNoAl;
 
+    @JsonIgnore
     @Column(name = "M_ROUND_NO_AL")
     private Integer mRoundNoAl;
 
+    @JsonIgnore
     @Column(name = "M_SUB_R_NO_AL")
     private Integer mSubRNoAl;
 
+    @JsonIgnore
     @Column(name = "M_DEPT_NO_AL")
     private Integer mDeptNoAl;
 
+    @JsonIgnore
     @Column(name = "M_COLL_NO_AL")
     private Integer mCollNoAl;
 
+    @JsonIgnore
     @Column(name = "M_CONS_NO_AL")
     private Integer mConsNoAl;
 
     @Column(name = "M_CONSUMER_NAME")
     private String mConsumerName;
 
+    @JsonIgnore
     @Column(name = "CONS_NAME_4")
     private String consName4;
 
     @Column(name = "M_OWNER_NAME")
     private String mOwnerName;
 
+    @JsonIgnore
     @Column(name = "M_CONS_TYPE")
     private Integer mConsType;
 
     @Column(name = "M_CONS_DATE")
+    @JsonIgnore
     private LocalDateTime mConsDate;
 
     @Column(name = "M_METER_NO")
     private Long mMeterNo;
 
+    @JsonIgnore
     @Column(name = "M_INSURANCE_VAL")
     private BigDecimal mInsuranceVal;
 
+    @JsonIgnore
     @Column(name = "M_FAZ")
     private Integer mFaz;
 
+    @JsonIgnore
     @Column(name = "M_AMBER_MAX")
     private Integer mAmberMax;
 
+    @JsonIgnore
     @Column(name = "M_AMBER_MIN")
     private Integer mAmberMin;
 
+    @JsonIgnore
     @Column(name = "M_FAC_PRD")
     private BigDecimal mFacPrd;
 
+    @JsonIgnore
     @Column(name = "M_DISCOUNT")
     private Integer mDiscount;
 
+    @JsonIgnore
     @Column(name = "ADD_TAX")
     private Integer addTax;
 
+    @JsonIgnore
     @Column(name = "FILS_TAX")
     private Integer filsTax;
 
+    @JsonIgnore
     @Column(name = "TELIVISION_TAX")
     private Integer telivisionTax;
 
+    @JsonIgnore
     @Column(name = "GAR_CITY")
     private Integer garCity;
 
+    @JsonIgnore
     @Column(name = "GARBIGE_TAX")
     private Integer garbigeTax;
 
+    @JsonIgnore
     @Column(name = "GAR_DEPT")
     private Integer garDept;
 
+    @JsonIgnore
     @Column(name = "M_COPY_NO")
     private Integer mCopyNo;
 
+    @JsonIgnore
     @Column(name = "M_GROUP_NO")
     private Integer mGroupNo;
 
+    @JsonIgnore
     @Column(name = "M_EMPLOYEE_NO")
     private Integer mEmployeeNo;
 
+    @JsonIgnore
     @Column(name = "M_METER_STATUS")
     private Integer mMeterStatus;
 
+    @JsonIgnore
     @Column(name = "M_PREVIOUS_READ")
     private Integer mPreviousRead;
 
     @Column(name = "M_PREV_READ_DATE")
+    @JsonIgnore
     private LocalDateTime mPrevReadDate;
 
+    @JsonIgnore
     @Column(name = "M_TOTAL_CONSUM_QTY")
     private Integer mTotalConsumQty;
 
+    @JsonIgnore
     @Column(name = "M_TOTAL_CONSUM_VALUE")
     private BigDecimal mTotalConsumValue;
 
+    @JsonIgnore
     @Column(name = "M_TOTAL_BILL_NO")
     private Integer mTotalBillNo;
 
+    @JsonIgnore
     @Column(name = "M_CON_BALANCE")
     private BigDecimal mConBalance;
 
+    @JsonIgnore
     @Column(name = "M_ESTIMATE_READ")
     private Integer mEstimateRead;
 
     @Column(name = "M_ESTIMATE_READ_DATE")
+    @JsonIgnore
     private LocalDateTime mEstimateReadDate;
 
+    @JsonIgnore
     @Column(name = "M_ESTIMATE_CONSUM")
     private Integer mEstimateConsum;
 
     @Column(name = "M_LAST_PAID_DATE")
+    @JsonIgnore
     private LocalDateTime mLastPaidDate;
 
+    @JsonIgnore
     @Column(name = "M_MAX_READ")
     private Integer mMaxRead;
 
     @Column(name = "M_LAST_MOD_DATE")
+    @JsonIgnore
     private LocalDateTime mLastModDate;
 
+    @JsonIgnore
     @Column(name = "M_LOSES_POWER")
     private Integer mLosesPower;
 
+    @JsonIgnore
     @Column(name = "M_SER_NO")
     private Integer mSerNo;
 
+    @JsonIgnore
     @Column(name = "M_MAN_DATE")
     private Integer mManDate;
 
+    @JsonIgnore
     @Column(name = "M_MAN_CODE")
     private Integer mManCode;
 
+    @JsonIgnore
     @Column(name = "M_MAN_TYPE")
     private Integer mManType;
 
+    @JsonIgnore
     @Column(name = "M_APAY_BAL")
     private BigDecimal mApayBal;
 
+    @JsonIgnore
     @Column(name = "M_FAC_M")
     private BigDecimal mFacM;
 
+    @JsonIgnore
     @Column(name = "M_MAX_CT")
     private Integer mMaxCt;
 
+    @JsonIgnore
     @Column(name = "M_PTYPE")
     private Integer mPtype;
 
+    @JsonIgnore
     @Column(name = "M_GROUP_GVMA")
     private Integer mGroupGvma;
 
+    @JsonIgnore
     @Column(name = "M_GROUP_GVMI")
     private Integer mGroupGvmi;
 
+    @JsonIgnore
     @Column(name = "M_GROUP_GVTY")
     private Integer mGroupGvty;
 
+    @JsonIgnore
     @Column(name = "M_GROUP_GVCI")
     private Integer mGroupGvci;
 
+    @JsonIgnore
     @Column(name = "M_CNT_UP")
     private Integer mCntUp;
 
+    @JsonIgnore
     @Column(name = "M_CNT_UNUP")
     private Integer mCntUnup;
 
+    @JsonIgnore
     @Column(name = "M_INTEREST")
     private Integer mInterest;
 
+    @JsonIgnore
     @Column(name = "M_CODE_GV")
     private Integer mCodeGv;
 
+    @JsonIgnore
     @Column(name = "M_CATEGORY")
     private Integer mCategory;
 
+    @JsonIgnore
     @Column(name = "M_ORGF")
     private Integer mOrgf;
 
+    @JsonIgnore
     @Column(name = "M_NATIO_NO")
     private Long mNatioNo;
 
+    @JsonIgnore
     @Column(name = "M_TEL_NO")
     private Long mTelNo;
 
+    @JsonIgnore
     @Column(name = "M_METER_RATE")
     private Integer mMeterRate;
 
+    @JsonIgnore
     @Column(name = "M_METER_BREAKER")
     private Integer mMeterBreaker;
 
+    @JsonIgnore
     @Column(name = "M_INTERNAL_METER_NO")
     private String mInternalMeterNo;
+
+    @Transient
+    @JsonIgnore
+    private List<Billhf> bills;
 
     public BillmfPK getBillmfPK() {
         return billmfPK;
@@ -729,6 +793,16 @@ public class Billmf implements Serializable {
 
     public void setmInternalMeterNo(String mInternalMeterNo) {
         this.mInternalMeterNo = mInternalMeterNo;
+    }
+
+    @JsonProperty
+    public List<Billhf> getBills() {
+        return bills;
+    }
+
+    @JsonIgnore
+    public void setBills(List<Billhf> bills) {
+        this.bills = bills;
     }
 
     @Override

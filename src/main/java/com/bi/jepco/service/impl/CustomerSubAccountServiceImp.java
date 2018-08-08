@@ -1,7 +1,9 @@
 package com.bi.jepco.service.impl;
 
+import com.bi.jepco.dao.BillmfDao;
 import com.bi.jepco.dao.CustomerProfileDao;
 import com.bi.jepco.dao.CustomerSubAccountDao;
+import com.bi.jepco.entities.Billmf;
 import com.bi.jepco.entities.CustomerProfile;
 import com.bi.jepco.entities.CustomerSubAccount;
 import com.bi.jepco.exception.ResourceException;
@@ -26,6 +28,9 @@ public class CustomerSubAccountServiceImp implements CustomerSubAccountService {
    @Autowired
    private CustomerProfileDao customerProfileDao;
 
+   @Autowired
+   private BillmfDao billmfDao;
+
 
    @Override
    public CustomerSubAccount create(CustomerSubAccount customerSubAccount) {
@@ -40,6 +45,12 @@ public class CustomerSubAccountServiceImp implements CustomerSubAccountService {
       }
 
       Utils.initFileNumberTokens(customerSubAccount);
+
+      Billmf billmf = billmfDao.find(customerSubAccount);
+
+      if(billmf == null){
+         throw new ResourceException(HttpStatus.NOT_FOUND,"file_number_not_found");
+      }
 
       customerSubAccount.setCustomerProfile(customerProfile);
 

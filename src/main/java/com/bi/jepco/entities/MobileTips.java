@@ -12,7 +12,10 @@ public class MobileTips implements Serializable {
     private Long serial;
 
     @Column(name = "T_TXT")
-    private String text;
+    private String arabicText;
+
+    @Column(name = "T_TXT_ENG")
+    private String englishText;
 
     public Long getSerial() {
         return serial;
@@ -22,11 +25,19 @@ public class MobileTips implements Serializable {
         this.serial = serial;
     }
 
-    public String getText() {
-        return text;
+    public String getArabicText() {
+        return arabicText;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setArabicText(String arabicText) {
+        this.arabicText = arabicText;
+    }
+
+    public String getEnglishText() {
+        return englishText;
+    }
+
+    public void setEnglishText(String englishText) {
+        this.englishText = englishText;
     }
 }

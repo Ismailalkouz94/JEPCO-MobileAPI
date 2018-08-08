@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "CUSTOMER_SUB_ACCOUNT")
@@ -107,6 +108,7 @@ public class CustomerSubAccount implements Serializable {
 
     @JsonProperty
     public void setNationalNumber(String nationalNumber) { this.nationalNumber = nationalNumber; }
+
 
     @Override
     public int hashCode() {

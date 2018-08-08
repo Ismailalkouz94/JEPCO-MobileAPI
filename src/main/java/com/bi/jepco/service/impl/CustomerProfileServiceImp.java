@@ -96,11 +96,9 @@ public class CustomerProfileServiceImp implements CustomerProfileService {
 
          customerSubAccountDao.create(customerSubAccount);
 
-         List<CustomerSubAccount> customerSubAccountsList = new ArrayList<>();
+         List<CustomerSubAccount> customerSubAccountsList = customerSubAccountDao.find(customerProfile);
 
-         customerSubAccountsList.add(customerSubAccount);
-
-         currentCustomerProfile.setCustomerSubAccountList(customerSubAccountsList);
+         customerProfile.setCustomerSubAccountList(customerSubAccountsList);
 
       }else{
          //update current customer profile

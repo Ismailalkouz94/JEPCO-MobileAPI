@@ -57,4 +57,37 @@ public class Utils {
         return customerSubAccount;
     }
 
+    public static boolean validateNationalNumber(String nationalNumber){
+
+        if(nationalNumber.length() != 10){
+            return false;
+        }
+
+        String birthYear = nationalNumber.substring(0,3);
+
+        switch (birthYear){
+            case "200":
+                return true;
+            case "500":
+                return true;
+            case "900":
+                return true;
+            default:
+                int year = Integer.parseInt(birthYear);
+                if( (year < 940) || (year >999)) {
+                    return false;
+                }
+                int gender = Integer.parseInt(nationalNumber.substring(3,4));
+                if( (gender != 0) && (gender != 1)){
+                    return false;
+                }
+                int constant = Integer.parseInt(nationalNumber.substring(4,5));
+                if(constant != 0){
+                    return false;
+                }
+                return true;
+        }
+
+    }
+
 }

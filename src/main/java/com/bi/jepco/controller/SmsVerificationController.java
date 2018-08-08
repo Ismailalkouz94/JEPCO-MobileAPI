@@ -28,7 +28,9 @@ public class SmsVerificationController {
                 || smsVerification.getMobileNumber().isEmpty()
                 || smsVerification.getFileNumber() == null
                 || smsVerification.getFileNumber().isEmpty()
-                || smsVerification.getFileNumber().length() != 13) {
+                || smsVerification.getFileNumber().length() != 13
+                || smsVerification.getNationalNumber() == null
+                || smsVerification.getNationalNumber().isEmpty()) {
             throw new ResourceException(HttpStatus.BAD_REQUEST , "validation_error");
         }
 
@@ -36,6 +38,10 @@ public class SmsVerificationController {
 
         if(mobileValidator.equals("0")){
             throw new ResourceException(HttpStatus.BAD_REQUEST , "invalid_mobile");
+        }
+
+        if(!Utils.validateNationalNumber(smsVerification.getNationalNumber())){
+            throw new ResourceException(HttpStatus.BAD_REQUEST , "national_number_not_valid");
         }
 
         smsVerification.setMobileNumber(mobileValidator);

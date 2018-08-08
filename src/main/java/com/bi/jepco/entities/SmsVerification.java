@@ -41,6 +41,10 @@ public class SmsVerification implements Serializable {
     @JsonIgnore
     private String fileNumber;
 
+    @Transient
+    @JsonIgnore
+    private String nationalNumber;
+
     public Long getId() {
         return id;
     }
@@ -98,6 +102,16 @@ public class SmsVerification implements Serializable {
 
     @JsonProperty
     public void setFileNumber(String fileNumber) { this.fileNumber = fileNumber; }
+
+    @JsonIgnore
+    public String getNationalNumber() {
+        return nationalNumber;
+    }
+
+    @JsonProperty
+    public void setNationalNumber(String nationalNumber) {
+        this.nationalNumber = nationalNumber;
+    }
 
     @Override
     public int hashCode() {
