@@ -147,7 +147,6 @@ public class Billmf implements Serializable {
     @Column(name = "M_TOTAL_BILL_NO")
     private Integer mTotalBillNo;
 
-    @JsonIgnore
     @Column(name = "M_CON_BALANCE")
     private BigDecimal mConBalance;
 

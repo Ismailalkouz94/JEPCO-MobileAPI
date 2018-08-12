@@ -33,7 +33,6 @@ public class Billhf implements Serializable {
     private Integer consAl;
 
     @Column(name = "H_TRANS_DATE" )
-    @JsonIgnore
     private LocalDate transDate;
 
     @Column(name = "H_PREVIOUS_READ" )
@@ -117,7 +116,6 @@ public class Billhf implements Serializable {
     private Integer billCode;
 
     @Column(name = "H_PAY_DATE" )
-    @JsonIgnore
     private LocalDate payDate;
 
     @Column(name = "H_COLL_T" )
