@@ -1,13 +1,17 @@
 package com.bi.jepco.controller;
 
 import com.bi.jepco.config.MessageBody;
+import com.bi.jepco.entities.CustomerProfile;
 import com.bi.jepco.entities.CustomerSubAccount;
 import com.bi.jepco.exception.ResourceException;
+import com.bi.jepco.service.CustomerProfileService;
 import com.bi.jepco.service.CustomerSubAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -15,6 +19,9 @@ public class CustomerSubAccountController {
 
     @Autowired
     private CustomerSubAccountService customerSubAccountService;
+
+    @Autowired
+    private CustomerProfileService customerProfileService;
 
     @PostMapping("/sub/create")
     public ResponseEntity<MessageBody> createSub(@RequestBody CustomerSubAccount customerSubAccount) {
@@ -36,18 +43,25 @@ public class CustomerSubAccountController {
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 
-    @DeleteMapping("/sub/delete")
-    public ResponseEntity<MessageBody> deleteSub(@RequestBody CustomerSubAccount customerSubAccount) {
+    @PutMapping("/sub/delete/{customerSubAccountId}")
+    public ResponseEntity<MessageBody> deleteSub(@PathVariable Long customerSubAccountId , @RequestBody CustomerProfile customerProfile) {
 
-        if(customerSubAccount.getId() == null
-                || customerSubAccount.getId() == 0){
+        if(customerSubAccountId == null
+                || customerSubAccountId== 0
+                || customerProfile.getNationalNumber() == null
+                || customerProfile.getNationalNumber().isEmpty()){
             throw new ResourceException(HttpStatus.BAD_REQUEST , "Validation_error");
         }
-        customerSubAccountService.delete(customerSubAccount);
+        customerSubAccountService.delete(customerSubAccountId);
+
+        customerProfile = customerProfileService.find(customerProfile.getNationalNumber());
+
+        List<CustomerSubAccount> customerSubAccountList = customerSubAccountService.find(customerProfile);
+
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
         messageBody.setKey("delete_sub_success");
-        messageBody.setBody("");
+        messageBody.setBody(customerSubAccountList);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 

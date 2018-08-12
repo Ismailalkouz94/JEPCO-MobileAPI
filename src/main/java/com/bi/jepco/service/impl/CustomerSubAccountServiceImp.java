@@ -70,8 +70,8 @@ public class CustomerSubAccountServiceImp implements CustomerSubAccountService {
    }
 
    @Override
-   public void delete(CustomerSubAccount customerSubAccount) {
-      customerSubAccount = customerSubAccountDao.find(customerSubAccount.getId());
+   public void delete(Long customerSubAccountId) {
+      CustomerSubAccount customerSubAccount = customerSubAccountDao.find(customerSubAccountId);
 
       if(customerSubAccount == null){
          throw new ResourceException(HttpStatus.NOT_FOUND, "sub_account_not_found");
