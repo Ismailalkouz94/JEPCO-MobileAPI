@@ -11,7 +11,6 @@ import java.time.LocalDate;
 public class Billhf implements Serializable {
 
     @EmbeddedId
-    @JsonIgnore
     protected BillhfPK billhfPK;
 
     @Column(name = "H_CITY_NO_AL")
@@ -46,7 +45,6 @@ public class Billhf implements Serializable {
     private Long currentRead;
 
     @Column(name = "H_CUR_READ_DATE" )
-    @JsonIgnore
     private LocalDate currentReadDate;
 
     @Column(name = "H_CONSUM_QTY" )
