@@ -51,4 +51,31 @@ public class BillmfController {
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 
+
+    @GetMapping("/calculate/{fileNumber}/reading/{meterReading}")
+    public ResponseEntity<MessageBody> calculateReading(@PathVariable String fileNumber,@PathVariable String meterReading) {
+
+        if(fileNumber == null || fileNumber.length() != 13){
+            throw new ResourceException(HttpStatus.NOT_FOUND , "missing_file_number");
+        }
+
+        if(meterReading == null){
+            throw new ResourceException(HttpStatus.NOT_FOUND , "missing_meter_reading");
+        }
+
+        CustomerSubAccount customerSubAccount = new CustomerSubAccount();
+
+        customerSubAccount.setFileNumber(fileNumber);
+
+        Utils.initFileNumberTokens(customerSubAccount);
+
+        Billmf billmf = billmfService.find(customerSubAccount);
+
+        MessageBody messageBody = MessageBody.getInstance();
+        messageBody.setStatus("success");
+        messageBody.setKey("calculate_reading_success");
+        messageBody.setBody("29.012021");
+        return new ResponseEntity<>(messageBody, HttpStatus.OK);
+    }
+
 }

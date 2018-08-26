@@ -8,10 +8,7 @@ import com.bi.jepco.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
@@ -48,10 +45,31 @@ public class SmsVerificationController {
 
         smsVerification = smsVerificationService.create(smsVerification);
 
+        try {
+            int status = Utils.sendSms( "Your JEPCO Code is "+ smsVerification.getCode()+" /n Close this message and enter into JEPCO to activate your account" , smsVerification.getMobileNumber());
+        }catch(Exception ex){
+        }
+
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
         messageBody.setKey("create_sms_success");
         messageBody.setBody(smsVerification);
+        return new ResponseEntity<>(messageBody, HttpStatus.OK);
+    }
+
+    @GetMapping("/sms/send")
+    public ResponseEntity<MessageBody> sendSms(@RequestParam("mobile") String mobile , @RequestParam("text") String text) {
+
+        try {
+            int status = Utils.sendSms(text, mobile);
+        }catch(Exception ex){
+            throw new ResourceException(HttpStatus.INTERNAL_SERVER_ERROR , "Server error");
+        }
+
+        MessageBody messageBody = MessageBody.getInstance();
+        messageBody.setStatus("success");
+        messageBody.setKey("send_sms_success");
+        messageBody.setBody(null);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 

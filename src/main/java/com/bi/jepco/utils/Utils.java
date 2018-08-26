@@ -3,7 +3,12 @@ package com.bi.jepco.utils;
 import com.bi.jepco.entities.CustomerSubAccount;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.util.Random;
 
@@ -88,6 +93,23 @@ public class Utils {
                 return true;
         }
 
+    }
+
+
+    public static int sendSms(String msg, String mobileNumber) throws IOException {
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://corporatesms.jo.zain.com/http/send_sms_http.php?login_name=jepco&login_password=Jj@123456&msg="+ URLEncoder.encode(msg, "UTF-8")+"&mobile_number="+mobileNumber+"&from=JEPCO&charset=windows-1256&unicode=0")
+                .get()
+                .addHeader("cache-control", "no-cache")
+                .addHeader("charset", "UTF-8")
+                .build();
+
+        Response response = client.newCall(request).execute();
+
+        return response.code();
     }
 
 }
