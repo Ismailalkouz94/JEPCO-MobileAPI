@@ -46,7 +46,7 @@ public class SmsVerificationController {
         smsVerification = smsVerificationService.create(smsVerification);
 
         try {
-            int status = Utils.sendSms( "Your JEPCO Code is "+ smsVerification.getCode()+" /n Close this message and enter into JEPCO to activate your account" , smsVerification.getMobileNumber());
+            int status = Utils.sendSms( "Your JEPCO Code is "+ smsVerification.getCode()+"Close this message and enter into JEPCO to activate your account" , smsVerification.getMobileNumber());
         }catch(Exception ex){
         }
 

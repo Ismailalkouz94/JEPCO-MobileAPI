@@ -101,7 +101,7 @@ public class Utils {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("http://corporatesms.jo.zain.com/http/send_sms_http.php?login_name=jepco&login_password=Jj@123456&msg="+ URLEncoder.encode(msg, "UTF-8")+"&mobile_number="+mobileNumber+"&from=JEPCO&charset=windows-1256&unicode=0")
+                .url("http://corporatesms.jo.zain.com/http/send_sms_http.php?login_name=jepco&login_password=Jj@123456&msg="+(msg)+"&mobile_number="+mobileNumber+"&from=JEPCO&charset=UTF-8&unicode=0")
                 .get()
                 .addHeader("cache-control", "no-cache")
                 .addHeader("charset", "UTF-8")
