@@ -3,6 +3,7 @@ package com.bi.jepco.controller;
 import com.bi.jepco.config.MessageBody;
 import com.bi.jepco.entities.Billhf;
 import com.bi.jepco.entities.CustomerSubAccount;
+import com.bi.jepco.entities.CustomerSubInfoPK;
 import com.bi.jepco.entities.MobileTips;
 import com.bi.jepco.exception.ResourceException;
 import com.bi.jepco.service.BillhfService;
@@ -38,6 +39,10 @@ public class BillhfController {
         }
 
         CustomerSubAccount customerSubAccount = new CustomerSubAccount();
+
+        CustomerSubInfoPK customerSubInfoPK = new CustomerSubInfoPK();
+
+        customerSubAccount.setCustomerSubInfoPK(customerSubInfoPK);
 
         customerSubAccount.setFileNumber(fileNumber);
 

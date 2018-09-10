@@ -9,30 +9,31 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "CUSTOMER_PROFILE")
+@Table(name = "MOB_CUST_INFO")
 public class CustomerProfile implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "CUS_PRO_ID" , updatable = false, nullable = false)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+//    @Column(name = "CUS_PRO_ID" , updatable = false, nullable = false)
+//    private Long id;
 
-    @Column(name = "CUS_PRO_NATIONAL_NUMBER" ,nullable = false ,unique = true ,length = 10)
+    @Id
+    @Column(name = "CUST_NAT_ID" ,nullable = false ,unique = true ,length = 10)
     private String nationalNumber;
 
-    @Column(name = "CUS_PRO_FIRST_NAME" ,nullable = false ,length = 30)
+    @Column(name = "CUST_FIRST_NAME" ,nullable = false ,length = 30)
     private String firstName;
 
-    @Column(name = "CUS_PRO_LAST_NAME" ,nullable = false ,length = 30)
+    @Column(name = "CUST_LAST_NAME" ,nullable = false ,length = 30)
     private String lastName;
 
-    @Column(name = "CUS_PRO_MOBILE_NUMBER" ,nullable = false ,length = 14)
+    @Column(name = "CUST_MOB_NO" ,nullable = false ,length = 14)
     private String mobileNumber;
 
-    @Column(name = "CUS_PRO_STATUS" , length = 1)
+    @Column(name = "CUST_STATUS" , length = 1)
     private Integer status;
 
-    @Column(name = "CUS_PRO_CREATION_DATE")
+    @Column(name = "CUS_CRE_DT")
     @JsonIgnore
     private LocalDateTime creationDate;
 
@@ -47,11 +48,11 @@ public class CustomerProfile implements Serializable {
     @Transient
     private List<CustomerSubAccount> customerSubAccountList;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) { this.id = id; }
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) { this.id = id; }
 
     public String getNationalNumber() {
         return nationalNumber;
@@ -120,7 +121,7 @@ public class CustomerProfile implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (nationalNumber != null ? nationalNumber.hashCode() : 0);
         return hash;
     }
 
@@ -130,7 +131,7 @@ public class CustomerProfile implements Serializable {
             return false;
         }
         CustomerProfile other = (CustomerProfile) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.nationalNumber == null && other.nationalNumber != null) || (this.nationalNumber != null && !this.nationalNumber.equals(other.nationalNumber))) {
             return false;
         }
         return true;
@@ -138,6 +139,6 @@ public class CustomerProfile implements Serializable {
 
     @Override
     public String toString() {
-        return "CustomerProfile[ id=" + id + " ]";
+        return "CustomerProfile[ id=" + nationalNumber + " ]";
     }
 }

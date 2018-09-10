@@ -53,11 +53,11 @@ public class Utils {
 
         String fileNumber = customerSubAccount.getFileNumber();
 
-        customerSubAccount.setCity(Integer.parseInt(fileNumber.substring(0,2)));
-        customerSubAccount.setRound(Integer.parseInt(fileNumber.substring(2 , 3)));
-        customerSubAccount.setDept(Integer.parseInt(fileNumber.substring(3,5)));
-        customerSubAccount.setColl(Integer.parseInt(fileNumber.substring(5 , 7)));
-        customerSubAccount.setCons(Integer.parseInt(fileNumber.substring( 7)));
+        customerSubAccount.getCustomerSubInfoPK().setCity(Integer.parseInt(fileNumber.substring(0,2)));
+        customerSubAccount.getCustomerSubInfoPK().setRound(Integer.parseInt(fileNumber.substring(2 , 3)));
+        customerSubAccount.getCustomerSubInfoPK().setDept(Integer.parseInt(fileNumber.substring(3,5)));
+        customerSubAccount.getCustomerSubInfoPK().setColl(Integer.parseInt(fileNumber.substring(5 , 7)));
+        customerSubAccount.getCustomerSubInfoPK().setCons(Integer.parseInt(fileNumber.substring( 7)));
 
         return customerSubAccount;
     }

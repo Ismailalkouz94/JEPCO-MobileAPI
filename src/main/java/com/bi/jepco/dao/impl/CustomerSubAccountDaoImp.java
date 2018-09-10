@@ -26,21 +26,17 @@ public class CustomerSubAccountDaoImp implements CustomerSubAccountDao {
    @Override
    public List<CustomerSubAccount> find(CustomerProfile customerProfile) {
       return sessionFactory.getCurrentSession().createQuery("from CustomerSubAccount cusSub" +
-              " where cusSub.customerProfile = :customerProfile")
+              " where cusSub.customerSubInfoPK.customerProfile = :customerProfile")
               .setParameter("customerProfile",customerProfile)
               .list();
    }
 
-   @Override
-   public CustomerSubAccount find(Long id) {
-      return (CustomerSubAccount) sessionFactory.getCurrentSession().get(CustomerSubAccount.class , id);
-   }
 
    @Override
    public CustomerSubAccount find(CustomerProfile customerProfile,String fileNumber) {
       return (CustomerSubAccount) sessionFactory.getCurrentSession().createQuery("from CustomerSubAccount cusSub" +
               " where cusSub.fileNumber = :fileNumber" +
-              " and cusSub.customerProfile = :customerProfile")
+              " and cusSub.customerSubInfoPK.customerProfile = :customerProfile")
               .setParameter("fileNumber",fileNumber)
               .setParameter("customerProfile",customerProfile)
               .uniqueResult();

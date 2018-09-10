@@ -4,6 +4,7 @@ import com.bi.jepco.config.MessageBody;
 import com.bi.jepco.entities.Billhf;
 import com.bi.jepco.entities.Billmf;
 import com.bi.jepco.entities.CustomerSubAccount;
+import com.bi.jepco.entities.CustomerSubInfoPK;
 import com.bi.jepco.exception.ResourceException;
 import com.bi.jepco.service.BillmfService;
 import com.bi.jepco.service.CustomerSubAccountService;
@@ -38,6 +39,10 @@ public class BillmfController {
 
         CustomerSubAccount customerSubAccount = new CustomerSubAccount();
 
+        CustomerSubInfoPK customerSubInfoPK = new CustomerSubInfoPK();
+
+        customerSubAccount.setCustomerSubInfoPK(customerSubInfoPK);
+
         customerSubAccount.setFileNumber(fileNumber);
 
         Utils.initFileNumberTokens(customerSubAccount);
@@ -64,6 +69,10 @@ public class BillmfController {
         }
 
         CustomerSubAccount customerSubAccount = new CustomerSubAccount();
+
+        CustomerSubInfoPK customerSubInfoPK = new CustomerSubInfoPK();
+
+        customerSubAccount.setCustomerSubInfoPK(customerSubInfoPK);
 
         customerSubAccount.setFileNumber(fileNumber);
 

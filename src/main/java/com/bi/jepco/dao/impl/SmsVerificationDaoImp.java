@@ -22,11 +22,17 @@ public class SmsVerificationDaoImp implements SmsVerificationDao {
 
    @Override
    public SmsVerification find(String mobileNumber, Integer status) {
+      // ------------------ old code --------------------------------------------------------
+//      return (SmsVerification) sessionFactory.getCurrentSession().createQuery("from SmsVerification" +
+//              " where mobileNumber = :mobileNumber" +
+//              " and status = :status")
+//              .setParameter("mobileNumber",mobileNumber)
+//              .setParameter("status",status)
+//              .uniqueResult();
+      // ------------------ new code update 9/10/2018 --------------------------------------------------------
       return (SmsVerification) sessionFactory.getCurrentSession().createQuery("from SmsVerification" +
-              " where mobileNumber = :mobileNumber" +
-              " and status = :status")
+              " where mobileNumber = :mobileNumber")
               .setParameter("mobileNumber",mobileNumber)
-              .setParameter("status",status)
               .uniqueResult();
    }
 

@@ -20,11 +20,11 @@ public class BillmfDaoImp implements BillmfDao {
    public Billmf find(CustomerSubAccount customerSubAccount) {
 
       BillmfPK billmfPK = new BillmfPK();
-      billmfPK.setMCityNo(customerSubAccount.getCity());
-      billmfPK.setMRoundNo(customerSubAccount.getRound());
-      billmfPK.setMDeptNo(customerSubAccount.getDept());
-      billmfPK.setMCollNo(customerSubAccount.getColl());
-      billmfPK.setMConsNo(customerSubAccount.getCons());
+      billmfPK.setMCityNo(customerSubAccount.getCustomerSubInfoPK().getCity());
+      billmfPK.setMRoundNo(customerSubAccount.getCustomerSubInfoPK().getRound());
+      billmfPK.setMDeptNo(customerSubAccount.getCustomerSubInfoPK().getDept());
+      billmfPK.setMCollNo(customerSubAccount.getCustomerSubInfoPK().getColl());
+      billmfPK.setMConsNo(customerSubAccount.getCustomerSubInfoPK().getCons());
 
       System.out.println(billmfPK.toString());
 

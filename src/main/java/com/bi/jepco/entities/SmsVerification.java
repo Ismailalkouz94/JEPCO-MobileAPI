@@ -8,32 +8,33 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "SMS_VERIFICATION")
+@Table(name = "MOB_SMS_INFO")
 public class SmsVerification implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "SMS_VER_ID" , updatable = false, nullable = false)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+//    @Column(name = "SMS_VER_ID" , updatable = false, nullable = false)
+//    private Long id;
 
-    @Column(name = "SMS_VER_CODE" ,nullable = false ,length = 4)
+    @Column(name = "SMS_CODE" ,nullable = false ,length = 4)
     private String code;
 
-    @Column(name = "SMS_VER_MOBILE_NUMBER" ,nullable = false ,length = 14)
+    @Id
+    @Column(name = "SMS_MOB_NO" ,nullable = false ,length = 14)
     private String mobileNumber;
 
-    @Column(name = "SMS_VER_STATUS" ,length = 1)
+    @Column(name = "SMS_STATUS" ,length = 1)
     private Integer status;
 
-    @Column(name = "SMS_VER_CREATION_DATE")
+    @Column(name = "SMS_CRE_DATE")
     @JsonIgnore
     private LocalDateTime creationDate;
 
-    @Column(name = "SMS_VER_EXPIRATION_DATE")
+    @Column(name = "SMS_EXP_DATE")
     @JsonIgnore
     private LocalDateTime expirationDate;
 
-    @Column(name = "SMS_VER_USED_DATE")
+    @Column(name = "SMS_USED_DT")
     @JsonIgnore
     private LocalDateTime usedDate;
 
@@ -45,13 +46,13 @@ public class SmsVerification implements Serializable {
     @JsonIgnore
     private String nationalNumber;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     public String getCode() {
         return code;
@@ -116,7 +117,7 @@ public class SmsVerification implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (mobileNumber != null ? mobileNumber.hashCode() : 0);
         return hash;
     }
 
@@ -126,7 +127,7 @@ public class SmsVerification implements Serializable {
             return false;
         }
         SmsVerification other = (SmsVerification) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.mobileNumber == null && other.mobileNumber != null) || (this.mobileNumber != null && !this.mobileNumber.equals(other.mobileNumber))) {
             return false;
         }
         return true;
@@ -134,6 +135,6 @@ public class SmsVerification implements Serializable {
 
     @Override
     public String toString() {
-        return "SMS_VERIFICATION[ id=" + id + " ]";
+        return "SMS_VERIFICATION[ id=" + mobileNumber + " ]";
     }
 }

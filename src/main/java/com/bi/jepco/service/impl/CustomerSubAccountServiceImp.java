@@ -6,6 +6,7 @@ import com.bi.jepco.dao.CustomerSubAccountDao;
 import com.bi.jepco.entities.Billmf;
 import com.bi.jepco.entities.CustomerProfile;
 import com.bi.jepco.entities.CustomerSubAccount;
+import com.bi.jepco.entities.CustomerSubInfoPK;
 import com.bi.jepco.exception.ResourceException;
 import com.bi.jepco.service.CustomerSubAccountService;
 import com.bi.jepco.utils.Utils;
@@ -44,6 +45,10 @@ public class CustomerSubAccountServiceImp implements CustomerSubAccountService {
          throw new ResourceException(HttpStatus.FOUND, "file_number_found");
       }
 
+      CustomerSubInfoPK customerSubInfoPK = new CustomerSubInfoPK();
+
+      customerSubAccount.setCustomerSubInfoPK(customerSubInfoPK);
+
       Utils.initFileNumberTokens(customerSubAccount);
 
       Billmf billmf = billmfDao.find(customerSubAccount);
@@ -52,7 +57,7 @@ public class CustomerSubAccountServiceImp implements CustomerSubAccountService {
          throw new ResourceException(HttpStatus.NOT_FOUND,"file_number_not_found");
       }
 
-      customerSubAccount.setCustomerProfile(customerProfile);
+      customerSubAccount.getCustomerSubInfoPK().setCustomerProfile(customerProfile);
 
       customerSubAccount.setCreationDate(LocalDateTime.now());
 
@@ -71,7 +76,8 @@ public class CustomerSubAccountServiceImp implements CustomerSubAccountService {
 
    @Override
    public void delete(Long customerSubAccountId) {
-      CustomerSubAccount customerSubAccount = customerSubAccountDao.find(customerSubAccountId);
+//      CustomerSubAccount customerSubAccount = customerSubAccountDao.find(customerSubAccountId);
+      CustomerSubAccount customerSubAccount = null;
 
       if(customerSubAccount == null){
          throw new ResourceException(HttpStatus.NOT_FOUND, "sub_account_not_found");

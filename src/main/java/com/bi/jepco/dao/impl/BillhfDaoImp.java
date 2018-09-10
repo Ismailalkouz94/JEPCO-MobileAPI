@@ -19,11 +19,11 @@ public class BillhfDaoImp implements BillhfDao {
    public List<Billhf> find(CustomerSubAccount customerSubAccount) {
 
       BillhfPK billhfPK = new BillhfPK();
-      billhfPK.sethCityNo(customerSubAccount.getCity());
-      billhfPK.sethRoundNo(customerSubAccount.getRound());
-      billhfPK.sethDeptNo(customerSubAccount.getDept());
-      billhfPK.sethCollNo(customerSubAccount.getColl());
-      billhfPK.sethConsNo(customerSubAccount.getCons());
+      billhfPK.sethCityNo(customerSubAccount.getCustomerSubInfoPK().getCity());
+      billhfPK.sethRoundNo(customerSubAccount.getCustomerSubInfoPK().getRound());
+      billhfPK.sethDeptNo(customerSubAccount.getCustomerSubInfoPK().getDept());
+      billhfPK.sethCollNo(customerSubAccount.getCustomerSubInfoPK().getColl());
+      billhfPK.sethConsNo(customerSubAccount.getCustomerSubInfoPK().getCons());
 
       List<Billhf> billhfList =  sessionFactory.getCurrentSession().createQuery("from Billhf bill" +
               " where bill.billhfPK.hCityNo = :cityNo" +

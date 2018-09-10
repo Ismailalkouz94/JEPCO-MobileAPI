@@ -7,10 +7,7 @@ import java.util.List;
 import com.bi.jepco.dao.BillmfDao;
 import com.bi.jepco.dao.CustomerSubAccountDao;
 import com.bi.jepco.dao.SmsVerificationDao;
-import com.bi.jepco.entities.Billmf;
-import com.bi.jepco.entities.CustomerProfile;
-import com.bi.jepco.entities.CustomerSubAccount;
-import com.bi.jepco.entities.SmsVerification;
+import com.bi.jepco.entities.*;
 import com.bi.jepco.exception.ResourceException;
 import com.bi.jepco.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +75,10 @@ public class CustomerProfileServiceImp implements CustomerProfileService {
 
          CustomerSubAccount customerSubAccount = new CustomerSubAccount();
 
+         CustomerSubInfoPK customerSubInfoPK = new CustomerSubInfoPK();
+
+         customerSubAccount.setCustomerSubInfoPK(customerSubInfoPK);
+
          customerSubAccount.setFileNumber(customerProfile.getFileNumber());
 
          Utils.initFileNumberTokens(customerSubAccount);
@@ -88,7 +89,7 @@ public class CustomerProfileServiceImp implements CustomerProfileService {
             throw new ResourceException(HttpStatus.NOT_FOUND,"file_no_not_found");
          }
 
-         customerSubAccount.setCustomerProfile(customerProfile);
+         customerSubAccount.getCustomerSubInfoPK().setCustomerProfile(customerProfile);
 
          customerSubAccount.setCreationDate(LocalDateTime.now());
 
