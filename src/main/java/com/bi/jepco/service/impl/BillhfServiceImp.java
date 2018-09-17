@@ -1,30 +1,24 @@
 package com.bi.jepco.service.impl;
 
 
-import com.bi.jepco.dao.BillhfDao;
-import com.bi.jepco.dao.MobileTipsDao;
-import com.bi.jepco.entities.Billhf;
-import com.bi.jepco.entities.CustomerSubAccount;
-import com.bi.jepco.entities.MobileTips;
-import com.bi.jepco.service.BillhfService;
-import com.bi.jepco.service.MobileTipsService;
+import com.bi.jepco.dao.BillParfDao;
+import com.bi.jepco.entities.BillParf;
+import com.bi.jepco.service.BillParfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 
 @Service
 @Transactional
-public class BillhfServiceImp implements BillhfService {
+public class BillhfServiceImp implements BillParfService {
 
    @Autowired
-   private BillhfDao billhfDao;
+   private BillParfDao billParfDao;
 
 
    @Override
-   public List<Billhf> find(CustomerSubAccount customerSubAccount) {
-      return billhfDao.find(customerSubAccount);
+   public BillParf find() {
+      return billParfDao.find();
    }
 }
