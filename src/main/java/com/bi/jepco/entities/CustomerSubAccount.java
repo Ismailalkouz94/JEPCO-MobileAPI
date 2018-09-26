@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "CUSTOMER_SUB_ACCOUNT")
+@Table(name = "MOB_CUST_SUB_INFO")
 public class CustomerSubAccount implements Serializable {
 
 //    @Id
