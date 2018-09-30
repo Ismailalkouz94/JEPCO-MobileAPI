@@ -26,11 +26,11 @@ public class SmsVerification implements Serializable {
     @Column(name = "SMS_STATUS" ,length = 1)
     private Integer status;
 
-    @Column(name = "SMS_CRE_DATE")
+    @Column(name = "SMS_CRE_DT")
     @JsonIgnore
     private LocalDateTime creationDate;
 
-    @Column(name = "SMS_EXP_DATE")
+    @Column(name = "SMS_EXP_DT")
     @JsonIgnore
     private LocalDateTime expirationDate;
 

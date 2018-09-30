@@ -33,7 +33,7 @@ public class CustomerProfile implements Serializable {
     @Column(name = "CUST_STATUS" , length = 1)
     private Integer status;
 
-    @Column(name = "CUS_CRE_DT")
+    @Column(name = "CUST_CRE_DT")
     @JsonIgnore
     private LocalDateTime creationDate;
 

@@ -1,11 +1,9 @@
 package com.bi.jepco.controller;
 
 import com.bi.jepco.config.MessageBody;
-import com.bi.jepco.entities.Billhf;
-import com.bi.jepco.entities.Billmf;
-import com.bi.jepco.entities.CustomerSubAccount;
-import com.bi.jepco.entities.CustomerSubInfoPK;
+import com.bi.jepco.entities.*;
 import com.bi.jepco.exception.ResourceException;
+import com.bi.jepco.service.BillParfService;
 import com.bi.jepco.service.BillmfService;
 import com.bi.jepco.service.CustomerSubAccountService;
 import com.bi.jepco.utils.Utils;
@@ -28,6 +26,9 @@ public class BillmfController {
 
     @Autowired
     private CustomerSubAccountService customerSubAccountService;
+
+    @Autowired
+    private BillParfService billParfService;
 
 
     @GetMapping("/history/{fileNumber}")
@@ -58,7 +59,7 @@ public class BillmfController {
 
 
     @GetMapping("/calculate/{fileNumber}/reading/{meterReading}")
-    public ResponseEntity<MessageBody> calculateReading(@PathVariable String fileNumber,@PathVariable String meterReading) {
+    public ResponseEntity<MessageBody> calculateReading(@PathVariable String fileNumber,@PathVariable Integer meterReading) {
 
         if(fileNumber == null || fileNumber.length() != 13){
             throw new ResourceException(HttpStatus.NOT_FOUND , "missing_file_number");
@@ -80,10 +81,34 @@ public class BillmfController {
 
         Billmf billmf = billmfService.find(customerSubAccount);
 
+        Integer consumption = Math.abs(meterReading - billmf.getmPreviousRead());
+
+        System.out.println("getmPreviousRead: "+billmf.getmPreviousRead());
+
+        List<BillParf> billParfList = billParfService.find(billmf.getmConsType());
+
+        BillParf selectedBillParf = null;
+
+        for (BillParf billParf: billParfList){
+            if( (consumption >= billParf.getFromkw()) && (consumption < billParf.getTokw())){
+                selectedBillParf = billParf;
+                break;
+            }
+        }
+
+        if(selectedBillParf == null){
+            throw new ResourceException(HttpStatus.NOT_FOUND , "bill_consumption_not_found");
+        }
+
+        System.out.println("billParfList: "+billParfList.size());
+
+        Double readingValue = consumption * selectedBillParf.getpValue();
+
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
         messageBody.setKey("calculate_reading_success");
-        messageBody.setBody("29.012021");
+//        messageBody.setBody(Utils.randomNumber(2)+"."+Utils.randomNumber(3));
+        messageBody.setBody(Math.round(readingValue * 100.0) / 100.0);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 

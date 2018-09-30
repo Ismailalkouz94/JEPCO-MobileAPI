@@ -11,7 +11,7 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name = "BILLMF")
+@Table(name = "BMF")
 public class Billmf implements Serializable {
 
     @EmbeddedId

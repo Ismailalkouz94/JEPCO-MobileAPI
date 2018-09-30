@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface BillParfDao {
 
-   public BillParf find();
+   public List<BillParf> find(Integer type);
 
 }

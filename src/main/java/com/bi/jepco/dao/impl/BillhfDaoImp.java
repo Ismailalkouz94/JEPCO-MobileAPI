@@ -30,12 +30,14 @@ public class BillhfDaoImp implements BillhfDao {
               " and bill.billhfPK.hRoundNo = :roundNo" +
               " and bill.billhfPK.hDeptNo = :deptNo" +
               " and bill.billhfPK.hCollNo = :collNo" +
-              " and bill.billhfPK.hConsNo = :consNo")
+              " and bill.billhfPK.hConsNo = :consNo" +
+              " order by bill.billhfPK.hBillNo desc")
               .setParameter("cityNo",billhfPK.gethCityNo())
               .setParameter("roundNo",billhfPK.gethRoundNo())
               .setParameter("deptNo",billhfPK.gethDeptNo())
               .setParameter("collNo",billhfPK.gethCollNo())
               .setParameter("consNo",billhfPK.gethConsNo())
+              .setMaxResults(12)
               .list();
 
        return billhfList;

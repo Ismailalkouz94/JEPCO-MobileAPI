@@ -26,8 +26,6 @@ public class BillmfDaoImp implements BillmfDao {
       billmfPK.setMCollNo(customerSubAccount.getCustomerSubInfoPK().getColl());
       billmfPK.setMConsNo(customerSubAccount.getCustomerSubInfoPK().getCons());
 
-      System.out.println(billmfPK.toString());
-
       return (Billmf) sessionFactory.getCurrentSession().createQuery("from Billmf billmf" +
               " where billmf.billmfPK = :billmfPK")
               .setParameter("billmfPK",billmfPK)

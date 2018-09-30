@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -23,7 +24,14 @@ public class MobileTipsController {
     @GetMapping("/tips")
     public ResponseEntity<MessageBody> findAllMobileTips() {
 
-        List<MobileTips> mobileTipsList = mobileTipsService.find();
+//        List<MobileTips> mobileTipsList = mobileTipsService.find();
+
+        List<MobileTips> mobileTipsList = new ArrayList<>();
+
+        MobileTips mobileTips = new MobileTips();
+        mobileTips.setArabicText("تقليل الاعتماد على الإضاءة الصناعية خلال أوقات النهار، والاعتماد على الإضاءة الطبيعية بدلاً منها، وذلك من خلال فتح النوّافذ لتدخل الإضاءة");
+        mobileTips.setEnglishText("Reduce dependence on industrial lighting during daylight hours, relying on natural lighting instead, by opening windows to interfere with lighting");
+        mobileTipsList.add(mobileTips);
 
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");

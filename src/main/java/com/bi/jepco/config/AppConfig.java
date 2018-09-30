@@ -67,7 +67,7 @@ public class AppConfig {
         props.put(PASS, env.getProperty("oracle.password"));
         // Setting Hibernate properties
         props.put(SHOW_SQL, env.getProperty("hibernate.show_sql"));
-        props.put(HBM2DDL_AUTO, env.getProperty("hibernate.hbm2ddl.auto"));
+//        props.put(HBM2DDL_AUTO, env.getProperty("hibernate.hbm2ddl.auto"));
 //        props.put(DIALECT, env.getProperty("hibernate.dialect"));
 
         // Setting C3P0 properties

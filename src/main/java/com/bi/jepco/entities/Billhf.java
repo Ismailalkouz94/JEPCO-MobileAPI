@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "BILLHF")
+@Table(name = "BHF")
 public class Billhf implements Serializable {
 
     @EmbeddedId

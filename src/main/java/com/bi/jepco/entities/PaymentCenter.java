@@ -11,23 +11,23 @@ import java.io.Serializable;
 public class PaymentCenter implements Serializable {
 
     @Id
-    @Column(name = "PAY_CEN_ID" , columnDefinition="NUMBER(2)")
+    @Column(name = "GPS_OFFICE")
     private Long id;
 
-    @Column(name = "PAY_CEN_NAME")
-    private String name;
+//    @Column(name = "PAY_CEN_NAME")
+//    private String name;
 
-    @Column(name = "PAY_CEN_ADDRESS")
-    private String address;
+//    @Column(name = "GPS_ADDRESS")
+//    private String address;
 
-    @Column(name = "PAY_CEN_LONGITUDE")
+    @Column(name = "GPS_LAT")
     private Double longitude;
 
-    @Column(name = "PAY_CEN_LATITUDE")
+    @Column(name = "GPS_LONG")
     private Double latitude;
 
-    @Column(name = "PAY_CEN_PHONE_NUMBER")
-    private String phoneNumber;
+//    @Column(name = "GPS_PHONE_NUMBER")
+//    private String phoneNumber;
 
     public Long getId() {
         return id;
@@ -37,21 +37,21 @@ public class PaymentCenter implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
+//    public String getAddress() {
+//        return address;
+//    }
+//
+//    public void setAddress(String address) {
+//        this.address = address;
+//    }
 
     public Double getLongitude() {
         return longitude;
@@ -69,11 +69,11 @@ public class PaymentCenter implements Serializable {
         this.latitude = latitude;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+//    public String getPhoneNumber() {
+//        return phoneNumber;
+//    }
+//
+//    public void setPhoneNumber(String phoneNumber) {
+//        this.phoneNumber = phoneNumber;
+//    }
 }

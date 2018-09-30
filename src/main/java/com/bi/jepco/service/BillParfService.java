@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface BillParfService {
 
-   public BillParf find();
+   public List<BillParf> find(Integer type);
 }
