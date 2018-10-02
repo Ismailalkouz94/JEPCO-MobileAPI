@@ -43,20 +43,33 @@ public class CustomerSubAccountController {
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 
-    @PutMapping("/sub/delete/{customerSubAccountId}")
-    public ResponseEntity<MessageBody> deleteSub(@PathVariable Long customerSubAccountId , @RequestBody CustomerProfile customerProfile) {
+    @PutMapping("/sub/delete/{customerSubAccountFileNumber}")
+    public ResponseEntity<MessageBody> deleteSub(@PathVariable String customerSubAccountFileNumber , @RequestBody CustomerSubAccount customerSubAccount) {
 
-        if(customerSubAccountId == null
-                || customerSubAccountId== 0
-                || customerProfile.getNationalNumber() == null
-                || customerProfile.getNationalNumber().isEmpty()){
+        if(customerSubAccountFileNumber == null
+                || customerSubAccountFileNumber.length() == 0
+                || customerSubAccount.getNationalNumber() == null
+                || customerSubAccount.getNationalNumber().isEmpty()){
             throw new ResourceException(HttpStatus.BAD_REQUEST , "Validation_error");
         }
-        customerSubAccountService.delete(customerSubAccountId);
 
-        customerProfile = customerProfileService.find(customerProfile.getNationalNumber());
+        CustomerProfile customerProfile = customerProfileService.find(customerSubAccount.getNationalNumber());
 
         List<CustomerSubAccount> customerSubAccountList = customerSubAccountService.find(customerProfile);
+
+        for(CustomerSubAccount customerSubAccountObj : customerSubAccountList){
+            if(customerSubAccountObj.getFileNumber().equals(customerSubAccountFileNumber)){
+                System.out.println("find file number success");
+                customerSubAccount = customerSubAccountObj;
+                break;
+            }
+        }
+        System.out.println("customerSubAccount: "+customerSubAccount.getFileNumber());
+        System.out.println("customerSubAccount: "+customerSubAccount.getCustomerSubInfoPK().getCustomerProfile().getNationalNumber());
+        customerSubAccountService.delete(customerSubAccount);
+
+
+        customerSubAccountList = customerSubAccountService.find(customerProfile);
 
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
