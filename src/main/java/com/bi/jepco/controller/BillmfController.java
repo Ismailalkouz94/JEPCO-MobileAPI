@@ -34,8 +34,8 @@ public class BillmfController {
     @GetMapping("/history/{fileNumber}")
     public ResponseEntity<MessageBody> findBills(@PathVariable String fileNumber) {
 
-        if(fileNumber == null || fileNumber.length() != 13){
-            throw new ResourceException(HttpStatus.NOT_FOUND , "missing_file_number");
+        if (fileNumber == null || fileNumber.length() != 13) {
+            throw new ResourceException(HttpStatus.NOT_FOUND, "missing_file_number");
         }
 
         CustomerSubAccount customerSubAccount = new CustomerSubAccount();
@@ -59,14 +59,14 @@ public class BillmfController {
 
 
     @GetMapping("/calculate/{fileNumber}/reading/{meterReading}")
-    public ResponseEntity<MessageBody> calculateReading(@PathVariable String fileNumber,@PathVariable Integer meterReading) {
+    public ResponseEntity<MessageBody> calculateReading(@PathVariable String fileNumber, @PathVariable Long meterReading) {
 
-        if(fileNumber == null || fileNumber.length() != 13){
-            throw new ResourceException(HttpStatus.NOT_FOUND , "missing_file_number");
+        if (fileNumber == null || fileNumber.length() != 13) {
+            throw new ResourceException(HttpStatus.NOT_FOUND, "missing_file_number");
         }
 
-        if(meterReading == null){
-            throw new ResourceException(HttpStatus.NOT_FOUND , "missing_meter_reading");
+        if (meterReading == null) {
+            throw new ResourceException(HttpStatus.NOT_FOUND, "missing_meter_reading");
         }
 
         CustomerSubAccount customerSubAccount = new CustomerSubAccount();
@@ -81,26 +81,29 @@ public class BillmfController {
 
         Billmf billmf = billmfService.find(customerSubAccount);
 
-        Integer consumption = Math.abs(meterReading - billmf.getmPreviousRead());
+        if (meterReading < billmf.getmPreviousRead()) {
+            throw new ResourceException(HttpStatus.NOT_FOUND, "bill_consumption_meterReading_lessThan_preReading");
+        }
+        Long consumption = Math.abs(meterReading - billmf.getmPreviousRead());
 
-        System.out.println("getmPreviousRead: "+billmf.getmPreviousRead());
+        System.out.println("getmPreviousRead: " + billmf.getmPreviousRead());
 
         List<BillParf> billParfList = billParfService.find(billmf.getmConsType());
 
         BillParf selectedBillParf = null;
 
-        for (BillParf billParf: billParfList){
-            if( (consumption >= billParf.getFromkw()) && (consumption < billParf.getTokw())){
+        for (BillParf billParf : billParfList) {
+            if ((consumption >= billParf.getFromkw()) && (consumption < billParf.getTokw())) {
                 selectedBillParf = billParf;
                 break;
             }
         }
 
-        if(selectedBillParf == null){
-            throw new ResourceException(HttpStatus.NOT_FOUND , "bill_consumption_not_found");
+        if (selectedBillParf == null) {
+            throw new ResourceException(HttpStatus.NOT_FOUND, "bill_consumption_not_found");
         }
 
-        System.out.println("billParfList: "+billParfList.size());
+        System.out.println("billParfList: " + billParfList.size());
 
         Double readingValue = consumption * selectedBillParf.getpValue();
 
