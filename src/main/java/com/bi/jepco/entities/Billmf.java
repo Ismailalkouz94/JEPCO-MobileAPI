@@ -127,7 +127,7 @@ public class Billmf implements Serializable {
     @Column(name = "M_METER_STATUS")
     private Integer mMeterStatus;
 
-    @JsonIgnore
+//    @JsonIgnore
     @Column(name = "M_PREVIOUS_READ")
     private Integer mPreviousRead;
 
