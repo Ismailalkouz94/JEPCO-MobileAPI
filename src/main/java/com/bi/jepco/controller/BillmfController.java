@@ -118,7 +118,9 @@ public class BillmfController {
         Map<String,Object> data=new HashMap<>();
         data.put("consumption",consumption);
         data.put("value",Math.round(readingValue * 100.0) / 100.0);
-        messageBody.setBody(data);
+//        messageBody.setBody(data);
+        messageBody.setBody(Math.round(readingValue * 100.0) / 100.0);
+
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 
