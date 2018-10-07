@@ -38,6 +38,32 @@ public class BillmfController {
     @Autowired
     private BillhfService billhfService;
 
+    @GetMapping("/subscriber/{fileNumber}")
+    public ResponseEntity<MessageBody> findSubscriber(@PathVariable String fileNumber) {
+
+        if (fileNumber == null || fileNumber.length() != 13) {
+            throw new ResourceException(HttpStatus.NOT_FOUND, "missing_file_number");
+        }
+
+        CustomerSubAccount customerSubAccount = new CustomerSubAccount();
+
+        CustomerSubInfoPK customerSubInfoPK = new CustomerSubInfoPK();
+
+        customerSubAccount.setCustomerSubInfoPK(customerSubInfoPK);
+
+        customerSubAccount.setFileNumber(fileNumber);
+
+        Utils.initFileNumberTokens(customerSubAccount);
+
+        Billmf billmf = billmfService.find(customerSubAccount);
+
+        MessageBody messageBody = MessageBody.getInstance();
+        messageBody.setStatus("success");
+        messageBody.setKey("find_subscriber_success");
+        messageBody.setBody(billmf);
+        return new ResponseEntity<>(messageBody, HttpStatus.OK);
+    }
+
 
     @GetMapping("/history/{fileNumber}/{payFlag}")
     public ResponseEntity<MessageBody> findBills(@PathVariable String fileNumber, @PathVariable Integer payFlag) {

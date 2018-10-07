@@ -37,7 +37,7 @@ public class BillhfDaoImp implements BillhfDao {
                     " and bill.payDate is null" +
                     " order by bill.billhfPK.hBillNo desc")
                     .setParameter("cityNo",billhfPK.gethCityNo())
-                    .setParameter("roundNo",billhfPK.gethRoundNo())
+                    .setParameter("roundNo",billhfPK.   gethRoundNo())
                     .setParameter("deptNo",billhfPK.gethDeptNo())
                     .setParameter("collNo",billhfPK.gethCollNo())
                     .setParameter("consNo",billhfPK.gethConsNo())

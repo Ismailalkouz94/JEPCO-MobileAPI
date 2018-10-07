@@ -16,6 +16,7 @@ public class CustomerProfileDaoImp implements CustomerProfileDao {
 
    @Override
    public CustomerProfile save(CustomerProfile customerProfile) {
+      customerProfile.setIdType(1);
       sessionFactory.getCurrentSession().save(customerProfile);
       return customerProfile;
    }
