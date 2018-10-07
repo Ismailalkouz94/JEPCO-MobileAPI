@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface BillhfService {
 
-   public List<Billhf> find(CustomerSubAccount customerSubAccount);
+   public List<Billhf> find(CustomerSubAccount customerSubAccount, Integer payFlag);
 }

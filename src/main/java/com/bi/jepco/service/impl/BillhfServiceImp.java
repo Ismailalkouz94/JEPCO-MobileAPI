@@ -21,7 +21,7 @@ public class BillhfServiceImp implements BillhfService {
 
 
    @Override
-   public List<Billhf> find(CustomerSubAccount customerSubAccount) {
-      return billhfDao.find(customerSubAccount);
+   public List<Billhf> find(CustomerSubAccount customerSubAccount, Integer payFlag) {
+      return billhfDao.find(customerSubAccount, payFlag);
    }
 }

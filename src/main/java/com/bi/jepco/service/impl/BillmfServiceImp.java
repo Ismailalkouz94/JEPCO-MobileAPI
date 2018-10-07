@@ -35,11 +35,7 @@ public class BillmfServiceImp implements BillmfService {
       if(billmf == null){
          throw new ResourceException(HttpStatus.NOT_FOUND , "file_not_found");
       }
-
-      List<Billhf> billhfList = billhfDao.find(customerSubAccount);
-
-      billmf.setBills(billhfList);
-
+      
       return billmf;
    }
 }
