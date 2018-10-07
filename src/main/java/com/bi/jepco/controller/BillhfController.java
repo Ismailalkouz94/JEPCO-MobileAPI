@@ -43,7 +43,7 @@ public class BillhfController {
         CustomerSubInfoPK customerSubInfoPK = new CustomerSubInfoPK();
 
         customerSubAccount.setCustomerSubInfoPK(customerSubInfoPK);
-pass
+
         customerSubAccount.setFileNumber(fileNumber);
 
         Utils.initFileNumberTokens(customerSubAccount);
