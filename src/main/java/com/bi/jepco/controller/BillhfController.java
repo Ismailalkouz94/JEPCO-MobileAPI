@@ -43,12 +43,12 @@ public class BillhfController {
         CustomerSubInfoPK customerSubInfoPK = new CustomerSubInfoPK();
 
         customerSubAccount.setCustomerSubInfoPK(customerSubInfoPK);
-
+pass
         customerSubAccount.setFileNumber(fileNumber);
 
         Utils.initFileNumberTokens(customerSubAccount);
 
-        List<Billhf> billhfList = billhfService.find(customerSubAccount);
+        List<Billhf> billhfList = billhfService.find(customerSubAccount,0);
 
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");

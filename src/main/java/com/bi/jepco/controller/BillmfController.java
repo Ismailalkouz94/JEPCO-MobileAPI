@@ -4,6 +4,7 @@ import com.bi.jepco.config.MessageBody;
 import com.bi.jepco.entities.*;
 import com.bi.jepco.exception.ResourceException;
 import com.bi.jepco.service.BillParfService;
+import com.bi.jepco.service.BillhfService;
 import com.bi.jepco.service.BillmfService;
 import com.bi.jepco.service.CustomerSubAccountService;
 import com.bi.jepco.utils.Utils;
@@ -34,9 +35,12 @@ public class BillmfController {
     @Autowired
     private BillParfService billParfService;
 
+    @Autowired
+    private BillhfService billhfService;
 
-    @GetMapping("/history/{fileNumber}")
-    public ResponseEntity<MessageBody> findBills(@PathVariable String fileNumber) {
+
+    @GetMapping("/history/{fileNumber}/{payFlag}")
+    public ResponseEntity<MessageBody> findBills(@PathVariable String fileNumber, @PathVariable Integer payFlag) {
 
         if (fileNumber == null || fileNumber.length() != 13) {
             throw new ResourceException(HttpStatus.NOT_FOUND, "missing_file_number");
@@ -53,6 +57,10 @@ public class BillmfController {
         Utils.initFileNumberTokens(customerSubAccount);
 
         Billmf billmf = billmfService.find(customerSubAccount);
+
+        List<Billhf> billhfList = billhfService.find(customerSubAccount, payFlag);
+
+        billmf.setBills(billhfList);
 
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");

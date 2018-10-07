@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface BillhfDao {
 
-   public List<Billhf> find(CustomerSubAccount customerSubAccount);
+   public List<Billhf> find(CustomerSubAccount customerSubAccount, Integer payFlag);
 
 }

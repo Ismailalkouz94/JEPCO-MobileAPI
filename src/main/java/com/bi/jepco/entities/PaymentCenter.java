@@ -1,9 +1,6 @@
 package com.bi.jepco.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -11,14 +8,9 @@ import java.io.Serializable;
 public class PaymentCenter implements Serializable {
 
     @Id
-    @Column(name = "GPS_OFFICE")
-    private Long id;
-
-//    @Column(name = "PAY_CEN_NAME")
-//    private String name;
-
-//    @Column(name = "GPS_ADDRESS")
-//    private String address;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "GPS_OFFICE")
+    private HostName hostName;
 
     @Column(name = "GPS_LAT")
     private Double longitude;
@@ -26,32 +18,13 @@ public class PaymentCenter implements Serializable {
     @Column(name = "GPS_LONG")
     private Double latitude;
 
-//    @Column(name = "GPS_PHONE_NUMBER")
-//    private String phoneNumber;
-
-    public Long getId() {
-        return id;
+    public HostName getHostName() {
+        return hostName;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setHostName(HostName hostName) {
+        this.hostName = hostName;
     }
-
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-
-//    public String getAddress() {
-//        return address;
-//    }
-//
-//    public void setAddress(String address) {
-//        this.address = address;
-//    }
 
     public Double getLongitude() {
         return longitude;
@@ -68,12 +41,4 @@ public class PaymentCenter implements Serializable {
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
-
-//    public String getPhoneNumber() {
-//        return phoneNumber;
-//    }
-//
-//    public void setPhoneNumber(String phoneNumber) {
-//        this.phoneNumber = phoneNumber;
-//    }
 }
