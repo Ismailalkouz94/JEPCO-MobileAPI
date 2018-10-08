@@ -31,22 +31,22 @@ public class SmsVerificationServiceImp implements SmsVerificationService {
 
     @Override
     public SmsVerification create(SmsVerification smsVerification) {
-
-        CustomerSubAccount customerSubAccount = new CustomerSubAccount();
-
-        CustomerSubInfoPK customerSubInfoPK = new CustomerSubInfoPK();
-
-        customerSubAccount.setCustomerSubInfoPK(customerSubInfoPK);
-
-        customerSubAccount.setFileNumber(smsVerification.getFileNumber());
-
-        Utils.initFileNumberTokens(customerSubAccount);
-
-        Billmf billmf = billmfDao.find(customerSubAccount);
-
-        if (billmf == null) {
-            throw new ResourceException(HttpStatus.NOT_FOUND, "file_no_not_found");
-        }
+//
+//        CustomerSubAccount customerSubAccount = new CustomerSubAccount();
+//
+//        CustomerSubInfoPK customerSubInfoPK = new CustomerSubInfoPK();
+//
+//        customerSubAccount.setCustomerSubInfoPK(customerSubInfoPK);
+//
+//        customerSubAccount.setFileNumber(smsVerification.getFileNumber());
+//
+//        Utils.initFileNumberTokens(customerSubAccount);
+//
+//        Billmf billmf = billmfDao.find(customerSubAccount);
+//
+//        if (billmf == null) {
+//            throw new ResourceException(HttpStatus.NOT_FOUND, "file_no_not_found");
+//        }
 
         // ----------------------- Old Code  --------------------------------------------
 

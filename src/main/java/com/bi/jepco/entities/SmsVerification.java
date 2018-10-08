@@ -44,6 +44,10 @@ public class SmsVerification implements Serializable {
 
     @Transient
     @JsonIgnore
+    private Integer idType;
+
+    @Transient
+    @JsonIgnore
     private String nationalNumber;
 
 //    public Long getId() {
@@ -53,6 +57,16 @@ public class SmsVerification implements Serializable {
 //    public void setId(Long id) {
 //        this.id = id;
 //    }
+
+    @JsonIgnore
+    public Integer getIdType() {
+        return idType;
+    }
+
+    @JsonProperty
+    public void setIdType(Integer idType) {
+        this.idType = idType;
+    }
 
     public String getCode() {
         return code;

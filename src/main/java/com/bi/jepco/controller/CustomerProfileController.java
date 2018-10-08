@@ -22,9 +22,9 @@ public class CustomerProfileController {
 
 
     @PostMapping("/profile/create")
-    public ResponseEntity<MessageBody> createProfile(@RequestBody  CustomerProfile customerProfile) {
+    public ResponseEntity<MessageBody> createProfile(@RequestBody CustomerProfile customerProfile) {
 
-        if(customerProfile.getNationalNumber() == null
+        if (customerProfile.getNationalNumber() == null
                 || customerProfile.getNationalNumber().isEmpty()
                 || customerProfile.getFirstName() == null
                 || customerProfile.getFirstName().isEmpty()
@@ -32,11 +32,10 @@ public class CustomerProfileController {
                 || customerProfile.getLastName().isEmpty()
                 || customerProfile.getMobileNumber() == null
                 || customerProfile.getMobileNumber().isEmpty()
-                || customerProfile.getCode() == null
-                || customerProfile.getCode().isEmpty()
                 || customerProfile.getFileNumber() == null
-                || customerProfile.getFileNumber().length() != 13){
-            throw new ResourceException(HttpStatus.BAD_REQUEST , "Validation_error");
+                || customerProfile.getFileNumber().length() != 13
+                || customerProfile.getIdType() == null) {
+            throw new ResourceException(HttpStatus.BAD_REQUEST, "Validation_error");
         }
 
         customerProfile = customerProfileService.create(customerProfile);
@@ -47,12 +46,34 @@ public class CustomerProfileController {
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 
+
+    @PostMapping("/profile/verify")
+    public ResponseEntity<MessageBody> verifyProfile(@RequestBody CustomerProfile customerProfile) {
+
+        if (customerProfile.getNationalNumber() == null
+                || customerProfile.getNationalNumber().isEmpty()
+                || customerProfile.getMobileNumber() == null
+                || customerProfile.getMobileNumber().isEmpty()
+                || customerProfile.getCode() == null
+                || customerProfile.getCode().isEmpty()
+                || customerProfile.getIdType() == null) {
+            throw new ResourceException(HttpStatus.BAD_REQUEST, "Validation_error");
+        }
+
+        customerProfile = customerProfileService.verify(customerProfile);
+        MessageBody messageBody = MessageBody.getInstance();
+        messageBody.setStatus("success");
+        messageBody.setKey("create_profile_success");
+        messageBody.setBody(customerProfile);
+        return new ResponseEntity<>(messageBody, HttpStatus.OK);
+    }
+
     @GetMapping("/profile/{nationalNumber}")
     public ResponseEntity<MessageBody> getProfile(@PathVariable String nationalNumber) {
 
-        if(nationalNumber == null
-                || nationalNumber.isEmpty()){
-            throw new ResourceException(HttpStatus.BAD_REQUEST , "Validation_error");
+        if (nationalNumber == null
+                || nationalNumber.isEmpty()) {
+            throw new ResourceException(HttpStatus.BAD_REQUEST, "Validation_error");
         }
 
         CustomerProfile customerProfile = customerProfileService.find(nationalNumber);

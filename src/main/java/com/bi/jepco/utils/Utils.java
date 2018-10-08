@@ -62,7 +62,11 @@ public class Utils {
         return customerSubAccount;
     }
 
-    public static boolean validateNationalNumber(String nationalNumber){
+    public static boolean validateNationalNumber(String nationalNumber, Integer idType){
+
+        if(idType==2){
+            return true;
+        }
 
         if(nationalNumber.length() != 10){
             return false;

@@ -22,112 +22,113 @@ import com.bi.jepco.service.CustomerProfileService;
 @Transactional
 public class CustomerProfileServiceImp implements CustomerProfileService {
 
-   @Autowired
-   private CustomerProfileDao customerProfileDao;
+    @Autowired
+    private CustomerProfileDao customerProfileDao;
 
-   @Autowired
-   private CustomerSubAccountDao customerSubAccountDao;
+    @Autowired
+    private CustomerSubAccountDao customerSubAccountDao;
 
-   @Autowired
-   private SmsVerificationDao smsVerificationDao;
+    @Autowired
+    private SmsVerificationDao smsVerificationDao;
 
-   @Autowired
-   private BillmfDao billmfDao;
+    @Autowired
+    private BillmfDao billmfDao;
 
-   @Override
-   public CustomerProfile create(CustomerProfile customerProfile) {
+    @Override
+    public CustomerProfile create(CustomerProfile customerProfile) {
 
-      String mobileValidator = Utils.formatE164("+962",customerProfile.getMobileNumber());
+        customerProfile.setCreationDate(LocalDateTime.now());
 
-      if(mobileValidator.equals("0")){
-         throw new ResourceException(HttpStatus.BAD_REQUEST , "invalid_mobile");
-      }
+        customerProfile.setStatus(1);
 
-      customerProfile.setMobileNumber(mobileValidator);
+        customerProfileDao.save(customerProfile);
 
-      SmsVerification smsVerification = smsVerificationDao.find(customerProfile.getMobileNumber(),1);
+        CustomerSubAccount customerSubAccount = new CustomerSubAccount();
 
-      if(smsVerification == null){
-         throw new ResourceException(HttpStatus.NOT_FOUND , "sms_code_not_found");
-      }
+        CustomerSubInfoPK customerSubInfoPK = new CustomerSubInfoPK();
 
-      if(smsVerification.getExpirationDate().isBefore(LocalDateTime.now())){
-         throw new ResourceException(HttpStatus.FORBIDDEN , "sms_code_expired");
-      }
+        customerSubAccount.setCustomerSubInfoPK(customerSubInfoPK);
 
-      if(!smsVerification.getCode().equals(customerProfile.getCode())){
-         throw new ResourceException(HttpStatus.NOT_ACCEPTABLE , "sms_code_invalid");
-      }
+        customerSubAccount.setFileNumber(customerProfile.getFileNumber());
 
-      smsVerification.setStatus(2);
+        Utils.initFileNumberTokens(customerSubAccount);
 
-      smsVerification.setUsedDate(LocalDateTime.now());
+        Billmf billmf = billmfDao.find(customerSubAccount);
 
-      CustomerProfile currentCustomerProfile = customerProfileDao.find(customerProfile.getNationalNumber());
+        if (billmf == null) {
+            throw new ResourceException(HttpStatus.NOT_FOUND, "file_no_not_found");
+        }
 
-      if(currentCustomerProfile == null){
-         //create new customer profile
-         customerProfile.setCreationDate(LocalDateTime.now());
+        customerSubAccount.getCustomerSubInfoPK().setCustomerProfile(customerProfile);
 
-         customerProfile.setStatus(1);
+        customerSubAccount.setCreationDate(LocalDateTime.now());
 
-         customerProfileDao.save(customerProfile);
+        customerSubAccount.setAlias(customerProfile.getFirstName() + " " + customerProfile.getLastName());
 
-         CustomerSubAccount customerSubAccount = new CustomerSubAccount();
+        customerSubAccountDao.create(customerSubAccount);
 
-         CustomerSubInfoPK customerSubInfoPK = new CustomerSubInfoPK();
+        List<CustomerSubAccount> customerSubAccountsList = customerSubAccountDao.find(customerProfile);
 
-         customerSubAccount.setCustomerSubInfoPK(customerSubInfoPK);
+        customerProfile.setCustomerSubAccountList(customerSubAccountsList);
 
-         customerSubAccount.setFileNumber(customerProfile.getFileNumber());
+        return customerProfile;
+    }
 
-         Utils.initFileNumberTokens(customerSubAccount);
+    @Override
+    public CustomerProfile verify(CustomerProfile customerProfile) {
 
-         Billmf billmf = billmfDao.find(customerSubAccount);
+        String mobileValidator = Utils.formatE164("+962", customerProfile.getMobileNumber());
 
-         if(billmf == null){
-            throw new ResourceException(HttpStatus.NOT_FOUND,"file_no_not_found");
-         }
+        if (mobileValidator.equals("0")) {
+            throw new ResourceException(HttpStatus.BAD_REQUEST, "invalid_mobile");
+        }
 
-         customerSubAccount.getCustomerSubInfoPK().setCustomerProfile(customerProfile);
+        customerProfile.setMobileNumber(mobileValidator);
 
-         customerSubAccount.setCreationDate(LocalDateTime.now());
+        SmsVerification smsVerification = smsVerificationDao.find(customerProfile.getMobileNumber(), 1);
 
-         customerSubAccount.setAlias(customerProfile.getFirstName() + " " + customerProfile.getLastName());
+        if (smsVerification == null) {
+            throw new ResourceException(HttpStatus.NOT_FOUND, "sms_code_not_found");
+        }
 
-         customerSubAccountDao.create(customerSubAccount);
+        if (smsVerification.getExpirationDate().isBefore(LocalDateTime.now())) {
+            throw new ResourceException(HttpStatus.FORBIDDEN, "sms_code_expired");
+        }
 
-         List<CustomerSubAccount> customerSubAccountsList = customerSubAccountDao.find(customerProfile);
+        if (!smsVerification.getCode().equals(customerProfile.getCode())) {
+            throw new ResourceException(HttpStatus.NOT_ACCEPTABLE, "sms_code_invalid");
+        }
 
-         customerProfile.setCustomerSubAccountList(customerSubAccountsList);
+        smsVerification.setStatus(2);
 
-      }else{
-         //update current customer profile
-         currentCustomerProfile.setMobileNumber(customerProfile.getMobileNumber());
+        smsVerification.setUsedDate(LocalDateTime.now());
 
-         List<CustomerSubAccount> customerSubAccounts = customerSubAccountDao.find(currentCustomerProfile);
+        CustomerProfile currentCustomerProfile = customerProfileDao.find(customerProfile.getNationalNumber());
 
-         currentCustomerProfile.setCustomerSubAccountList(customerSubAccounts);
+        if (currentCustomerProfile == null) {
+            return null;
+        } else {
+            List<CustomerSubAccount> customerSubAccounts = customerSubAccountDao.find(currentCustomerProfile);
+            currentCustomerProfile.setCustomerSubAccountList(customerSubAccounts);
 
-         customerProfile = currentCustomerProfile;
-      }
-      return customerProfile;
-   }
+            return currentCustomerProfile;
+        }
+    }
 
-   @Override
-   public CustomerProfile find(String nationalNumber) {
-      CustomerProfile customerProfile = customerProfileDao.find(nationalNumber);
+    @Override
+    public CustomerProfile find(String nationalNumber) {
+        CustomerProfile customerProfile = customerProfileDao.find(nationalNumber);
 
-      if(customerProfile == null){
-         throw new ResourceException(HttpStatus.NOT_FOUND, "profile_not_found");
-      }
+        if (customerProfile == null) {
+            throw new ResourceException(HttpStatus.NOT_FOUND, "profile_not_found");
+        }
 
-      List<CustomerSubAccount> customerSubAccountList = customerSubAccountDao.find(customerProfile);
+        List<CustomerSubAccount> customerSubAccountList = customerSubAccountDao.find(customerProfile);
 
-      customerProfile.setCustomerSubAccountList(customerSubAccountList);
+        customerProfile.setCustomerSubAccountList(customerSubAccountList);
 
-      return customerProfile;
-   }
+        return customerProfile;
+    }
 
 
 }
