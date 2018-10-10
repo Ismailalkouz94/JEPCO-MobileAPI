@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -122,36 +123,30 @@ public class BillmfController {
         if (meterReading < billmf.getmPreviousRead()) {
             throw new ResourceException(HttpStatus.NOT_FOUND, "bill_consumption_meterReading_lessThan_preReading");
         }
-        Long consumption = Math.abs(meterReading - billmf.getmPreviousRead());
+        BigDecimal consumption = new BigDecimal(Math.abs(meterReading - billmf.getmPreviousRead()));
 
-        System.out.println("getmPreviousRead: " + billmf.getmPreviousRead());
-
+        //tarifa -> bilParf
         List<BillParf> billParfList = billParfService.find(billmf.getmConsType());
 
-        BillParf selectedBillParf = null;
-
+        BigDecimal result = new BigDecimal(0);
+        BigDecimal remainder = new BigDecimal(0);
         for (BillParf billParf : billParfList) {
-            if ((consumption >= billParf.getFromkw()) && (consumption < billParf.getTokw())) {
-                selectedBillParf = billParf;
+            BigDecimal sliceResult = new BigDecimal((billParf.getTokw() - billParf.getFromkw())+1);
+            if (consumption.compareTo(sliceResult) == -1) {
+                //calculate the last tarifa
+                result = result.add(consumption.multiply(new BigDecimal(billParf.getpValue())));
                 break;
             }
+            consumption = consumption.subtract(sliceResult);
+            result = result.add(sliceResult.multiply(new BigDecimal(billParf.getpValue())));
         }
-
-        if (selectedBillParf == null) {
-            throw new ResourceException(HttpStatus.NOT_FOUND, "bill_consumption_not_found");
-        }
-
-        System.out.println("billParfList: " + billParfList.size());
-
-        Double readingValue = consumption * selectedBillParf.getpValue();
 
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
         messageBody.setKey("calculate_reading_success");
-//        messageBody.setBody(Utils.randomNumber(2)+"."+Utils.randomNumber(3));
-        Map<String,Object> data=new HashMap<>();
-        data.put("consumption",consumption);
-        data.put("value",Math.round(readingValue * 100.0) / 100.0);
+        Map<String, Object> data = new HashMap<>();
+        data.put("consumption", meterReading - billmf.getmPreviousRead());
+        data.put("value", result.doubleValue());
         messageBody.setBody(data);
 //        messageBody.setBody(Math.round(readingValue * 100.0) / 100.0);
 
