@@ -21,6 +21,17 @@ public class CustomerProfileController {
     private SmsVerificationService smsVerificationService;
 
 
+    @GetMapping("/irf")
+    public ResponseEntity<MessageBody> getIRF() {
+
+        MessageBody messageBody = MessageBody.getInstance();
+        messageBody.setStatus("success");
+        messageBody.setKey("success");
+        messageBody.setBody("0");
+        return new ResponseEntity<>(messageBody, HttpStatus.OK);
+    }
+
+
     @PostMapping("/profile/create")
     public ResponseEntity<MessageBody> createProfile(@RequestBody CustomerProfile customerProfile) {
 
