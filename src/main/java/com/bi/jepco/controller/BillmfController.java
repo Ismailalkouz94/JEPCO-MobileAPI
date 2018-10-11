@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -129,9 +130,8 @@ public class BillmfController {
         List<BillParf> billParfList = billParfService.find(billmf.getmConsType());
 
         BigDecimal result = new BigDecimal(0);
-        BigDecimal remainder = new BigDecimal(0);
         for (BillParf billParf : billParfList) {
-            BigDecimal sliceResult = new BigDecimal((billParf.getTokw() - billParf.getFromkw())+1);
+            BigDecimal sliceResult = new BigDecimal((billParf.getTokw() - billParf.getFromkw()) + 1);
             if (consumption.compareTo(sliceResult) == -1) {
                 //calculate the last tarifa
                 result = result.add(consumption.multiply(new BigDecimal(billParf.getpValue())));
@@ -146,7 +146,7 @@ public class BillmfController {
         messageBody.setKey("calculate_reading_success");
         Map<String, Object> data = new HashMap<>();
         data.put("consumption", meterReading - billmf.getmPreviousRead());
-        data.put("value", result.doubleValue());
+        data.put("value", result.setScale(3,BigDecimal.ROUND_HALF_EVEN));
         messageBody.setBody(data);
 //        messageBody.setBody(Math.round(readingValue * 100.0) / 100.0);
 
