@@ -26,8 +26,8 @@ public class CustomerSubAccountController {
     @PostMapping("/sub/create")
     public ResponseEntity<MessageBody> createSub(@RequestBody CustomerSubAccount customerSubAccount) {
 
-        if(customerSubAccount.getNationalNumber() == null
-                || customerSubAccount.getNationalNumber().isEmpty()
+        if(customerSubAccount.getMobileNumber() == null
+                || customerSubAccount.getMobileNumber().isEmpty()
                 || customerSubAccount.getAlias() == null
                 || customerSubAccount.getAlias().isEmpty()
                 || customerSubAccount.getFileNumber() == null
@@ -48,12 +48,12 @@ public class CustomerSubAccountController {
 
         if(customerSubAccountFileNumber == null
                 || customerSubAccountFileNumber.length() == 0
-                || customerSubAccount.getNationalNumber() == null
-                || customerSubAccount.getNationalNumber().isEmpty()){
+                || customerSubAccount.getMobileNumber() == null
+                || customerSubAccount.getMobileNumber().isEmpty()){
             throw new ResourceException(HttpStatus.BAD_REQUEST , "Validation_error");
         }
 
-        CustomerProfile customerProfile = customerProfileService.find(customerSubAccount.getNationalNumber());
+        CustomerProfile customerProfile = customerProfileService.find(customerSubAccount.getMobileNumber());
 
         List<CustomerSubAccount> customerSubAccountList = customerSubAccountService.find(customerProfile);
 

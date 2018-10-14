@@ -23,8 +23,6 @@ public class SmsVerificationController {
 
         if(smsVerification.getMobileNumber()== null
                 || smsVerification.getMobileNumber().isEmpty()
-                || smsVerification.getNationalNumber() == null
-                || smsVerification.getNationalNumber().isEmpty()
                 || smsVerification.getIdType()==null) {
             System.out.println("MobileNumber "+smsVerification.getMobileNumber());
             System.out.println("NationalNumber"+smsVerification.getNationalNumber());
@@ -39,9 +37,9 @@ public class SmsVerificationController {
             throw new ResourceException(HttpStatus.BAD_REQUEST , "invalid_mobile");
         }
 
-        if(!Utils.validateNationalNumber(smsVerification.getNationalNumber(),smsVerification.getIdType())){
-            throw new ResourceException(HttpStatus.BAD_REQUEST , "national_number_not_valid");
-        }
+//        if(!Utils.validateNationalNumber(smsVerification.getNationalNumber(),smsVerification.getIdType())){
+//            throw new ResourceException(HttpStatus.BAD_REQUEST , "national_number_not_valid");
+//        }
 
         smsVerification.setMobileNumber(mobileValidator);
 

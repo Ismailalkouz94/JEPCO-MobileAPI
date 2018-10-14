@@ -20,10 +20,10 @@ public class CustomerProfileDaoImp implements CustomerProfileDao {
     }
 
     @Override
-    public CustomerProfile find(String nationalNumber) {
+    public CustomerProfile find(String mobileNumber) {
         return (CustomerProfile) sessionFactory.getCurrentSession().createQuery("from CustomerProfile cusPro" +
-                " where cusPro.nationalNumber =: nationalNumber")
-                .setParameter("nationalNumber", nationalNumber)
+                " where cusPro.mobileNumber =: mobileNumber")
+                .setParameter("mobileNumber", mobileNumber)
                 .uniqueResult();
     }
 

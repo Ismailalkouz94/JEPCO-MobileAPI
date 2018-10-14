@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "MOB_CUST_INFO")
+@Table(name = "MOB_CUST_INFO_NEW")
 public class CustomerProfile implements Serializable {
 
 //    @Id
@@ -18,7 +18,10 @@ public class CustomerProfile implements Serializable {
 //    private Long id;
 
     @Id
-    @Column(name = "CUST_NAT_ID" ,nullable = false ,unique = true ,length = 10)
+    @Column(name = "CUST_MOB_NO" ,nullable = false ,unique = true ,length = 14)
+    private String mobileNumber;
+
+    @Column(name = "CUST_NAT_ID" ,unique = true ,length = 10)
     private String nationalNumber;
 
     @Column(name = "CUST_FIRST_NAME" ,nullable = false ,length = 30)
@@ -27,8 +30,6 @@ public class CustomerProfile implements Serializable {
     @Column(name = "CUST_LAST_NAME" ,nullable = false ,length = 30)
     private String lastName;
 
-    @Column(name = "CUST_MOB_NO" ,nullable = false ,length = 14)
-    private String mobileNumber;
 
     @Column(name = "CUST_STATUS" , length = 1)
     private Integer status;

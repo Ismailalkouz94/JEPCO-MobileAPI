@@ -35,14 +35,12 @@ public class CustomerProfileController {
     @PostMapping("/profile/create")
     public ResponseEntity<MessageBody> createProfile(@RequestBody CustomerProfile customerProfile) {
 
-        if (customerProfile.getNationalNumber() == null
-                || customerProfile.getNationalNumber().isEmpty()
+        if (customerProfile.getMobileNumber() == null
+                || customerProfile.getMobileNumber().isEmpty()
                 || customerProfile.getFirstName() == null
                 || customerProfile.getFirstName().isEmpty()
                 || customerProfile.getLastName() == null
                 || customerProfile.getLastName().isEmpty()
-                || customerProfile.getMobileNumber() == null
-                || customerProfile.getMobileNumber().isEmpty()
                 || customerProfile.getFileNumber() == null
                 || customerProfile.getFileNumber().length() != 13
                 || customerProfile.getIdType() == null) {
@@ -61,9 +59,7 @@ public class CustomerProfileController {
     @PostMapping("/profile/verify")
     public ResponseEntity<MessageBody> verifyProfile(@RequestBody CustomerProfile customerProfile) {
 
-        if (customerProfile.getNationalNumber() == null
-                || customerProfile.getNationalNumber().isEmpty()
-                || customerProfile.getMobileNumber() == null
+        if ( customerProfile.getMobileNumber() == null
                 || customerProfile.getMobileNumber().isEmpty()
                 || customerProfile.getCode() == null
                 || customerProfile.getCode().isEmpty()
@@ -79,15 +75,15 @@ public class CustomerProfileController {
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 
-    @GetMapping("/profile/{nationalNumber}")
-    public ResponseEntity<MessageBody> getProfile(@PathVariable String nationalNumber) {
+    @GetMapping("/profile/{mobileNumber}")
+    public ResponseEntity<MessageBody> getProfile(@PathVariable String mobileNumber) {
 
-        if (nationalNumber == null
-                || nationalNumber.isEmpty()) {
+        if (mobileNumber == null
+                || mobileNumber.isEmpty()) {
             throw new ResourceException(HttpStatus.BAD_REQUEST, "Validation_error");
         }
 
-        CustomerProfile customerProfile = customerProfileService.find(nationalNumber);
+        CustomerProfile customerProfile = customerProfileService.find(mobileNumber);
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
         messageBody.setKey("find_profile_success");
