@@ -34,8 +34,6 @@ public class CustomerProfile implements Serializable {
     @Column(name = "CUST_STATUS" , length = 1)
     private Integer status;
 
-    @Column(name = "CUST_ID_TYPE" , length = 1)
-    private Integer idType;
 
     @Column(name = "CUST_CRE_DT")
     @JsonIgnore
@@ -104,14 +102,6 @@ public class CustomerProfile implements Serializable {
 
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
-    }
-
-    public Integer getIdType() {
-        return idType;
-    }
-
-    public void setIdType(Integer idType) {
-        this.idType = idType;
     }
 
     @JsonIgnore

@@ -104,7 +104,8 @@ public class CustomerProfileServiceImp implements CustomerProfileService {
         smsVerification.setUsedDate(LocalDateTime.now());
 
         CustomerProfile currentCustomerProfile = customerProfileDao.find(customerProfile.getMobileNumber());
-
+        System.out.println(">> mobile number "+customerProfile.getMobileNumber());
+        System.out.println(">> currentCustomerProfile "+currentCustomerProfile);
         if (currentCustomerProfile == null) {
             return null;
         } else {

@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class CustomerSubInfoPK implements Serializable{
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CUST_MOB_NO")
+    @JoinColumn(name = "CUST_SUB_MOB_NO")
     @JsonIgnore
     private CustomerProfile customerProfile;
 

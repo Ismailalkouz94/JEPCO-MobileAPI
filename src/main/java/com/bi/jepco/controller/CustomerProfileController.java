@@ -5,6 +5,7 @@ import com.bi.jepco.entities.CustomerProfile;
 import com.bi.jepco.exception.ResourceException;
 import com.bi.jepco.service.CustomerProfileService;
 import com.bi.jepco.service.SmsVerificationService;
+import com.bi.jepco.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,9 +44,11 @@ public class CustomerProfileController {
                 || customerProfile.getLastName().isEmpty()
                 || customerProfile.getFileNumber() == null
                 || customerProfile.getFileNumber().length() != 13
-                || customerProfile.getIdType() == null) {
+                ) {
             throw new ResourceException(HttpStatus.BAD_REQUEST, "Validation_error");
         }
+        String mobileValidator = Utils.formatE164("+962", customerProfile.getMobileNumber());
+        customerProfile.setMobileNumber(mobileValidator);
 
         customerProfile = customerProfileService.create(customerProfile);
         MessageBody messageBody = MessageBody.getInstance();
@@ -63,9 +66,10 @@ public class CustomerProfileController {
                 || customerProfile.getMobileNumber().isEmpty()
                 || customerProfile.getCode() == null
                 || customerProfile.getCode().isEmpty()
-                || customerProfile.getIdType() == null) {
+                ) {
             throw new ResourceException(HttpStatus.BAD_REQUEST, "Validation_error");
         }
+
 
         customerProfile = customerProfileService.verify(customerProfile);
         MessageBody messageBody = MessageBody.getInstance();
