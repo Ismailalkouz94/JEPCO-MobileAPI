@@ -6,6 +6,7 @@ import com.bi.jepco.entities.CustomerSubAccount;
 import com.bi.jepco.exception.ResourceException;
 import com.bi.jepco.service.CustomerProfileService;
 import com.bi.jepco.service.CustomerSubAccountService;
+import com.bi.jepco.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,9 @@ public class CustomerSubAccountController {
                 || customerSubAccount.getFileNumber().length() != 13){
             throw new ResourceException(HttpStatus.BAD_REQUEST , "Validation_error");
         }
+
+        String mobileValidator = Utils.formatE164("+962", customerSubAccount.getMobileNumber());
+        customerSubAccount.setMobileNumber(mobileValidator);
 
         customerSubAccount = customerSubAccountService.create(customerSubAccount);
         MessageBody messageBody = MessageBody.getInstance();
