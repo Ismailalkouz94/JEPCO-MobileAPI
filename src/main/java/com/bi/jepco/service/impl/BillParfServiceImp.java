@@ -19,12 +19,17 @@ import java.util.List;
 @Transactional
 public class BillParfServiceImp implements BillParfService {
 
-   @Autowired
-   private BillParfDao billParfDao;
+    @Autowired
+    private BillParfDao billParfDao;
 
 
-   @Override
-   public List<BillParf> find(Integer type) {
-      return billParfDao.find(type);
-   }
+    @Override
+    public List<BillParf> find(Integer type) {
+        return billParfDao.find(type);
+    }
+
+    @Override
+    public List<BillParf> find() {
+        return billParfDao.find();
+    }
 }

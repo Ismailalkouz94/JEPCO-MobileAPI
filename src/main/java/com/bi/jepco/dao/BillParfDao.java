@@ -8,5 +8,7 @@ import java.util.List;
 public interface BillParfDao {
 
    public List<BillParf> find(Integer type);
+   public List<BillParf> find();
+
 
 }

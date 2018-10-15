@@ -10,4 +10,5 @@ import java.util.List;
 public interface BillParfService {
 
    public List<BillParf> find(Integer type);
+   public List<BillParf> find();
 }

@@ -1,21 +1,49 @@
 package com.bi.jepco.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "TARIFFA")
 public class BillParf implements Serializable {
 
-    private Double prevValue;
-
+    @Id
+    @Column(name = "P_VALUE")
     private Double pValue;
 
+    @Column(name = "PREV_VALUE")
+    private Double prevValue;
+
+    @Column(name = "P_TOKW")
     private Double tokw;
 
+    @Column(name = "P_FROMKW")
     private Double fromkw;
 
+    @Column(name = "P_TYPE")
     private Integer pType;
 
+
+    @JsonIgnore
+    @Column(name = "P_DATE")
     private LocalDate pDate;
+
+    @Column(name = "TYPE_DESC")
+    private String typeDesc;
+
+    public String getTypeDesc() {
+        return typeDesc;
+    }
+
+    public void setTypeDesc(String typeDesc) {
+        this.typeDesc = typeDesc;
+    }
 
     public Double getPrevValue() {
         return prevValue;

@@ -3,6 +3,7 @@ package com.bi.jepco.controller;
 import com.bi.jepco.config.MessageBody;
 import com.bi.jepco.entities.CustomerProfile;
 import com.bi.jepco.exception.ResourceException;
+import com.bi.jepco.service.BillParfService;
 import com.bi.jepco.service.CustomerProfileService;
 import com.bi.jepco.service.SmsVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class CustomerProfileController {
     @Autowired
     private SmsVerificationService smsVerificationService;
 
+    @Autowired
+    private BillParfService billParfService;
 
     @GetMapping("/irf")
     public ResponseEntity<MessageBody> getIRF() {
@@ -92,6 +95,16 @@ public class CustomerProfileController {
         messageBody.setStatus("success");
         messageBody.setKey("find_profile_success");
         messageBody.setBody(customerProfile);
+        return new ResponseEntity<>(messageBody, HttpStatus.OK);
+    }
+
+    @GetMapping("/tariffa/getAll")
+    public ResponseEntity<MessageBody> getAll() {
+
+        MessageBody messageBody = MessageBody.getInstance();
+        messageBody.setStatus("success");
+        messageBody.setKey("success");
+        messageBody.setBody(billParfService.find());
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 
