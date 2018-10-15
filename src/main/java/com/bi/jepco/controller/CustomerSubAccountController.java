@@ -59,7 +59,6 @@ public class CustomerSubAccountController {
 
         for(CustomerSubAccount customerSubAccountObj : customerSubAccountList){
             if(customerSubAccountObj.getFileNumber().equals(customerSubAccountFileNumber)){
-                System.out.println("find file number success");
                 customerSubAccount = customerSubAccountObj;
                 break;
             }
