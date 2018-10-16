@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "MOB_CUST_SUB_INFO")
+@Table(name = "MOB_CUST_SUB_INFO_NEW")
 public class CustomerSubAccount implements Serializable {
 
 //    @Id
@@ -40,7 +40,7 @@ public class CustomerSubAccount implements Serializable {
 
     @Transient
     @JsonIgnore
-    private String nationalNumber;
+    private String mobileNumber;
 
 //    public Long getId() {
 //        return id;
@@ -84,8 +84,8 @@ public class CustomerSubAccount implements Serializable {
 //    public void setCustomerProfile(CustomerProfile customerProfile) { this.customerProfile = customerProfile; }
 
     @JsonIgnore
-    public String getNationalNumber() { return nationalNumber; }
+    public String getMobileNumber() { return mobileNumber; }
 
     @JsonProperty
-    public void setNationalNumber(String nationalNumber) { this.nationalNumber = nationalNumber; }
+    public void setMobileNumber(String mobileNumber) { this.mobileNumber = mobileNumber; }
 }

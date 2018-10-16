@@ -18,38 +18,31 @@ public class SmsVerificationController {
     private SmsVerificationService smsVerificationService;
 
 
-    @PostMapping("/sms/send")
-    public ResponseEntity<MessageBody> createSms(@RequestBody SmsVerification smsVerification) {
+    @PostMapping("/sms/send/{mobileNumber}")
+    public ResponseEntity<MessageBody> createSms(@PathVariable String mobileNumber) {
 
-        if(smsVerification.getMobileNumber()== null
-                || smsVerification.getMobileNumber().isEmpty()
-                || smsVerification.getNationalNumber() == null
-                || smsVerification.getNationalNumber().isEmpty()
-                || smsVerification.getIdType()==null) {
-            System.out.println("MobileNumber "+smsVerification.getMobileNumber());
-            System.out.println("NationalNumber"+smsVerification.getNationalNumber());
-            System.out.println("IdType"+smsVerification.getIdType());
+        if (mobileNumber == null ||mobileNumber.isEmpty()) {
 
-            throw new ResourceException(HttpStatus.BAD_REQUEST , "validation_error");
+            throw new ResourceException(HttpStatus.BAD_REQUEST, "validation_error");
+        }
+        System.out.println(">> mob no "+mobileNumber);
+        String mobileValidator = Utils.formatE164("+962", mobileNumber);
+
+        if (mobileValidator.equals("0")) {
+            throw new ResourceException(HttpStatus.BAD_REQUEST, "invalid_mobile");
         }
 
-        String mobileValidator = Utils.formatE164("+962",smsVerification.getMobileNumber());
-
-        if(mobileValidator.equals("0")){
-            throw new ResourceException(HttpStatus.BAD_REQUEST , "invalid_mobile");
-        }
-
-        if(!Utils.validateNationalNumber(smsVerification.getNationalNumber(),smsVerification.getIdType())){
-            throw new ResourceException(HttpStatus.BAD_REQUEST , "national_number_not_valid");
-        }
-
+//        if(!Utils.validateNationalNumber(smsVerification.getNationalNumber(),smsVerification.getIdType())){
+//            throw new ResourceException(HttpStatus.BAD_REQUEST , "national_number_not_valid");
+//        }
+        SmsVerification smsVerification = new SmsVerification();
         smsVerification.setMobileNumber(mobileValidator);
 
         smsVerification = smsVerificationService.create(smsVerification);
 
         try {
-            int status = Utils.sendSms( "Your JEPCO Code is: "+ smsVerification.getCode()+" Close this message and enter into JEPCO to activate your account" , smsVerification.getMobileNumber());
-        }catch(Exception ex){
+            int status = Utils.sendSms("Your JEPCO Code is: " + smsVerification.getCode() + " Close this message and enter into JEPCO to activate your account", smsVerification.getMobileNumber());
+        } catch (Exception ex) {
         }
 
         MessageBody messageBody = MessageBody.getInstance();
@@ -60,12 +53,12 @@ public class SmsVerificationController {
     }
 
     @GetMapping("/sms/send")
-    public ResponseEntity<MessageBody> sendSms(@RequestParam("mobile") String mobile , @RequestParam("text") String text) {
+    public ResponseEntity<MessageBody> sendSms(@RequestParam("mobile") String mobile, @RequestParam("text") String text) {
 
         try {
             int status = Utils.sendSms(text, mobile);
-        }catch(Exception ex){
-            throw new ResourceException(HttpStatus.INTERNAL_SERVER_ERROR , "Server error");
+        } catch (Exception ex) {
+            throw new ResourceException(HttpStatus.INTERNAL_SERVER_ERROR, "Server error");
         }
 
         MessageBody messageBody = MessageBody.getInstance();

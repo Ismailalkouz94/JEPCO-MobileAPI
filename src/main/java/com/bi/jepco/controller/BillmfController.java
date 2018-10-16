@@ -152,7 +152,7 @@ public class BillmfController {
 
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
-
+//    ..
     @GetMapping("/calculateWithOutSub/{subscriptionType}/reading/{consValue}")
     public ResponseEntity<MessageBody> calculateWithOutSub(@PathVariable Integer subscriptionType, @PathVariable Long consValue) {
 

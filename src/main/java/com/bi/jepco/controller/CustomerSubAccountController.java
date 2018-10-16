@@ -6,6 +6,7 @@ import com.bi.jepco.entities.CustomerSubAccount;
 import com.bi.jepco.exception.ResourceException;
 import com.bi.jepco.service.CustomerProfileService;
 import com.bi.jepco.service.CustomerSubAccountService;
+import com.bi.jepco.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +27,17 @@ public class CustomerSubAccountController {
     @PostMapping("/sub/create")
     public ResponseEntity<MessageBody> createSub(@RequestBody CustomerSubAccount customerSubAccount) {
 
-        if(customerSubAccount.getNationalNumber() == null
-                || customerSubAccount.getNationalNumber().isEmpty()
+        if(customerSubAccount.getMobileNumber() == null
+                || customerSubAccount.getMobileNumber().isEmpty()
                 || customerSubAccount.getAlias() == null
                 || customerSubAccount.getAlias().isEmpty()
                 || customerSubAccount.getFileNumber() == null
                 || customerSubAccount.getFileNumber().length() != 13){
             throw new ResourceException(HttpStatus.BAD_REQUEST , "Validation_error");
         }
+
+        String mobileValidator = Utils.formatE164("+962", customerSubAccount.getMobileNumber());
+        customerSubAccount.setMobileNumber(mobileValidator);
 
         customerSubAccount = customerSubAccountService.create(customerSubAccount);
         MessageBody messageBody = MessageBody.getInstance();
@@ -48,12 +52,12 @@ public class CustomerSubAccountController {
 
         if(customerSubAccountFileNumber == null
                 || customerSubAccountFileNumber.length() == 0
-                || customerSubAccount.getNationalNumber() == null
-                || customerSubAccount.getNationalNumber().isEmpty()){
+                || customerSubAccount.getMobileNumber() == null
+                || customerSubAccount.getMobileNumber().isEmpty()){
             throw new ResourceException(HttpStatus.BAD_REQUEST , "Validation_error");
         }
 
-        CustomerProfile customerProfile = customerProfileService.find(customerSubAccount.getNationalNumber());
+        CustomerProfile customerProfile = customerProfileService.find(customerSubAccount.getMobileNumber());
 
         List<CustomerSubAccount> customerSubAccountList = customerSubAccountService.find(customerProfile);
 

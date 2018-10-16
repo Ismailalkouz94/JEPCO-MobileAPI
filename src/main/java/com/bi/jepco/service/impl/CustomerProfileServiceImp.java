@@ -103,8 +103,9 @@ public class CustomerProfileServiceImp implements CustomerProfileService {
 
         smsVerification.setUsedDate(LocalDateTime.now());
 
-        CustomerProfile currentCustomerProfile = customerProfileDao.find(customerProfile.getNationalNumber());
-
+        CustomerProfile currentCustomerProfile = customerProfileDao.find(customerProfile.getMobileNumber());
+        System.out.println(">> mobile number "+customerProfile.getMobileNumber());
+        System.out.println(">> currentCustomerProfile "+currentCustomerProfile);
         if (currentCustomerProfile == null) {
             return null;
         } else {
@@ -116,8 +117,8 @@ public class CustomerProfileServiceImp implements CustomerProfileService {
     }
 
     @Override
-    public CustomerProfile find(String nationalNumber) {
-        CustomerProfile customerProfile = customerProfileDao.find(nationalNumber);
+    public CustomerProfile find(String mobileNumber) {
+        CustomerProfile customerProfile = customerProfileDao.find(mobileNumber);
 
         if (customerProfile == null) {
             throw new ResourceException(HttpStatus.NOT_FOUND, "profile_not_found");

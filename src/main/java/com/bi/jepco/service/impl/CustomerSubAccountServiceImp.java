@@ -36,7 +36,7 @@ public class CustomerSubAccountServiceImp implements CustomerSubAccountService {
    @Override
    public CustomerSubAccount create(CustomerSubAccount customerSubAccount) {
 
-      CustomerProfile customerProfile = customerProfileDao.find(customerSubAccount.getNationalNumber());
+      CustomerProfile customerProfile = customerProfileDao.find(customerSubAccount.getMobileNumber());
       if(customerProfile == null){
          throw new ResourceException(HttpStatus.NOT_FOUND, "profile_not_found");
       }
