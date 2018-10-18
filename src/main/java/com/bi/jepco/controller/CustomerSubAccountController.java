@@ -67,10 +67,7 @@ public class CustomerSubAccountController {
                 break;
             }
         }
-        System.out.println("customerSubAccount: "+customerSubAccount.getFileNumber());
-        System.out.println("customerSubAccount: "+customerSubAccount.getCustomerSubInfoPK().getCustomerProfile().getNationalNumber());
         customerSubAccountService.delete(customerSubAccount);
-
 
         customerSubAccountList = customerSubAccountService.find(customerProfile);
 
@@ -78,6 +75,38 @@ public class CustomerSubAccountController {
         messageBody.setStatus("success");
         messageBody.setKey("delete_sub_success");
         messageBody.setBody(customerSubAccountList);
+        return new ResponseEntity<>(messageBody, HttpStatus.OK);
+    }
+
+    @PutMapping("/sub/update/{customerSubAccountFileNumber}")
+    public ResponseEntity<MessageBody> updateSub(@PathVariable String customerSubAccountFileNumber , @RequestBody CustomerSubAccount customerSubAccount) {
+
+        if(customerSubAccountFileNumber == null
+                || customerSubAccountFileNumber.length() == 0
+                || customerSubAccount.getMobileNumber() == null
+                || customerSubAccount.getMobileNumber().isEmpty()){
+            throw new ResourceException(HttpStatus.BAD_REQUEST , "Validation_error");
+        }
+        String alias=customerSubAccount.getAlias();
+        CustomerProfile customerProfile = customerProfileService.find(customerSubAccount.getMobileNumber());
+
+        List<CustomerSubAccount> customerSubAccountList = customerSubAccountService.find(customerProfile);
+
+        for(CustomerSubAccount customerSubAccountObj : customerSubAccountList){
+            if(customerSubAccountObj.getFileNumber().equals(customerSubAccountFileNumber)){
+                customerSubAccount = customerSubAccountObj;
+                break;
+            }
+        }
+        customerSubAccount.setAlias(alias);
+        customerSubAccountService.update(customerSubAccount);
+
+//        customerSubAccountList = customerSubAccountService.find(customerProfile);
+
+        MessageBody messageBody = MessageBody.getInstance();
+        messageBody.setStatus("success");
+        messageBody.setKey("update_sub_success");
+        messageBody.setBody(null);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 
