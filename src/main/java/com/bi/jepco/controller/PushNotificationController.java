@@ -1,7 +1,11 @@
 package com.bi.jepco.controller;
 
 import com.bi.jepco.config.MessageBody;
+import com.bi.jepco.entities.CustPNCAccounts;
+import com.bi.jepco.entities.CustomerProfile;
 import com.bi.jepco.entities.CustomerSubAccount;
+import com.bi.jepco.service.CustPNCAccountsService;
+import com.bi.jepco.service.CustomerProfileService;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -9,6 +13,7 @@ import com.google.firebase.messaging.AndroidConfig;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.Message;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +28,35 @@ import java.util.logging.Logger;
 @CrossOrigin
 @RestController
 public class PushNotificationController {
+
+    @Autowired
+    private CustPNCAccountsService custPNCAccountsService;
+
+    @Autowired
+    private CustomerProfileService customerProfileService;
+
+    @PostMapping("/pnc/save")
+    public ResponseEntity<MessageBody> saveTackenInfo(@RequestBody CustPNCAccounts custPNCAccounts) {
+
+        CustomerProfile customerProfile = customerProfileService.find(custPNCAccounts.getMobileNumber());
+
+        custPNCAccounts.setCustomerProfile(customerProfile);
+        System.out.println(">>>>>> ");
+        System.out.println(custPNCAccounts.getId());
+        System.out.println(custPNCAccounts.getToken());
+        System.out.println(custPNCAccounts.getOsVersion());
+        System.out.println(custPNCAccounts.getPlatform());
+        System.out.println(custPNCAccounts.getMobileNumber());
+
+
+//        custPNCAccounts.setId(new Long(1));
+        MessageBody messageBody = MessageBody.getInstance();
+        messageBody.setStatus("success");
+        messageBody.setKey("success");
+        messageBody.setBody(custPNCAccountsService.save(custPNCAccounts));
+        return new ResponseEntity<>(messageBody, HttpStatus.OK);
+    }
+
 
     @GetMapping("/pnc/send/{message}")
     public ResponseEntity<MessageBody> send(@PathVariable String message) {

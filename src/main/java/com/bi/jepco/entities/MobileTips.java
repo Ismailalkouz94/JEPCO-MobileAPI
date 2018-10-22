@@ -14,7 +14,7 @@ public class MobileTips implements Serializable {
     @Column(name = "T_TXT")
     private String arabicText;
 
-    @Column(name = "T_TXT_ENG")
+    @Column(name = "T_TXT_EN")
     private String englishText;
 
     public Long getSerial() {
