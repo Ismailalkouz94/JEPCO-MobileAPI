@@ -23,4 +23,19 @@ public class CustPNCAccountsDaoImpl implements CustPNCAccountsDao {
             throw new ResourceException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
+
+    @Override
+    public CustPNCAccounts update(CustPNCAccounts custPNCAccounts) {
+        try {
+            sessionFactory.getCurrentSession().update(custPNCAccounts);
+            return custPNCAccounts;
+        } catch (Exception e) {
+            throw new ResourceException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @Override
+    public CustPNCAccounts findById(CustPNCAccounts custPNCAccounts) {
+        return (CustPNCAccounts) sessionFactory.getCurrentSession().find(CustPNCAccounts.class,custPNCAccounts.getToken());
+    }
 }

@@ -16,6 +16,11 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
 
     @Override
     public CustPNCAccounts save(CustPNCAccounts custPNCAccounts) {
-        return custPNCAccountsDao.save(custPNCAccounts);
+        CustPNCAccounts pncAccounts = custPNCAccountsDao.findById(custPNCAccounts);
+        if (pncAccounts != null) {
+            return custPNCAccountsDao.update(pncAccounts);
+        } else {
+            return custPNCAccountsDao.save(custPNCAccounts);
+        }
     }
 }
