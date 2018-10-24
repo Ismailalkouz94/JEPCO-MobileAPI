@@ -70,19 +70,65 @@ public class CustomerSubAccountServiceImp implements CustomerSubAccountService {
    }
 
    @Override
-   public CustomerSubAccount update(CustomerSubAccount customerSubAccount) {
-      return customerSubAccountDao.update(customerSubAccount);
+   public CustomerSubAccount update(String oldFileNumber ,CustomerSubAccount customerSubAccount) {
+
+      CustomerProfile customerProfile = customerProfileDao.find(customerSubAccount.getMobileNumber());
+
+      if(customerProfile == null){
+         throw new ResourceException(HttpStatus.NOT_FOUND,"profile_not_found");
+      }
+
+      CustomerSubAccount currentCustomerSubAccount = customerSubAccountDao.find(customerProfile, oldFileNumber);
+
+      if(currentCustomerSubAccount == null){
+         throw new ResourceException(HttpStatus.NOT_FOUND,"sub_account_not_found");
+      }
+
+      customerSubAccountDao.delete(currentCustomerSubAccount);
+
+      CustomerSubInfoPK customerSubInfoPK = new CustomerSubInfoPK();
+      customerSubAccount.setCustomerSubInfoPK(customerSubInfoPK);
+
+      Utils.initFileNumberTokens(customerSubAccount);
+
+      customerSubAccount.getCustomerSubInfoPK().setCustomerProfile(customerProfile);
+
+      Billmf billmf = billmfDao.find(customerSubAccount);
+
+      if(billmf == null){
+         throw new ResourceException(HttpStatus.NOT_FOUND,"file_not_found");
+      }
+
+      return customerSubAccountDao.create(customerSubAccount);
+
+//      currentCustomerSubAccount.setAlias(customerSubAccount.getAlias());
+//      currentCustomerSubAccount.setFileNumber(customerSubAccount.getFileNumber());
+//
+//      currentCustomerSubAccount.getCustomerSubInfoPK().setCity(Integer.parseInt(customerSubAccount.getFileNumber().substring(0,2)));
+//      currentCustomerSubAccount.getCustomerSubInfoPK().setRound(Integer.parseInt(customerSubAccount.getFileNumber().substring(2 , 3)));
+//      currentCustomerSubAccount.getCustomerSubInfoPK().setDept(Integer.parseInt(customerSubAccount.getFileNumber().substring(3,5)));
+//      currentCustomerSubAccount.getCustomerSubInfoPK().setColl(Integer.parseInt(customerSubAccount.getFileNumber().substring(5 , 7)));
+//      currentCustomerSubAccount.getCustomerSubInfoPK().setCons(Integer.parseInt(customerSubAccount.getFileNumber().substring( 7)));
+
+//      return currentCustomerSubAccount;
    }
 
    @Override
-   public void delete(CustomerSubAccount customerSubAccount) {
-//      CustomerSubAccount customerSubAccount = customerSubAccountDao.find(customerSubAccountId);
-//      CustomerSubAccount customerSubAccount = null;
+   public void delete(CustomerProfile customerProfile,String customerSubAccountFileNumber) {
+
+      CustomerSubAccount customerSubAccount = customerSubAccountDao.find(customerProfile, customerSubAccountFileNumber);
 
       if(customerSubAccount == null){
-         throw new ResourceException(HttpStatus.NOT_FOUND, "sub_account_not_found");
+         throw new ResourceException(HttpStatus.NOT_FOUND,"sub_account_not_found");
       }
 
-      customerSubAccountDao.delete(customerSubAccount);
+      CustomerSubInfoPK customerSubInfoPK = new CustomerSubInfoPK();
+      customerSubAccount.setCustomerSubInfoPK(customerSubInfoPK);
+
+      Utils.initFileNumberTokens(customerSubAccount);
+
+      customerSubAccount.getCustomerSubInfoPK().setCustomerProfile(customerProfile);
+
+       customerSubAccountDao.delete(customerSubAccount);
    }
 }

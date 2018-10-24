@@ -2,7 +2,9 @@ package com.bi.jepco.dao.impl;
 
 import com.bi.jepco.config.MessageBody;
 import com.bi.jepco.dao.CustPNCAccountsDao;
+import com.bi.jepco.entities.Billmf;
 import com.bi.jepco.entities.CustPNCAccounts;
+import com.bi.jepco.entities.CustomerProfile;
 import com.bi.jepco.exception.ResourceException;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,8 @@ public class CustPNCAccountsDaoImpl implements CustPNCAccountsDao {
             sessionFactory.getCurrentSession().save(custPNCAccounts);
             return custPNCAccounts;
         } catch (Exception e) {
-            throw new ResourceException(HttpStatus.NOT_FOUND, e.getMessage());
+            e.printStackTrace();
+            throw new ResourceException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
@@ -30,12 +33,40 @@ public class CustPNCAccountsDaoImpl implements CustPNCAccountsDao {
             sessionFactory.getCurrentSession().update(custPNCAccounts);
             return custPNCAccounts;
         } catch (Exception e) {
-            throw new ResourceException(HttpStatus.NOT_FOUND, e.getMessage());
+            e.printStackTrace();
+            throw new ResourceException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
     @Override
     public CustPNCAccounts findById(CustPNCAccounts custPNCAccounts) {
-        return (CustPNCAccounts) sessionFactory.getCurrentSession().find(CustPNCAccounts.class,custPNCAccounts.getToken());
+        return (CustPNCAccounts) sessionFactory.getCurrentSession().find(CustPNCAccounts.class, custPNCAccounts.getToken());
+    }
+
+    @Override
+    public CustPNCAccounts find(CustomerProfile customerProfile) {
+        return (CustPNCAccounts) sessionFactory.getCurrentSession().createQuery("from CustPNCAccounts PNC" +
+                " where PNC.customerProfile = :customerProfile")
+                .setParameter("customerProfile", customerProfile)
+                .uniqueResult();
+    }
+
+    @Override
+    public CustPNCAccounts find(String token) {
+        return (CustPNCAccounts) sessionFactory.getCurrentSession().createQuery("from CustPNCAccounts PNC" +
+                " where PNC.token = :token")
+                .setParameter("token", token)
+                .uniqueResult();
+    }
+
+    @Override
+    public void delete(CustPNCAccounts custPNCAccounts) {
+        try {
+            sessionFactory.getCurrentSession().delete(custPNCAccounts);
+
+        } catch (Exception e) {
+            throw new ResourceException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
     }
 }
+

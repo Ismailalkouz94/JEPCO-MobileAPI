@@ -10,6 +10,7 @@ import java.util.Objects;
 @Table(name = "MOB_CUST_PNC")
 public class CustPNCAccounts {
 
+    @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "CUST_PNC_ID")
     private Long id;
@@ -18,8 +19,7 @@ public class CustPNCAccounts {
     @JoinColumn(name = "CUST_PNC_MOB_NO")
     private CustomerProfile customerProfile;
 
-    @Id
-    @Column(name = "CUST_PNC_TOKEN", nullable = false, unique = true, length = 300)
+    @Column(name = "CUST_PNC_TOKEN", updatable = true , length = 300)
     private String token;
 
     @Column(name = "CUST_PNC_PLATFORM")

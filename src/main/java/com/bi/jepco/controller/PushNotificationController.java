@@ -6,6 +6,7 @@ import com.bi.jepco.entities.CustomerProfile;
 import com.bi.jepco.entities.CustomerSubAccount;
 import com.bi.jepco.service.CustPNCAccountsService;
 import com.bi.jepco.service.CustomerProfileService;
+import com.bi.jepco.utils.Utils;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -38,18 +39,12 @@ public class PushNotificationController {
     @PostMapping("/pnc/save")
     public ResponseEntity<MessageBody> saveTackenInfo(@RequestBody CustPNCAccounts custPNCAccounts) {
 
-        CustomerProfile customerProfile = customerProfileService.find(custPNCAccounts.getMobileNumber());
+        String mobileValidator = Utils.formatE164("+962", custPNCAccounts.getMobileNumber());
+
+        CustomerProfile customerProfile = customerProfileService.find(mobileValidator);
 
         custPNCAccounts.setCustomerProfile(customerProfile);
-        System.out.println(">>>>>> ");
-        System.out.println(custPNCAccounts.getId());
-        System.out.println(custPNCAccounts.getToken());
-        System.out.println(custPNCAccounts.getOsVersion());
-        System.out.println(custPNCAccounts.getPlatform());
-        System.out.println(custPNCAccounts.getMobileNumber());
 
-
-//        custPNCAccounts.setId(new Long(1));
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
         messageBody.setKey("success");

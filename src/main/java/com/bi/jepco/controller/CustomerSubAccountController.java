@@ -56,20 +56,15 @@ public class CustomerSubAccountController {
                 || customerSubAccount.getMobileNumber().isEmpty()){
             throw new ResourceException(HttpStatus.BAD_REQUEST , "Validation_error");
         }
+        String mobileValidator = Utils.formatE164("+962", customerSubAccount.getMobileNumber());
+        customerSubAccount.setMobileNumber(mobileValidator);
+
 
         CustomerProfile customerProfile = customerProfileService.find(customerSubAccount.getMobileNumber());
 
-        List<CustomerSubAccount> customerSubAccountList = customerSubAccountService.find(customerProfile);
+        customerSubAccountService.delete(customerProfile,customerSubAccountFileNumber);
 
-        for(CustomerSubAccount customerSubAccountObj : customerSubAccountList){
-            if(customerSubAccountObj.getFileNumber().equals(customerSubAccountFileNumber)){
-                customerSubAccount = customerSubAccountObj;
-                break;
-            }
-        }
-        customerSubAccountService.delete(customerSubAccount);
-
-        customerSubAccountList = customerSubAccountService.find(customerProfile);
+        List<CustomerSubAccount> customerSubAccountList  = customerSubAccountService.find(customerProfile);
 
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
@@ -78,35 +73,27 @@ public class CustomerSubAccountController {
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 
-    @PutMapping("/sub/update/{customerSubAccountFileNumber}")
-    public ResponseEntity<MessageBody> updateSub(@PathVariable String customerSubAccountFileNumber , @RequestBody CustomerSubAccount customerSubAccount) {
+    @PutMapping("/sub/update/{oldCustomerSubAccountFileNumber}")
+    public ResponseEntity<MessageBody> updateSub(@PathVariable String oldCustomerSubAccountFileNumber , @RequestBody CustomerSubAccount customerSubAccount) {
 
-        if(customerSubAccountFileNumber == null
-                || customerSubAccountFileNumber.length() == 0
+        if(oldCustomerSubAccountFileNumber == null
+                || oldCustomerSubAccountFileNumber.length() == 0
                 || customerSubAccount.getMobileNumber() == null
                 || customerSubAccount.getMobileNumber().isEmpty()){
             throw new ResourceException(HttpStatus.BAD_REQUEST , "Validation_error");
         }
-        String alias=customerSubAccount.getAlias();
-        CustomerProfile customerProfile = customerProfileService.find(customerSubAccount.getMobileNumber());
 
-        List<CustomerSubAccount> customerSubAccountList = customerSubAccountService.find(customerProfile);
+        String mobileValidator = Utils.formatE164("+962", customerSubAccount.getMobileNumber());
+        customerSubAccount.setMobileNumber(mobileValidator);
 
-        for(CustomerSubAccount customerSubAccountObj : customerSubAccountList){
-            if(customerSubAccountObj.getFileNumber().equals(customerSubAccountFileNumber)){
-                customerSubAccount = customerSubAccountObj;
-                break;
-            }
-        }
-        customerSubAccount.setAlias(alias);
-        customerSubAccountService.update(customerSubAccount);
+        customerSubAccountService.update(oldCustomerSubAccountFileNumber,customerSubAccount);
 
-//        customerSubAccountList = customerSubAccountService.find(customerProfile);
+        List<CustomerSubAccount> customerSubAccountList = customerSubAccountService.find(customerSubAccount.getCustomerSubInfoPK().getCustomerProfile());
 
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
         messageBody.setKey("update_sub_success");
-        messageBody.setBody(null);
+        messageBody.setBody(customerSubAccountList);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 

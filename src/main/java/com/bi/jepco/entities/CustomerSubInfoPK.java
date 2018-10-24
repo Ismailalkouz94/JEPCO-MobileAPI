@@ -14,19 +14,19 @@ public class CustomerSubInfoPK implements Serializable{
     @JsonIgnore
     private CustomerProfile customerProfile;
 
-    @Column(name = "CUST_SUB_CITY_NO" ,nullable = false ,length = 2 , columnDefinition="NUMBER(2)")
+    @Column(name = "CUST_SUB_CITY_NO" ,updatable = true ,nullable = false ,length = 2 , columnDefinition="NUMBER(2)")
     private Integer city;
 
-    @Column(name = "CUST_SUB_ROUND_NO" ,nullable = false ,length = 1 , columnDefinition="NUMBER(1)")
+    @Column(name = "CUST_SUB_ROUND_NO" ,updatable = true ,nullable = false ,length = 1 , columnDefinition="NUMBER(1)")
     private Integer round;
 
-    @Column(name = "CUST_SUB_DEPT_NO" ,nullable = false ,length = 2 , columnDefinition="NUMBER(2)")
+    @Column(name = "CUST_SUB_DEPT_NO" ,updatable = true ,nullable = false ,length = 2 , columnDefinition="NUMBER(2)")
     private Integer dept;
 
-    @Column(name = "CUST_SUB_COLL_NO" ,nullable = false ,length = 2 , columnDefinition="NUMBER(2)")
+    @Column(name = "CUST_SUB_COLL_NO" ,updatable = true ,nullable = false ,length = 2 , columnDefinition="NUMBER(2)")
     private Integer coll;
 
-    @Column(name = "CUST_SUB_CONS_NO" ,nullable = false ,length = 6 , columnDefinition="NUMBER(6)")
+    @Column(name = "CUST_SUB_CONS_NO" ,updatable = true ,nullable = false ,length = 6 , columnDefinition="NUMBER(6)")
     private Integer cons;
 
     public CustomerProfile getCustomerProfile() {

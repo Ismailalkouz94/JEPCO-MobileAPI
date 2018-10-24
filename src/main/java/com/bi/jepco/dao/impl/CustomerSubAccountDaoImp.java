@@ -3,8 +3,10 @@ package com.bi.jepco.dao.impl;
 import com.bi.jepco.dao.CustomerSubAccountDao;
 import com.bi.jepco.entities.CustomerProfile;
 import com.bi.jepco.entities.CustomerSubAccount;
+import com.bi.jepco.exception.ResourceException;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -50,6 +52,10 @@ public class CustomerSubAccountDaoImp implements CustomerSubAccountDao {
 
    @Override
    public void delete(CustomerSubAccount customerSubAccount) {
-      sessionFactory.getCurrentSession().delete(customerSubAccount);
+      try{
+         sessionFactory.getCurrentSession().delete(customerSubAccount);
+      }catch (Exception e){
+         throw new ResourceException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+      }
    }
 }
