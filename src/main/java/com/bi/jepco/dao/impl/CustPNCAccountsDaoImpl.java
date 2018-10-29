@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class CustPNCAccountsDaoImpl implements CustPNCAccountsDao {
     @Autowired
@@ -57,6 +59,11 @@ public class CustPNCAccountsDaoImpl implements CustPNCAccountsDao {
                 " where PNC.token = :token")
                 .setParameter("token", token)
                 .uniqueResult();
+    }
+
+    @Override
+    public List<CustPNCAccounts> find() {
+        return sessionFactory.getCurrentSession().createQuery("FROM CustPNCAccounts").list();
     }
 
     @Override
