@@ -21,6 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -62,9 +65,11 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
         FileInputStream serviceAccount = null;
         FirebaseOptions options = null;
         try {
-            ClassLoader classLoader = getClass().getClassLoader();
-            serviceAccount = new FileInputStream(classLoader.getResource("fcmfile/jepco-fcm.json").getFile());
 
+//            ClassLoader classLoader = getClass().getClassLoader();
+//            serviceAccount = new FileInputStream(classLoader.getResource("/fcmfile/jepco-fcm.json").getPath());
+
+            serviceAccount= new FileInputStream("C:\\Users\\mobapp.JEPCO\\Desktop\\jepco-fcm.json");
             options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl("https://jepco-217509.firebaseio.com")
@@ -133,7 +138,7 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
 
         } catch (InterruptedException | ExecutionException ex) {
             Logger.getLogger(PushNotificationController.class.getName()).log(Level.SEVERE, null, ex);
-            throw new ResourceException(HttpStatus.INTERNAL_SERVER_ERROR,ex.getMessage());
+            throw new ResourceException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }
         return pncResource;
     }
