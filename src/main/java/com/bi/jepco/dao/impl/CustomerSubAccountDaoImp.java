@@ -45,6 +45,14 @@ public class CustomerSubAccountDaoImp implements CustomerSubAccountDao {
    }
 
    @Override
+   public List<CustomerSubAccount> find(String fileNumber) {
+      return sessionFactory.getCurrentSession().createQuery("from CustomerSubAccount cusSub" +
+              " where cusSub.fileNumber = :fileNumber")
+              .setParameter("fileNumber",fileNumber)
+              .list();
+   }
+
+   @Override
    public CustomerSubAccount update(CustomerSubAccount customerSubAccount) {
        sessionFactory.getCurrentSession().update(customerSubAccount);
        return customerSubAccount;

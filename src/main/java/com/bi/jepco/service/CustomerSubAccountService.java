@@ -10,6 +10,7 @@ public interface CustomerSubAccountService {
 
    public CustomerSubAccount create(CustomerSubAccount customerSubAccount);
    public List<CustomerSubAccount> find(CustomerProfile customerProfile);
+   public List<CustomerSubAccount> find(String fileNumber);
    public CustomerSubAccount update(String oldFileNumber ,CustomerSubAccount customerSubAccount);
    public void delete(CustomerProfile customerProfile,String customerSubAccountFileNumber);
 }

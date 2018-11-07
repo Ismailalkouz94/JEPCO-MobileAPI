@@ -60,6 +60,7 @@ public class PushNotificationController {
 
         System.out.println(">>>>> "+pncResource.getToFlaq());
         System.out.println(pncResource.getMobileNumber());
+        System.out.println(pncResource.getFileNumber());
         System.out.println(pncResource.getTitle());
         System.out.println(pncResource.getMessage());
 
@@ -70,7 +71,7 @@ public class PushNotificationController {
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
         messageBody.setKey("success");
-        messageBody.setBody(custPNCAccountsService.send(pncResource));
+        messageBody.setBody(pncResource);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 
