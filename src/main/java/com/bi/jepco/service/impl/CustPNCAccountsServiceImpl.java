@@ -22,8 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,10 +72,12 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
     @Override
     public PncResource send(PncResource pncResource) {
 
-
+        String picName = null;
         FileInputStream serviceAccount = null;
         FirebaseOptions options = null;
         try {
+
+            picName=storePic(pncResource.getPicture());
 
             ClassLoader classLoader = getClass().getClassLoader();
             serviceAccount = new FileInputStream(classLoader.getResource("/fcmfile/jepco-fcm.json").getPath());
@@ -108,20 +112,26 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
         notificationObj.put("body", pncResource.getMessage());
 
         JSONObject dataObj = new JSONObject();
-
-        dataObj.put("title",  pncResource.getTitle());
+        dataObj.put("title", pncResource.getTitle());
         dataObj.put("message", pncResource.getMessage());
+        dataObj.put("style", "picture");
+        dataObj.put("priority", 1);
+        dataObj.put("picture", "http://217.144.0.210:8085/JEPCO/ismail.jpg");
+        dataObj.put("forceShow", "true");
+        dataObj.put("coldstart", "true");
+        dataObj.put("foreground", "true");
+
         JSONArray actionsArr = new JSONArray();
 
         JSONObject actionObjPay = new JSONObject();
-        actionObjPay.put("title", "OPEN");
-        actionObjPay.put("callback", "MyApp.open");
+        actionObjPay.put("title", "PRESENT");
+        actionObjPay.put("callback", "present");
         actionObjPay.put("foreground", "true");
         actionsArr.put(actionObjPay);
 
         JSONObject actionObjPresent = new JSONObject();
-        actionObjPresent.put("title", "CLOSE");
-        actionObjPresent.put("callback", "close");
+        actionObjPresent.put("title", "PAY");
+        actionObjPresent.put("callback", "pay");
         actionObjPresent.put("foreground", "true");
         actionsArr.put(actionObjPresent);
 
@@ -131,8 +141,8 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
 
         switch (pncResource.getToFlaq()) {
             case "mobileNumber":
-                if (pncResource.getMobileNumber().isEmpty() || pncResource.getMobileNumber()==null){
-                    throw new ResourceException(HttpStatus.BAD_REQUEST,"validation_error");
+                if (pncResource.getMobileNumber().isEmpty() || pncResource.getMobileNumber() == null) {
+                    throw new ResourceException(HttpStatus.BAD_REQUEST, "validation_error");
                 }
 
                 CustomerProfile customerProfile = customerProfileDao.find(pncResource.getMobileNumber());
@@ -145,8 +155,8 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
                 custPNCAccountsList.add(custPNCAccountsDao.find(customerProfile));
                 break;
             case "fileNumber":
-                if (pncResource.getFileNumber().isEmpty() || pncResource.getFileNumber()==null){
-                    throw new ResourceException(HttpStatus.BAD_REQUEST,"validation_error");
+                if (pncResource.getFileNumber().isEmpty() || pncResource.getFileNumber() == null) {
+                    throw new ResourceException(HttpStatus.BAD_REQUEST, "validation_error");
                 }
                 custPNCAccountsList = find(pncResource.getFileNumber());
                 break;
@@ -193,5 +203,25 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
             }
         }
         return custPNCAccountsList;
+    }
+
+    @Override
+    public String storePic(MultipartFile pic) throws IOException {
+        if (!pic.isEmpty()) {
+            byte[] bytes = pic.getBytes();
+            FileOutputStream fos = new FileOutputStream(
+                    "D:/ionic project/" + pic.getOriginalFilename());
+            try {
+                fos.write(bytes);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                fos.close();
+            }
+            return pic.getOriginalFilename();
+        } else {
+            return "false";
+        }
     }
 }

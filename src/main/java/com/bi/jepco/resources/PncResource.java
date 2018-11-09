@@ -1,11 +1,14 @@
 package com.bi.jepco.resources;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class PncResource {
     private String toFlaq;
     private String mobileNumber;
     private String fileNumber;
     private String title;
     private String message;
+    private MultipartFile picture;
 
     public String getToFlaq() {
         return toFlaq;
@@ -45,5 +48,13 @@ public class PncResource {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public MultipartFile getPicture() {
+        return picture;
+    }
+
+    public void setPicture(MultipartFile picture) {
+        this.picture = picture;
     }
 }
