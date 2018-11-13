@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CustPNCAccountsService {
     public CustPNCAccounts save(CustPNCAccounts custPNCAccounts);
-    public PncResource send(PncResource pncResource);
+    public PncResource send(PncResource pncResource, MultipartFile picture);
     public List<CustPNCAccounts> find(String fileNumber);
     public String storePic(MultipartFile pic) throws IOException;
 }

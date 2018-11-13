@@ -8,7 +8,6 @@ public class PncResource {
     private String fileNumber;
     private String title;
     private String message;
-    private MultipartFile picture;
 
     public String getToFlaq() {
         return toFlaq;
@@ -50,11 +49,5 @@ public class PncResource {
         this.message = message;
     }
 
-    public MultipartFile getPicture() {
-        return picture;
-    }
 
-    public void setPicture(MultipartFile picture) {
-        this.picture = picture;
-    }
 }

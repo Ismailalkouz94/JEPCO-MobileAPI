@@ -70,14 +70,14 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
     }
 
     @Override
-    public PncResource send(PncResource pncResource) {
+    public PncResource send(PncResource pncResource, MultipartFile picture) {
 
         String picName = null;
         FileInputStream serviceAccount = null;
         FirebaseOptions options = null;
         try {
 
-            picName=storePic(pncResource.getPicture());
+            picName=storePic(picture);
 
             ClassLoader classLoader = getClass().getClassLoader();
             serviceAccount = new FileInputStream(classLoader.getResource("/fcmfile/jepco-fcm.json").getPath());
@@ -116,7 +116,7 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
         dataObj.put("message", pncResource.getMessage());
         dataObj.put("style", "picture");
         dataObj.put("priority", 1);
-        dataObj.put("picture", "http://217.144.0.210:8085/JEPCO/ismail.jpg");
+        dataObj.put("picture", "http://217.144.0.210:8085/JEPCO/"+picName);
         dataObj.put("forceShow", "true");
         dataObj.put("coldstart", "true");
         dataObj.put("foreground", "true");

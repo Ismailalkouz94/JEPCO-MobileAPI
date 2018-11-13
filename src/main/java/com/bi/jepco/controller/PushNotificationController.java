@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -56,7 +57,7 @@ public class PushNotificationController {
 
 
     @PostMapping("/pnc/send")
-    public ResponseEntity<MessageBody> send(@RequestBody PncResource pncResource) {
+    public ResponseEntity<MessageBody> send(@RequestBody PncResource pncResource ,@RequestParam("picture") MultipartFile picture) {
 
         System.out.println(">>>>> "+pncResource.getToFlaq());
         System.out.println(pncResource.getMobileNumber());
@@ -66,7 +67,7 @@ public class PushNotificationController {
 
         String mobileValidator = Utils.formatE164("+962", pncResource.getMobileNumber());
         pncResource.setMobileNumber(mobileValidator);
-        custPNCAccountsService.send(pncResource);
+        custPNCAccountsService.send(pncResource,picture);
 
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");

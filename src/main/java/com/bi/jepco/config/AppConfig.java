@@ -24,6 +24,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 @Configuration
 @PropertySource("classpath:db.properties")
@@ -48,6 +49,7 @@ public class AppConfig {
 
         return factoryBean;
     }
+
 
     @Bean
     public HibernateTransactionManager getTransactionManager() {
