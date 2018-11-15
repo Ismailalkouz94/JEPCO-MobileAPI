@@ -57,7 +57,7 @@ public class PushNotificationController {
 
 
     @PostMapping("/pnc/send")
-    public ResponseEntity<MessageBody> send(@RequestBody PncResource pncResource ,@RequestParam("picture") MultipartFile picture) {
+    public ResponseEntity<MessageBody> send(@RequestBody PncResource pncResource ) {
 
         System.out.println(">>>>> "+pncResource.getToFlaq());
         System.out.println(pncResource.getMobileNumber());
@@ -67,7 +67,7 @@ public class PushNotificationController {
 
         String mobileValidator = Utils.formatE164("+962", pncResource.getMobileNumber());
         pncResource.setMobileNumber(mobileValidator);
-        custPNCAccountsService.send(pncResource,picture);
+        custPNCAccountsService.send(pncResource);
 
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
@@ -75,5 +75,22 @@ public class PushNotificationController {
         messageBody.setBody(pncResource);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
+
+//    @PostMapping("/pnc/upload")
+//    public ResponseEntity<MessageBody> upload(@RequestParam("file") MultipartFile file ) {
+//
+//
+//        try {
+//            custPNCAccountsService.storePic(file);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        MessageBody messageBody = MessageBody.getInstance();
+//        messageBody.setStatus("success");
+//        messageBody.setKey("success");
+//        messageBody.setBody(null);
+//        return new ResponseEntity<>(messageBody, HttpStatus.OK);
+//    }
 
 }

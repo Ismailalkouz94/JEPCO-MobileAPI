@@ -8,6 +8,8 @@ public class PncResource {
     private String fileNumber;
     private String title;
     private String message;
+    private String picture;
+    private String pictureName;
 
     public String getToFlaq() {
         return toFlaq;
@@ -49,5 +51,19 @@ public class PncResource {
         this.message = message;
     }
 
+    public String getPicture() {
+        return picture;
+    }
 
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public String getPictureName() {
+        return pictureName;
+    }
+
+    public void setPictureName(String pictureName) {
+        this.pictureName = pictureName;
+    }
 }

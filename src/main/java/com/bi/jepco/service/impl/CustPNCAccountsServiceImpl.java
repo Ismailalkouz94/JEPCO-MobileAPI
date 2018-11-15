@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -70,19 +71,19 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
     }
 
     @Override
-    public PncResource send(PncResource pncResource, MultipartFile picture) {
+    public PncResource send(PncResource pncResource) {
 
         String picName = null;
         FileInputStream serviceAccount = null;
         FirebaseOptions options = null;
         try {
 
-            picName=storePic(picture);
+//            picName=storePic(pncResource.getPicture(),pncResource.getPictureName());
 
-            ClassLoader classLoader = getClass().getClassLoader();
-            serviceAccount = new FileInputStream(classLoader.getResource("/fcmfile/jepco-fcm.json").getPath());
+//            ClassLoader classLoader = getClass().getClassLoader();
+//            serviceAccount = new FileInputStream(classLoader.getResource("/fcmfile/jepco-fcm.json").getPath());
 
-//            serviceAccount= new FileInputStream("C:\\Users\\mobapp.JEPCO\\Desktop\\jepco-fcm.json");
+            serviceAccount= new FileInputStream("C:\\Users\\mobapp.JEPCO\\Desktop\\jepco-fcm.json");
             options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl("https://jepco-217509.firebaseio.com")
@@ -114,9 +115,14 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
         JSONObject dataObj = new JSONObject();
         dataObj.put("title", pncResource.getTitle());
         dataObj.put("message", pncResource.getMessage());
-        dataObj.put("style", "picture");
-        dataObj.put("priority", 1);
-        dataObj.put("picture", "http://217.144.0.210:8085/JEPCO/"+picName);
+
+        if(pncResource.getPicture()!=null ){
+            dataObj.put("style", "picture");
+            dataObj.put("summaryText", pncResource.getMessage());
+            dataObj.put("picture", "http://217.144.0.210:8085/PNC-Image/"+storePic(pncResource.getPicture(),pncResource.getPictureName()));
+        }
+
+
         dataObj.put("forceShow", "true");
         dataObj.put("coldstart", "true");
         dataObj.put("foreground", "true");
@@ -206,22 +212,44 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
     }
 
     @Override
-    public String storePic(MultipartFile pic) throws IOException {
-        if (!pic.isEmpty()) {
-            byte[] bytes = pic.getBytes();
-            FileOutputStream fos = new FileOutputStream(
-                    "D:/ionic project/" + pic.getOriginalFilename());
-            try {
-                fos.write(bytes);
+    public String storePic(String pic, String picName)  {
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                fos.close();
-            }
-            return pic.getOriginalFilename();
-        } else {
-            return "false";
+        try{
+
+//            String sourceFolder = "D:\\ionic project\\";
+            String sourceFolder= "C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\webapps\\PNC-Image\\";
+
+            byte[] btDataFile = new sun.misc.BASE64Decoder().decodeBuffer(pic);
+
+            File of = new File(sourceFolder + picName);
+            FileOutputStream fos = new FileOutputStream(of);
+            fos.write(btDataFile);
+            fos.flush();
+        }catch (Exception e){
+            e.printStackTrace();
         }
+        return picName;
     }
+
+//    @Override
+//    public String storePic(MultipartFile pic) throws IOException {
+//        if (!pic.isEmpty()) {
+//            byte[] bytes = pic.getBytes();
+//            FileOutputStream fos = new FileOutputStream(
+//                    "D:\\ionic project\\" + pic.getOriginalFilename());
+//
+////            "C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\webapps\\JEPCO\\" + pic.getOriginalFilename());
+//            try {
+//                fos.write(bytes);
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                fos.close();
+//            }
+//            return pic.getOriginalFilename();
+//        } else {
+//            return "false";
+//        }
+//    }
 }
