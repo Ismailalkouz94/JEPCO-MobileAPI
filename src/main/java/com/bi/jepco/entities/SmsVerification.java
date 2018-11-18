@@ -68,10 +68,12 @@ public class SmsVerification implements Serializable {
         this.idType = idType;
     }
 
+    @JsonIgnore
     public String getCode() {
         return code;
     }
 
+    @JsonProperty
     public void setCode(String code) {
         this.code = code;
     }

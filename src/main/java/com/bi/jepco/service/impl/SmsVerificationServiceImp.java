@@ -84,7 +84,7 @@ public class SmsVerificationServiceImp implements SmsVerificationService {
                 smsVerification.setCode(Utils.randomNumber(4));
             }
             smsVerification.setCreationDate(LocalDateTime.now());
-            smsVerification.setExpirationDate(LocalDateTime.now().plusMinutes(1).plusSeconds(10));
+            smsVerification.setExpirationDate(LocalDateTime.now().plusMinutes(3).plusSeconds(10));
             smsVerification.setStatus(1);
             return smsVerificationDao.create(smsVerification);
         }

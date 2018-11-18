@@ -1,33 +1,16 @@
 package com.bi.jepco.controller;
 
-import com.bi.jepco.config.MessageBody;
+import com.bi.jepco.utils.MessageBody;
 import com.bi.jepco.entities.CustPNCAccounts;
 import com.bi.jepco.entities.CustomerProfile;
-import com.bi.jepco.entities.CustomerSubAccount;
 import com.bi.jepco.resources.PncResource;
 import com.bi.jepco.service.CustPNCAccountsService;
 import com.bi.jepco.service.CustomerProfileService;
 import com.bi.jepco.utils.Utils;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.messaging.AndroidConfig;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.Message;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @CrossOrigin
 @RestController

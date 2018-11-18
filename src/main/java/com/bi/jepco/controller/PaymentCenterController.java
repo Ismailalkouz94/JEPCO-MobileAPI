@@ -1,9 +1,7 @@
 package com.bi.jepco.controller;
 
-import com.bi.jepco.config.MessageBody;
-import com.bi.jepco.entities.MobileTips;
+import com.bi.jepco.utils.MessageBody;
 import com.bi.jepco.entities.PaymentCenter;
-import com.bi.jepco.service.MobileTipsService;
 import com.bi.jepco.service.PaymentCenterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

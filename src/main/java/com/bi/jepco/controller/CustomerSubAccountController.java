@@ -1,6 +1,6 @@
 package com.bi.jepco.controller;
 
-import com.bi.jepco.config.MessageBody;
+import com.bi.jepco.utils.MessageBody;
 import com.bi.jepco.entities.CustomerProfile;
 import com.bi.jepco.entities.CustomerSubAccount;
 import com.bi.jepco.exception.ResourceException;

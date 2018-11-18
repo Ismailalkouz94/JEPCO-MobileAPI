@@ -19,6 +19,9 @@ public class SubmitIssue {
 
     private String description;
 
+    private String attachName;
+    private String attachValue;
+
 
     public String getRequesterMobile() {
         return requesterMobile;
@@ -82,5 +85,21 @@ public class SubmitIssue {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getAttachName() {
+        return attachName;
+    }
+
+    public void setAttachName(String attachName) {
+        this.attachName = attachName;
+    }
+
+    public String getAttachValue() {
+        return attachValue;
+    }
+
+    public void setAttachValue(String attachValue) {
+        this.attachValue = attachValue;
     }
 }

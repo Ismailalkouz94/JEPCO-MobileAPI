@@ -1,8 +1,6 @@
 package com.bi.jepco.dao.impl;
 
-import com.bi.jepco.config.MessageBody;
 import com.bi.jepco.dao.CustPNCAccountsDao;
-import com.bi.jepco.entities.Billmf;
 import com.bi.jepco.entities.CustPNCAccounts;
 import com.bi.jepco.entities.CustomerProfile;
 import com.bi.jepco.exception.ResourceException;

@@ -116,32 +116,26 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
         dataObj.put("title", pncResource.getTitle());
         dataObj.put("message", pncResource.getMessage());
 
+        JSONArray actionsArr = new JSONArray();
         if(pncResource.getPicture()!=null ){
             dataObj.put("style", "picture");
             dataObj.put("summaryText", pncResource.getMessage());
             dataObj.put("picture", "http://217.144.0.210:8085/PNC-Image/"+storePic(pncResource.getPicture(),pncResource.getPictureName()));
-        }
+        }else {
+            JSONObject actionObjPay = new JSONObject();
+            actionObjPay.put("title", "OPEN");
+            actionObjPay.put("callback", "open");
+            actionObjPay.put("foreground", "true");
+            actionsArr.put(actionObjPay);
 
+
+            dataObj.put("actions", actionsArr);
+        }
 
         dataObj.put("forceShow", "true");
         dataObj.put("coldstart", "true");
         dataObj.put("foreground", "true");
 
-        JSONArray actionsArr = new JSONArray();
-
-        JSONObject actionObjPay = new JSONObject();
-        actionObjPay.put("title", "PRESENT");
-        actionObjPay.put("callback", "present");
-        actionObjPay.put("foreground", "true");
-        actionsArr.put(actionObjPay);
-
-        JSONObject actionObjPresent = new JSONObject();
-        actionObjPresent.put("title", "PAY");
-        actionObjPresent.put("callback", "pay");
-        actionObjPresent.put("foreground", "true");
-        actionsArr.put(actionObjPresent);
-
-        dataObj.put("actions", actionsArr);
 
         List<CustPNCAccounts> custPNCAccountsList = new ArrayList<>();
 

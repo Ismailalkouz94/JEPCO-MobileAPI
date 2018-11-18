@@ -1,14 +1,12 @@
 package com.bi.jepco.controller;
 
-import com.bi.jepco.config.MessageBody;
+import com.bi.jepco.utils.MessageBody;
 import com.bi.jepco.entities.Billhf;
 import com.bi.jepco.entities.CustomerSubAccount;
 import com.bi.jepco.entities.CustomerSubInfoPK;
-import com.bi.jepco.entities.MobileTips;
 import com.bi.jepco.exception.ResourceException;
 import com.bi.jepco.service.BillhfService;
 import com.bi.jepco.service.CustomerSubAccountService;
-import com.bi.jepco.service.MobileTipsService;
 import com.bi.jepco.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

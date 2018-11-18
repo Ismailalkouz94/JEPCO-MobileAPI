@@ -5,7 +5,7 @@
  */
 package com.bi.jepco.exception;
 
-import com.bi.jepco.config.MessageBody;
+import com.bi.jepco.utils.MessageBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

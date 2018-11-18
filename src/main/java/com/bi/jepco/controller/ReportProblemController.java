@@ -1,7 +1,8 @@
 package com.bi.jepco.controller;
 
-import com.bi.jepco.config.MessageBody;
+import com.bi.jepco.utils.MessageBody;
 import com.bi.jepco.resources.reportproblem.*;
+import com.bi.jepco.utils.Utils;
 import com.squareup.okhttp.*;
 import com.squareup.okhttp.RequestBody;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ import java.util.List;
 @RequestMapping(value = "/reportProblem")
 public class ReportProblemController {
 
-    private final String WS_URL="http://192.168.91.20/XMLJepcoNew/issue.asmx";
+    private final String WS_URL = "http://192.168.91.20/XMLJepcoNew/issue.asmx";
 
     //لمحافظات almohafzat
     @RequestMapping(value = "/getProvincesList/{lang}", method = RequestMethod.GET)
@@ -47,7 +48,7 @@ public class ReportProblemController {
                     "  <soap:Body>\n" +
                     "    <GetBranchList xmlns=\"http://tempuri.org/\">\n" +
                     "      <CompanyID>1</CompanyID>\n" +
-                    "      <Lang>"+lang+"</Lang>\n" +
+                    "      <Lang>" + lang + "</Lang>\n" +
                     "    </GetBranchList>\n" +
                     "  </soap:Body>\n" +
                     "</soap:Envelope>");
@@ -59,7 +60,15 @@ public class ReportProblemController {
                     .build();
 
             Response response = client.newCall(request).execute();
-            outputString=response.body().string();
+            outputString = response.body().string();
+
+            if (response.code() != 200) {
+                MessageBody messageBody = MessageBody.getInstance();
+                messageBody.setStatus("error");
+                messageBody.setKey("error");
+                messageBody.setBody(null);
+                return new ResponseEntity<>(messageBody, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
 
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -96,8 +105,8 @@ public class ReportProblemController {
     }
 
 
-    @RequestMapping(value = "/getAreaList/{provinceId}/{lang}", method = RequestMethod.GET )
-    public ResponseEntity<MessageBody> getAreaList(@PathVariable("provinceId") Integer provinceId,@PathVariable("lang") Integer lang) throws IOException {
+    @RequestMapping(value = "/getAreaList/{provinceId}/{lang}", method = RequestMethod.GET)
+    public ResponseEntity<MessageBody> getAreaList(@PathVariable("provinceId") Integer provinceId, @PathVariable("lang") Integer lang) throws IOException {
 
         String outputString = null;
         List<GetAreaList> areaList = new ArrayList<>();
@@ -106,16 +115,16 @@ public class ReportProblemController {
 
             MediaType mediaType = MediaType.parse("text/xml");
             RequestBody body = RequestBody.create(mediaType, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-                            "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
-                            "  <soap:Body>\n" +
-                            "    <GetProjectServicesList xmlns=\"http://tempuri.org/\">\n" +
-                            "      <UserID>1</UserID>\n" +
-                            "      <ProjectID>1</ProjectID>\n" +
-                            "      <BranchID>" + provinceId + "</BranchID>\n" +
-                            "      <Lang>"+lang+"</Lang>\n" +
-                            "    </GetProjectServicesList>\n" +
-                            "  </soap:Body>\n" +
-                            "</soap:Envelope>");
+                    "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+                    "  <soap:Body>\n" +
+                    "    <GetProjectServicesList xmlns=\"http://tempuri.org/\">\n" +
+                    "      <UserID>1</UserID>\n" +
+                    "      <ProjectID>1</ProjectID>\n" +
+                    "      <BranchID>" + provinceId + "</BranchID>\n" +
+                    "      <Lang>" + lang + "</Lang>\n" +
+                    "    </GetProjectServicesList>\n" +
+                    "  </soap:Body>\n" +
+                    "</soap:Envelope>");
             Request request = new Request.Builder()
                     .url("http://192.168.91.20/XMLJepcoNew/issue.asmx")
                     .post(body)
@@ -124,10 +133,15 @@ public class ReportProblemController {
                     .build();
 
             Response response = client.newCall(request).execute();
-            outputString=response.body().string();
+            outputString = response.body().string();
 
-            System.out.println("??>>>>>>>>>>>>>>>>>>>>");
-            System.out.println(outputString);
+            if (response.code() != 200) {
+                MessageBody messageBody = MessageBody.getInstance();
+                messageBody.setStatus("error");
+                messageBody.setKey("error");
+                messageBody.setBody(null);
+                return new ResponseEntity<>(messageBody, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -162,8 +176,8 @@ public class ReportProblemController {
 
     @RequestMapping(value = "/getNeighborhood/{areaId}/{provinceId}/{lang}", method = RequestMethod.GET)
     public ResponseEntity<MessageBody> getNeighborhood(@PathVariable("areaId") Integer areaId,
-                                                            @PathVariable("provinceId") Integer provinceId,
-                                                            @PathVariable("lang") Integer lang) throws IOException {
+                                                       @PathVariable("provinceId") Integer provinceId,
+                                                       @PathVariable("lang") Integer lang) throws IOException {
 
         String outputString = null;
         List<GetNeighborhoodList> neighborhoodList = new ArrayList<>();
@@ -175,9 +189,9 @@ public class ReportProblemController {
                     "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
                     "  <soap:Body>\n" +
                     "    <GetServiceCategories xmlns=\"http://tempuri.org/\">\n" +
-                    "      <ServiceID>"+areaId+"</ServiceID>\n" +
-                    "      <BranchID>"+provinceId+"</BranchID>\n" +
-                    "      <Lang>"+lang+"</Lang>\n" +
+                    "      <ServiceID>" + areaId + "</ServiceID>\n" +
+                    "      <BranchID>" + provinceId + "</BranchID>\n" +
+                    "      <Lang>" + lang + "</Lang>\n" +
                     "    </GetServiceCategories>\n" +
                     "  </soap:Body>\n" +
                     "</soap:Envelope>");
@@ -189,7 +203,15 @@ public class ReportProblemController {
                     .build();
 
             Response response = client.newCall(request).execute();
-            outputString=response.body().string();
+            outputString = response.body().string();
+
+            if (response.code() != 200) {
+                MessageBody messageBody = MessageBody.getInstance();
+                messageBody.setStatus("error");
+                messageBody.setKey("error");
+                messageBody.setBody(null);
+                return new ResponseEntity<>(messageBody, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -222,8 +244,6 @@ public class ReportProblemController {
     }
 
 
-
-
     @RequestMapping(value = "/getStreetList/{provinceId}/{neighborhoodId}/{lang}", method = RequestMethod.GET)
     public ResponseEntity<MessageBody> getStreetList(@PathVariable("provinceId") Integer provinceId,
                                                      @PathVariable("neighborhoodId") Integer neighborhoodId,
@@ -239,9 +259,9 @@ public class ReportProblemController {
                     "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
                     "  <soap:Body>\n" +
                     "    <getIssueSubCategories xmlns=\"http://tempuri.org/\">\n" +
-                    "      <BranchID>"+provinceId+"</BranchID>\n" +
-                    "      <Lang>"+lang+"</Lang>\n" +
-                    "      <MajorCategoryID>"+neighborhoodId+"</MajorCategoryID>\n" +
+                    "      <BranchID>" + provinceId + "</BranchID>\n" +
+                    "      <Lang>" + lang + "</Lang>\n" +
+                    "      <MajorCategoryID>" + neighborhoodId + "</MajorCategoryID>\n" +
                     "      <orderby>1</orderby>\n" +
                     "      <OrderByType>1</OrderByType>\n" +
                     "    </getIssueSubCategories>\n" +
@@ -255,7 +275,14 @@ public class ReportProblemController {
                     .build();
 
             Response response = client.newCall(request).execute();
-            outputString=response.body().string();
+            outputString = response.body().string();
+            if (response.code() != 200) {
+                MessageBody messageBody = MessageBody.getInstance();
+                messageBody.setStatus("error");
+                messageBody.setKey("error");
+                messageBody.setBody(null);
+                return new ResponseEntity<>(messageBody, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
 
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -265,17 +292,17 @@ public class ReportProblemController {
             doc.getDocumentElement().normalize();
             NodeList nodeList = doc.getElementsByTagName("Table");
 
-            GetStreetList streetList1 = null;
+            GetStreetList street = null;
             for (int temp = 0; temp < nodeList.getLength(); temp++) {
                 Node nNode = nodeList.item(temp);
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-                    streetList1 = new GetStreetList();
-                    streetList1.setCode(Integer.parseInt(eElement.getElementsByTagName("code").item(0).getTextContent()));
-                    streetList1.setDesc(eElement.getElementsByTagName("Desc1").item(0).getTextContent());
+                    street = new GetStreetList();
+                    street.setCode(Integer.parseInt(eElement.getElementsByTagName("code").item(0).getTextContent()));
+                    street.setDesc(eElement.getElementsByTagName("Desc1").item(0).getTextContent());
 
                 }
-                streetList.add(streetList1);
+                streetList.add(street);
             }
 
         } catch (ParserConfigurationException | IOException | SAXException e) {
@@ -290,10 +317,10 @@ public class ReportProblemController {
     }
 
 
-
     @RequestMapping(value = "/submitIssue", method = RequestMethod.POST)
     public ResponseEntity<MessageBody> submitIssue(@org.springframework.web.bind.annotation.RequestBody SubmitIssue submitIssue) throws IOException {
 
+        submitIssue.setAttachName(Utils.randomNumber(10)+".jpg");
         String outputString = null;
         try {
             OkHttpClient client = new OkHttpClient();
@@ -303,16 +330,18 @@ public class ReportProblemController {
                     "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
                     "  <soap:Body>\n" +
                     "    <JEPCO_IssueSave xmlns=\"http://tempuri.org/\">\n" +
-                    "      <BranchID>"+submitIssue.getProvinceId()+"</BranchID>\n" +
-                    "      <RequesterMobile>"+submitIssue.getRequesterMobile()+"</RequesterMobile>\n" +
-                    "      <RequesterName>"+submitIssue.getRequesterName()+"</RequesterName>\n" +
-                    "      <RequesterTel>"+submitIssue.getCounterNumber()+"</RequesterTel>\n" +
-                    "      <ServiceID>"+submitIssue.getAreaId()+"</ServiceID>\n" +
-                    "      <CategoryID>"+submitIssue.getNeighborhoodId()+"</CategoryID>\n" +
-                    "      <SubCategoryID>"+submitIssue.getStreetId()+"</SubCategoryID>\n" +
+                    "      <BranchID>" + submitIssue.getProvinceId() + "</BranchID>\n" +
+                    "      <RequesterMobile>" + submitIssue.getRequesterMobile().substring(4) + "</RequesterMobile>\n" +
+                    "      <RequesterName>" + submitIssue.getRequesterName() + "</RequesterName>\n" +
+                    "      <RequesterTel>" + submitIssue.getCounterNumber() + "</RequesterTel>\n" +
+                    "      <ServiceID>" + submitIssue.getAreaId() + "</ServiceID>\n" +
+                    "      <CategoryID>" + submitIssue.getNeighborhoodId() + "</CategoryID>\n" +
+                    "      <SubCategoryID>" + submitIssue.getStreetId() + "</SubCategoryID>\n" +
+                    "      <AttachName>" + submitIssue.getAttachName() + "</AttachName>\n" +
+                    "      <AttachValue>" + submitIssue.getAttachValue() + "</AttachValue>\n" +
                     "      <SubItemID>-1</SubItemID>\n" +
                     "      <IssueTitle>Report a Problem</IssueTitle>\n" +
-                    "      <IssueDescription>"+submitIssue.getDescription()+"</IssueDescription>\n" +
+                    "      <IssueDescription>" + submitIssue.getDescription() + "</IssueDescription>\n" +
                     "    </JEPCO_IssueSave>\n" +
                     "  </soap:Body>\n" +
                     "</soap:Envelope>");
@@ -324,7 +353,7 @@ public class ReportProblemController {
                     .build();
 
             Response response = client.newCall(request).execute();
-            outputString=response.body().string();
+            outputString = response.body().string();
 
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -338,13 +367,22 @@ public class ReportProblemController {
                 Node nNode = nodeList.item(temp);
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-                   outputString= eElement.getElementsByTagName("JEPCO_IssueSaveResult").item(0).getTextContent();
+                    outputString = eElement.getElementsByTagName("JEPCO_IssueSaveResult").item(0).getTextContent();
                 }
+            }
+
+            if (response.code() != 200) {
+                MessageBody messageBody = MessageBody.getInstance();
+                messageBody.setStatus("error");
+                messageBody.setKey("error");
+                messageBody.setBody(outputString);
+                return new ResponseEntity<>(messageBody, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
         }
+
 
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");

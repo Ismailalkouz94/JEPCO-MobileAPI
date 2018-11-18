@@ -1,6 +1,6 @@
 package com.bi.jepco.controller;
 
-import com.bi.jepco.config.MessageBody;
+import com.bi.jepco.utils.MessageBody;
 import com.bi.jepco.entities.*;
 import com.bi.jepco.exception.ResourceException;
 import com.bi.jepco.service.BillParfService;
@@ -8,7 +8,6 @@ import com.bi.jepco.service.BillhfService;
 import com.bi.jepco.service.BillmfService;
 import com.bi.jepco.service.CustomerSubAccountService;
 import com.bi.jepco.utils.Utils;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
