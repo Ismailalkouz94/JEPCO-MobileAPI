@@ -29,10 +29,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 @Configuration
 @PropertySource("classpath:db.properties")
 @EnableTransactionManagement
-@ComponentScans(value = {
-    @ComponentScan("com.bi.jepco.dao.impl")
-    , @ComponentScan("com.bi.jepco.service.impl")
-    , @ComponentScan("com.bi.jepco.exception")})
+@ComponentScans(value = @ComponentScan("com.bi.jepco"))
 public class AppConfig {
 
     private static final Logger logger = Logger.getLogger(AppConfig.class);
