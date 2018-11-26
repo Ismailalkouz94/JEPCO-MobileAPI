@@ -126,26 +126,13 @@ public class BillmfController {
         //tarifa -> bilParf
         List<BillParf> billParfList = billParfService.find(billmf.getmConsType());
 
-        BigDecimal result = new BigDecimal(0);
-        for (BillParf billParf : billParfList) {
-            BigDecimal sliceResult = new BigDecimal((billParf.getTokw() - billParf.getFromkw()) + 1);
-            if (consumption.compareTo(sliceResult) == -1) {
-                //calculate the last tarifa
-                result = result.add(consumption.multiply(new BigDecimal(billParf.getpValue())));
-                break;
-            }
-            consumption = consumption.subtract(sliceResult);
-            result = result.add(sliceResult.multiply(new BigDecimal(billParf.getpValue())));
-        }
-
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
         messageBody.setKey("calculate_reading_success");
         Map<String, Object> data = new HashMap<>();
         data.put("consumption", meterReading - billmf.getmPreviousRead());
-        data.put("value", result.setScale(3,BigDecimal.ROUND_HALF_EVEN));
+        data.put("value", billmfService.sliceCalculation(billParfList,consumption));
         messageBody.setBody(data);
-//        messageBody.setBody(Math.round(readingValue * 100.0) / 100.0);
 
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
@@ -166,24 +153,12 @@ public class BillmfController {
         //tarifa -> bilParf
         List<BillParf> billParfList = billParfService.find(subscriptionType);
 
-        BigDecimal result = new BigDecimal(0);
-        for (BillParf billParf : billParfList) {
-            BigDecimal sliceResult = new BigDecimal((billParf.getTokw() - billParf.getFromkw()) + 1);
-            if (consumption.compareTo(sliceResult) == -1) {
-                //calculate the last tarifa
-                result = result.add(consumption.multiply(new BigDecimal(billParf.getpValue())));
-                break;
-            }
-            consumption = consumption.subtract(sliceResult);
-            result = result.add(sliceResult.multiply(new BigDecimal(billParf.getpValue())));
-        }
-
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
         messageBody.setKey("calculate_reading_success");
         Map<String, Object> data = new HashMap<>();
         data.put("consumption", consValue);
-        data.put("value", result.setScale(3,BigDecimal.ROUND_HALF_EVEN));
+        data.put("value", billmfService.sliceCalculation(billParfList,consumption));
         messageBody.setBody(data);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
