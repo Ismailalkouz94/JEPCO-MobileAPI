@@ -394,7 +394,9 @@ public class ReportProblemController {
     @RequestMapping(value = "/submitIssue", method = RequestMethod.POST)
     public ResponseEntity<MessageBody> submitIssue(@org.springframework.web.bind.annotation.RequestBody SubmitIssue submitIssue) throws IOException {
 
-        submitIssue.setAttachName(Utils.randomNumber(15) + ".jpg");
+        if (submitIssue.getAttachName()!=null) {
+            submitIssue.setAttachName(Utils.randomNumber(15) + ".jpg");
+        }
         String outputString = null;
         ReportProblemLog reportProblemLog = null;
         try {
