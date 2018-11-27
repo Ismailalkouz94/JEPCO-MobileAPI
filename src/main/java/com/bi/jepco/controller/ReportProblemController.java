@@ -323,7 +323,7 @@ public class ReportProblemController {
 
     @RequestMapping(value = "/getFailureTypeList/{provinceId}/{lang}", method = RequestMethod.GET)
     public ResponseEntity<MessageBody> getFailureTypeList(@PathVariable("provinceId") Integer provinceId,
-                                                     @PathVariable("lang") Integer lang) throws IOException {
+                                                          @PathVariable("lang") Integer lang) throws IOException {
 
         String outputString = null;
         List<FailureType> failureTypeList = new ArrayList<>();
@@ -335,9 +335,9 @@ public class ReportProblemController {
                     "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
                     "  <soap:Body>\n" +
                     "    <IssueAdditionlFieldValuesSelect xmlns=\"http://tempuri.org/\">\n" +
-                    "      <branchID>"+provinceId+"</branchID>\n" +
+                    "      <branchID>" + provinceId + "</branchID>\n" +
                     "      <fieldID>1</fieldID>\n" +
-                    "      <lang>"+lang+"</lang>\n" +
+                    "      <lang>" + lang + "</lang>\n" +
                     "    </IssueAdditionlFieldValuesSelect>\n" +
                     "  </soap:Body>\n" +
                     "</soap:Envelope>");
@@ -394,9 +394,9 @@ public class ReportProblemController {
     @RequestMapping(value = "/submitIssue", method = RequestMethod.POST)
     public ResponseEntity<MessageBody> submitIssue(@org.springframework.web.bind.annotation.RequestBody SubmitIssue submitIssue) throws IOException {
 
-        submitIssue.setAttachName(Utils.randomNumber(15)+".jpg");
+        submitIssue.setAttachName(Utils.randomNumber(15) + ".jpg");
         String outputString = null;
-        ReportProblemLog reportProblemLog=null;
+        ReportProblemLog reportProblemLog = null;
         try {
             OkHttpClient client = new OkHttpClient();
 
@@ -446,8 +446,9 @@ public class ReportProblemController {
                     outputString = eElement.getElementsByTagName("JEPCO_IssueSaveResult").item(0).getTextContent();
                 }
             }
+            System.out.println(">>> " + outputString);
 
-            reportProblemLog=new ReportProblemLog();
+            reportProblemLog = new ReportProblemLog();
             reportProblemLog.setMobileNumber(submitIssue.getRequesterMobile());
             reportProblemLog.setName(submitIssue.getRequesterName());
             reportProblemLog.setCounterNo(submitIssue.getCounterNumber());
@@ -457,10 +458,19 @@ public class ReportProblemController {
             reportProblemLog.setStreetId(submitIssue.getStreetId());
             reportProblemLog.setIssueTitle("Report a Problem");
             reportProblemLog.setDescription(submitIssue.getDescription());
-            reportProblemLog.setImagePath("http://217.144.0.210:8085/ReportProblem-image/"+storePic(submitIssue.getAttachValue(),submitIssue.getAttachName()));
+            reportProblemLog.setImagePath("http://217.144.0.210:8085/ReportProblem-image/" + storePic(submitIssue.getAttachValue(), submitIssue.getAttachName()));
             reportProblemLog.setType("REPORT_PROBLEM");
 
-            if (response.code() != 200) {
+
+            if (response.code() == 200) {
+                if (outputString.contains("AMAN")) {
+                    reportProblemLog.setStatus(1);
+                    reportProblemLog.setRefNo(outputString.substring(34));
+                }else{
+                    reportProblemLog.setStatus(0);
+                }
+                reportProblemService.saveLog(reportProblemLog);
+            } else {
                 reportProblemLog.setStatus(0);
                 reportProblemService.saveLog(reportProblemLog);
                 MessageBody messageBody = MessageBody.getInstance();
@@ -468,16 +478,10 @@ public class ReportProblemController {
                 messageBody.setKey("error");
                 messageBody.setBody(outputString);
                 return new ResponseEntity<>(messageBody, HttpStatus.INTERNAL_SERVER_ERROR);
-            }else{
-                reportProblemLog.setStatus(1);
-                reportProblemLog.setRefNo(outputString.substring(33));
-                reportProblemService.saveLog(reportProblemLog);
             }
 
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
-            reportProblemLog.setStatus(0);
-            reportProblemService.saveLog(reportProblemLog);
         }
 
         MessageBody messageBody = MessageBody.getInstance();
@@ -487,10 +491,10 @@ public class ReportProblemController {
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 
-    public String storePic(String pic, String picName)  {
+    public String storePic(String pic, String picName) {
 
-        try{
-            String sourceFolder= "C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\webapps\\ReportProblem-image\\";
+        try {
+            String sourceFolder = "C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\webapps\\ReportProblem-image\\";
 
             byte[] btDataFile = new sun.misc.BASE64Decoder().decodeBuffer(pic);
 
@@ -498,7 +502,7 @@ public class ReportProblemController {
             FileOutputStream fos = new FileOutputStream(of);
             fos.write(btDataFile);
             fos.flush();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return picName;
