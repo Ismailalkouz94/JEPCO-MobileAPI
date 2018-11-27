@@ -6,6 +6,7 @@ import com.bi.jepco.dao.CustomerProfileDao;
 import com.bi.jepco.entities.CustPNCAccounts;
 import com.bi.jepco.entities.CustomerProfile;
 import com.bi.jepco.entities.CustomerSubAccount;
+import com.bi.jepco.entities.PNCLog;
 import com.bi.jepco.exception.ResourceException;
 import com.bi.jepco.resources.PncResource;
 import com.bi.jepco.service.CustPNCAccountsService;
@@ -28,6 +29,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -118,9 +121,10 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
 
         JSONArray actionsArr = new JSONArray();
         if(pncResource.getPicture()!=null ){
+            picName="http://217.144.0.210:8085/PNC-Image/"+storePic(pncResource.getPicture(),pncResource.getPictureName());
             dataObj.put("style", "picture");
             dataObj.put("summaryText", pncResource.getMessage());
-            dataObj.put("picture", "http://217.144.0.210:8085/PNC-Image/"+storePic(pncResource.getPicture(),pncResource.getPictureName()));
+            dataObj.put("picture",picName );
         }else {
             JSONObject actionObjPay = new JSONObject();
             actionObjPay.put("title", "OPEN");
@@ -168,7 +172,9 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
         }
 
         Message fcmMessage = null;
+        PNCLog pncLog =null;
         for (CustPNCAccounts item : custPNCAccountsList) {
+            pncLog = new PNCLog();
             System.out.println(item.getToken());
             fcmMessage = Message.builder()
                     .setAndroidConfig(AndroidConfig.builder()
@@ -179,17 +185,31 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
                     .setToken(item.getToken())
                     .build();
 
+            pncLog.setMobileNumber(item.getCustomerProfile().getMobileNumber());
+            pncLog.setFileNumber(pncResource.getFileNumber());
+            pncLog.setToken(item.getToken());
+            pncLog.setTitle(pncResource.getTitle());
+            pncLog.setMessage(pncResource.getMessage());
+            pncLog.setImagePath(picName);
+            pncLog.setPlatform(item.getPlatform());
+            pncLog.setOsVersion(item.getOsVersion());
+
             String response;
             try {
                 response = FirebaseMessaging.getInstance().sendAsync(fcmMessage).get();
                 // Response is a message ID string.
                 System.out.println("Successfully sent message: " + response);
-
+                 pncLog.setStatus(1);
+                 custPNCAccountsDao.saveLog(pncLog);
             } catch (InterruptedException | ExecutionException ex) {
+                pncLog.setStatus(0);
+                custPNCAccountsDao.saveLog(pncLog);
                 Logger.getLogger(PushNotificationController.class.getName()).log(Level.SEVERE, null, ex);
-                throw new ResourceException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+//                throw new ResourceException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
             }
+
         }
+
         return pncResource;
     }
 

@@ -2,6 +2,7 @@ package com.bi.jepco.dao;
 
 import com.bi.jepco.entities.CustPNCAccounts;
 import com.bi.jepco.entities.CustomerProfile;
+import com.bi.jepco.entities.PNCLog;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ public interface CustPNCAccountsDao   {
     public CustPNCAccounts find(CustomerProfile customerProfile);
     public CustPNCAccounts find(String token);
     public List<CustPNCAccounts> find();
-
     public void delete(CustPNCAccounts custPNCAccounts);
+    public PNCLog saveLog(PNCLog pncLog);
+
 }

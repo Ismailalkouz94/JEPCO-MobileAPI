@@ -1,10 +1,13 @@
 package com.bi.jepco.controller;
 
+import com.bi.jepco.entities.ReportProblemLog;
+import com.bi.jepco.service.ReportProblemService;
 import com.bi.jepco.utils.MessageBody;
 import com.bi.jepco.resources.reportproblem.*;
 import com.bi.jepco.utils.Utils;
 import com.squareup.okhttp.*;
 import com.squareup.okhttp.RequestBody;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +33,11 @@ import java.util.List;
 @RequestMapping(value = "/reportProblem")
 public class ReportProblemController {
 
+    @Autowired
+    ReportProblemService reportProblemService;
+
     private final String WS_URL = "http://192.168.91.20/XMLJepcoNew/issue.asmx";
 
-    //لمحافظات almohafzat
     @RequestMapping(value = "/getProvincesList/{lang}", method = RequestMethod.GET)
     public ResponseEntity<MessageBody> getBranchList(@PathVariable("lang") Integer lang) throws IOException {
 
@@ -316,12 +321,82 @@ public class ReportProblemController {
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/getFailureTypeList/{provinceId}/{lang}", method = RequestMethod.GET)
+    public ResponseEntity<MessageBody> getFailureTypeList(@PathVariable("provinceId") Integer provinceId,
+                                                     @PathVariable("lang") Integer lang) throws IOException {
+
+        String outputString = null;
+        List<FailureType> failureTypeList = new ArrayList<>();
+        try {
+            OkHttpClient client = new OkHttpClient();
+
+            MediaType mediaType = MediaType.parse("text/xml");
+            RequestBody body = RequestBody.create(mediaType, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+                    "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+                    "  <soap:Body>\n" +
+                    "    <IssueAdditionlFieldValuesSelect xmlns=\"http://tempuri.org/\">\n" +
+                    "      <branchID>"+provinceId+"</branchID>\n" +
+                    "      <fieldID>1</fieldID>\n" +
+                    "      <lang>"+lang+"</lang>\n" +
+                    "    </IssueAdditionlFieldValuesSelect>\n" +
+                    "  </soap:Body>\n" +
+                    "</soap:Envelope>");
+            Request request = new Request.Builder()
+                    .url("http://192.168.91.20/XMLJepcoNew/issue.asmx")
+                    .post(body)
+                    .addHeader("Content-Type", "text/xml")
+                    .addHeader("Cache-Control", "no-cache")
+                    .build();
+
+            Response response = client.newCall(request).execute();
+            outputString = response.body().string();
+            if (response.code() != 200) {
+                MessageBody messageBody = MessageBody.getInstance();
+                messageBody.setStatus("error");
+                messageBody.setKey("error");
+                messageBody.setBody(null);
+                return new ResponseEntity<>(messageBody, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(new InputSource(new StringReader(outputString)));
+
+            doc.getDocumentElement().normalize();
+            NodeList nodeList = doc.getElementsByTagName("Table");
+
+            FailureType failureType = null;
+            for (int temp = 0; temp < nodeList.getLength(); temp++) {
+                Node nNode = nodeList.item(temp);
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) nNode;
+                    failureType = new FailureType();
+                    failureType.setFailureId(Integer.parseInt(eElement.getElementsByTagName("FieldValue").item(0).getTextContent()));
+                    failureType.setDesc(eElement.getElementsByTagName("FieldDesc").item(0).getTextContent());
+
+                }
+                failureTypeList.add(failureType);
+            }
+
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            e.printStackTrace();
+        }
+
+        MessageBody messageBody = MessageBody.getInstance();
+        messageBody.setStatus("success");
+        messageBody.setKey("success");
+        messageBody.setBody(failureTypeList);
+        return new ResponseEntity<>(messageBody, HttpStatus.OK);
+    }
+
 
     @RequestMapping(value = "/submitIssue", method = RequestMethod.POST)
     public ResponseEntity<MessageBody> submitIssue(@org.springframework.web.bind.annotation.RequestBody SubmitIssue submitIssue) throws IOException {
 
         submitIssue.setAttachName(Utils.randomNumber(15)+".jpg");
         String outputString = null;
+        ReportProblemLog reportProblemLog=null;
         try {
             OkHttpClient client = new OkHttpClient();
 
@@ -342,6 +417,7 @@ public class ReportProblemController {
                     "      <SubItemID>-1</SubItemID>\n" +
                     "      <IssueTitle>Report a Problem</IssueTitle>\n" +
                     "      <IssueDescription>" + submitIssue.getDescription() + "</IssueDescription>\n" +
+                    "      <FailureType>" + submitIssue.getFailureType() + "</FailureType>\n" +
                     "    </JEPCO_IssueSave>\n" +
                     "  </soap:Body>\n" +
                     "</soap:Envelope>");
@@ -371,24 +447,61 @@ public class ReportProblemController {
                 }
             }
 
+            reportProblemLog=new ReportProblemLog();
+            reportProblemLog.setMobileNumber(submitIssue.getRequesterMobile());
+            reportProblemLog.setName(submitIssue.getRequesterName());
+            reportProblemLog.setCounterNo(submitIssue.getCounterNumber());
+            reportProblemLog.setProvinceId(submitIssue.getProvinceId());
+            reportProblemLog.setAreaId(submitIssue.getAreaId());
+            reportProblemLog.setNeighborhoodId(submitIssue.getNeighborhoodId());
+            reportProblemLog.setStreetId(submitIssue.getStreetId());
+            reportProblemLog.setIssueTitle("Report a Problem");
+            reportProblemLog.setDescription(submitIssue.getDescription());
+            reportProblemLog.setImagePath("http://217.144.0.210:8085/ReportProblem-image/"+storePic(submitIssue.getAttachValue(),submitIssue.getAttachName()));
+            reportProblemLog.setType("REPORT_PROBLEM");
+
             if (response.code() != 200) {
+                reportProblemLog.setStatus(0);
+                reportProblemService.saveLog(reportProblemLog);
                 MessageBody messageBody = MessageBody.getInstance();
                 messageBody.setStatus("error");
                 messageBody.setKey("error");
                 messageBody.setBody(outputString);
                 return new ResponseEntity<>(messageBody, HttpStatus.INTERNAL_SERVER_ERROR);
+            }else{
+                reportProblemLog.setStatus(1);
+                reportProblemLog.setRefNo(outputString.substring(33));
+                reportProblemService.saveLog(reportProblemLog);
             }
 
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
+            reportProblemLog.setStatus(0);
+            reportProblemService.saveLog(reportProblemLog);
         }
-
 
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
         messageBody.setKey("success");
         messageBody.setBody(outputString);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
+    }
+
+    public String storePic(String pic, String picName)  {
+
+        try{
+            String sourceFolder= "C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\webapps\\ReportProblem-image\\";
+
+            byte[] btDataFile = new sun.misc.BASE64Decoder().decodeBuffer(pic);
+
+            File of = new File(sourceFolder + picName);
+            FileOutputStream fos = new FileOutputStream(of);
+            fos.write(btDataFile);
+            fos.flush();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return picName;
     }
 
 }

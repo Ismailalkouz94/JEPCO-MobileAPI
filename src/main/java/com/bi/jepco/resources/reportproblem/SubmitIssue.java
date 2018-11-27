@@ -22,6 +22,8 @@ public class SubmitIssue {
     private String attachName;
     private String attachValue;
 
+    private Integer failureType;
+
 
     public String getRequesterMobile() {
         return requesterMobile;
@@ -101,5 +103,13 @@ public class SubmitIssue {
 
     public void setAttachValue(String attachValue) {
         this.attachValue = attachValue;
+    }
+
+    public Integer getFailureType() {
+        return failureType;
+    }
+
+    public void setFailureType(Integer failureType) {
+        this.failureType = failureType;
     }
 }

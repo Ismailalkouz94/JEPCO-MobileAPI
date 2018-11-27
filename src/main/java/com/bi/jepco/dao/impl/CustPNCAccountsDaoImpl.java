@@ -3,6 +3,7 @@ package com.bi.jepco.dao.impl;
 import com.bi.jepco.dao.CustPNCAccountsDao;
 import com.bi.jepco.entities.CustPNCAccounts;
 import com.bi.jepco.entities.CustomerProfile;
+import com.bi.jepco.entities.PNCLog;
 import com.bi.jepco.exception.ResourceException;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,17 @@ public class CustPNCAccountsDaoImpl implements CustPNCAccountsDao {
             sessionFactory.getCurrentSession().delete(custPNCAccounts);
 
         } catch (Exception e) {
+            throw new ResourceException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    @Override
+    public PNCLog saveLog(PNCLog pncLog) {
+        try {
+            sessionFactory.getCurrentSession().save(pncLog);
+            return pncLog;
+        } catch (Exception e) {
+            e.printStackTrace();
             throw new ResourceException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }

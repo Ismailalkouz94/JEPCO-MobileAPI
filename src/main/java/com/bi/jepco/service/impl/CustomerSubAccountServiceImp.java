@@ -42,7 +42,7 @@ public class CustomerSubAccountServiceImp implements CustomerSubAccountService {
       }
 
       if(customerSubAccountDao.find(customerProfile,customerSubAccount.getFileNumber()) != null) {
-         throw new ResourceException(HttpStatus.FOUND, "file_number_found");
+         throw new ResourceException(HttpStatus.NOT_FOUND, "file_number_found");
       }
 
       CustomerSubInfoPK customerSubInfoPK = new CustomerSubInfoPK();

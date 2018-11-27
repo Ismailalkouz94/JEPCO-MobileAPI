@@ -37,6 +37,10 @@ public class CustomerProfileServiceImp implements CustomerProfileService {
     @Override
     public CustomerProfile create(CustomerProfile customerProfile) {
 
+        if(customerProfileDao.find(customerProfile.getMobileNumber()) != null){
+            throw new ResourceException(HttpStatus.FOUND,"profile_exist");
+        }
+
         customerProfile.setCreationDate(LocalDateTime.now());
 
         customerProfile.setStatus(1);
@@ -92,11 +96,11 @@ public class CustomerProfileServiceImp implements CustomerProfileService {
         }
 
         if (smsVerification.getExpirationDate().isBefore(LocalDateTime.now())) {
-            throw new ResourceException(HttpStatus.FORBIDDEN, "sms_code_expired");
+            throw new ResourceException(HttpStatus.NOT_FOUND, "sms_code_expired");
         }
 
         if (!smsVerification.getCode().equals(customerProfile.getCode())) {
-            throw new ResourceException(HttpStatus.NOT_ACCEPTABLE, "sms_code_invalid");
+            throw new ResourceException(HttpStatus.NOT_FOUND, "sms_code_invalid");
         }
 
         smsVerification.setStatus(2);

@@ -11,7 +11,7 @@ import java.util.Objects;
 public class CustPNCAccounts {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue()
     @Column(name = "CUST_PNC_ID")
     private Long id;
 
