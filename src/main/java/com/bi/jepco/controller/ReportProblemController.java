@@ -394,7 +394,7 @@ public class ReportProblemController {
     @RequestMapping(value = "/submitIssue", method = RequestMethod.POST)
     public ResponseEntity<MessageBody> submitIssue(@org.springframework.web.bind.annotation.RequestBody SubmitIssue submitIssue) throws IOException {
 
-        if (submitIssue.getAttachName()!=null) {
+        if (submitIssue.getAttachValue()!=null) {
             submitIssue.setAttachName(Utils.randomNumber(15) + ".jpg");
         }
         String outputString = null;
@@ -460,9 +460,8 @@ public class ReportProblemController {
             reportProblemLog.setStreetId(submitIssue.getStreetId());
             reportProblemLog.setIssueTitle("Report a Problem");
             reportProblemLog.setDescription(submitIssue.getDescription());
-            reportProblemLog.setImagePath("http://217.144.0.210:8085/ReportProblem-image/" + storePic(submitIssue.getAttachValue(), submitIssue.getAttachName()));
+            reportProblemLog.setImagePath("http://217.144.0.210:8085/ReportProblem-image/" + reportProblemService.storePic(submitIssue.getAttachValue(), submitIssue.getAttachName()));
             reportProblemLog.setType("REPORT_PROBLEM");
-
 
             if (response.code() == 200) {
                 if (outputString.contains("AMAN")) {
@@ -492,22 +491,4 @@ public class ReportProblemController {
         messageBody.setBody(outputString);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
-
-    public String storePic(String pic, String picName) {
-
-        try {
-            String sourceFolder = "C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\webapps\\ReportProblem-image\\";
-
-            byte[] btDataFile = new sun.misc.BASE64Decoder().decodeBuffer(pic);
-
-            File of = new File(sourceFolder + picName);
-            FileOutputStream fos = new FileOutputStream(of);
-            fos.write(btDataFile);
-            fos.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return picName;
-    }
-
 }
