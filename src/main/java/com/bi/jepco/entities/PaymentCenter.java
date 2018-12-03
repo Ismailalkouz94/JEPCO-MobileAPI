@@ -18,6 +18,13 @@ public class PaymentCenter implements Serializable {
     @Column(name = "GPS_LONG")
     private Double latitude;
 
+    @Column(name = "GPS_TEL")
+    private String tel;
+
+    @Column(name = "GPS_ADDRESS")
+    private String address;
+
+
     public HostName getHostName() {
         return hostName;
     }
@@ -40,5 +47,21 @@ public class PaymentCenter implements Serializable {
 
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
