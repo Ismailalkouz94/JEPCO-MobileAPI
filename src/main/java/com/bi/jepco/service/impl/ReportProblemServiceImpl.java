@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 
 @Service
 @Transactional
@@ -20,6 +21,11 @@ public class ReportProblemServiceImpl implements ReportProblemService {
     @Override
     public ReportProblemLog saveLog(ReportProblemLog reportProblemLog) {
         return reportProblemDao.saveLog(reportProblemLog);
+    }
+
+    @Override
+    public List<ReportProblemLog> findLog() {
+        return reportProblemDao.findLog();
     }
 
     public String storePic(String pic, String picName) {

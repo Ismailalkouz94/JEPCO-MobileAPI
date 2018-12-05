@@ -10,12 +10,19 @@ public class SubmitIssue {
 
     //branchId
     private Integer provinceId;
+    private String provinceDesc;
+
     //ServiceID
     private Integer areaId;
+    private String areaDesc;
+
     //CategoryID
     private Integer neighborhoodId;
+    private String neighborhoodDesc;
+
     //SubCategoryID
     private Integer streetId;
+    private String streetDesc;
 
     private String description;
 
@@ -111,5 +118,37 @@ public class SubmitIssue {
 
     public void setFailureType(String failureType) {
         this.failureType = failureType;
+    }
+
+    public String getProvinceDesc() {
+        return provinceDesc;
+    }
+
+    public void setProvinceDesc(String provinceDesc) {
+        this.provinceDesc = provinceDesc;
+    }
+
+    public String getAreaDesc() {
+        return areaDesc;
+    }
+
+    public void setAreaDesc(String areaDesc) {
+        this.areaDesc = areaDesc;
+    }
+
+    public String getNeighborhoodDesc() {
+        return neighborhoodDesc;
+    }
+
+    public void setNeighborhoodDesc(String neighborhoodDesc) {
+        this.neighborhoodDesc = neighborhoodDesc;
+    }
+
+    public String getStreetDesc() {
+        return streetDesc;
+    }
+
+    public void setStreetDesc(String streetDesc) {
+        this.streetDesc = streetDesc;
     }
 }

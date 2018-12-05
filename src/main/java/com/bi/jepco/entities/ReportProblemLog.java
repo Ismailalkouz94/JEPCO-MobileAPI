@@ -26,14 +26,29 @@ public class ReportProblemLog {
     @Column(name = "P_PROVENCE_ID")
     private Integer provinceId;
 
+    @Column(name = "P_PROVENCE_DESC")
+    private String provinceDesc;
+
     @Column(name = "P_AREA_ID")
     private Integer areaId;
+
+    @Column(name = "P_AREA_DESC")
+    private String areaDesc;
 
     @Column(name = "P_HOOD_ID")
     private Integer neighborhoodId;
 
+    @Column(name = "P_HOOD_DESC")
+    private String neighborhoodDesc;
+
     @Column(name = "P_STREET_ID")
     private Integer streetId;
+
+    @Column(name = "P_STREET_DESC")
+    private String streetDesc;
+
+    @Column(name = "P_FAILURE_TYPE")
+    private String failureType;
 
     @Column(name = "P_ISSUE_TITLE")
     private String issueTitle;
@@ -176,5 +191,45 @@ public class ReportProblemLog {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getProvinceDesc() {
+        return provinceDesc;
+    }
+
+    public void setProvinceDesc(String provinceDesc) {
+        this.provinceDesc = provinceDesc;
+    }
+
+    public String getAreaDesc() {
+        return areaDesc;
+    }
+
+    public void setAreaDesc(String areaDesc) {
+        this.areaDesc = areaDesc;
+    }
+
+    public String getNeighborhoodDesc() {
+        return neighborhoodDesc;
+    }
+
+    public void setNeighborhoodDesc(String neighborhoodDesc) {
+        this.neighborhoodDesc = neighborhoodDesc;
+    }
+
+    public String getStreetDesc() {
+        return streetDesc;
+    }
+
+    public void setStreetDesc(String streetDesc) {
+        this.streetDesc = streetDesc;
+    }
+
+    public String getFailureType() {
+        return failureType;
+    }
+
+    public void setFailureType(String failureType) {
+        this.failureType = failureType;
     }
 }

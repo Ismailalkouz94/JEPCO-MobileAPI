@@ -394,8 +394,10 @@ public class ReportProblemController {
     @RequestMapping(value = "/submitIssue", method = RequestMethod.POST)
     public ResponseEntity<MessageBody> submitIssue(@org.springframework.web.bind.annotation.RequestBody SubmitIssue submitIssue) throws IOException {
 
+        boolean isPicFound=false;
         if (submitIssue.getAttachValue()!=null) {
             submitIssue.setAttachName(Utils.randomNumber(15) + ".jpg");
+            isPicFound=true;
         }
         String outputString = null;
         ReportProblemLog reportProblemLog = null;
@@ -455,12 +457,19 @@ public class ReportProblemController {
             reportProblemLog.setName(submitIssue.getRequesterName());
             reportProblemLog.setCounterNo(submitIssue.getCounterNumber());
             reportProblemLog.setProvinceId(submitIssue.getProvinceId());
+            reportProblemLog.setProvinceDesc(submitIssue.getProvinceDesc());
             reportProblemLog.setAreaId(submitIssue.getAreaId());
+            reportProblemLog.setAreaDesc(submitIssue.getAreaDesc());
             reportProblemLog.setNeighborhoodId(submitIssue.getNeighborhoodId());
+            reportProblemLog.setNeighborhoodDesc(submitIssue.getNeighborhoodDesc());
             reportProblemLog.setStreetId(submitIssue.getStreetId());
+            reportProblemLog.setStreetDesc(submitIssue.getStreetDesc());
+            reportProblemLog.setFailureType(submitIssue.getFailureType());
             reportProblemLog.setIssueTitle("Report a Problem");
             reportProblemLog.setDescription(submitIssue.getDescription());
-            reportProblemLog.setImagePath("http://217.144.0.210:8085/ReportProblem-image/" + reportProblemService.storePic(submitIssue.getAttachValue(), submitIssue.getAttachName()));
+            if(isPicFound){
+                reportProblemLog.setImagePath("http://217.144.0.210:8085/ReportProblem-image/" + reportProblemService.storePic(submitIssue.getAttachValue(), submitIssue.getAttachName()));
+            }
             reportProblemLog.setType("REPORT_PROBLEM");
 
             if (response.code() == 200) {
@@ -489,6 +498,18 @@ public class ReportProblemController {
         messageBody.setStatus("success");
         messageBody.setKey("success");
         messageBody.setBody(outputString);
+        return new ResponseEntity<>(messageBody, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/listLog", method = RequestMethod.GET)
+    public ResponseEntity<MessageBody> findAllPaymentCenters() {
+
+        List<ReportProblemLog> reportProblemLogs = reportProblemService.findLog();
+
+        MessageBody messageBody = MessageBody.getInstance();
+        messageBody.setStatus("success");
+        messageBody.setKey("find_tips_success");
+        messageBody.setBody(reportProblemLogs);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 }

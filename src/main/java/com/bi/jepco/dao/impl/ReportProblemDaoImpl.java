@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class ReportProblemDaoImpl implements ReportProblemDao {
     @Autowired
@@ -22,5 +24,10 @@ public class ReportProblemDaoImpl implements ReportProblemDao {
             e.printStackTrace();
             throw new ResourceException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
+    }
+
+    @Override
+    public List<ReportProblemLog> findLog() {
+        return sessionFactory.getCurrentSession().createQuery("from ReportProblemLog ORDER BY id DESC").list();
     }
 }
