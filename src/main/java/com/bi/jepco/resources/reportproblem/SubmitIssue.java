@@ -29,6 +29,7 @@ public class SubmitIssue {
     private String attachName;
     private String attachValue;
 
+    private Integer failureTypeId;
     private String failureType;
 
 
@@ -150,5 +151,13 @@ public class SubmitIssue {
 
     public void setStreetDesc(String streetDesc) {
         this.streetDesc = streetDesc;
+    }
+
+    public Integer getFailureTypeId() {
+        return failureTypeId;
+    }
+
+    public void setFailureTypeId(Integer failureTypeId) {
+        this.failureTypeId = failureTypeId;
     }
 }

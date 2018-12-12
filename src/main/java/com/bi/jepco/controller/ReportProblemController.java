@@ -394,11 +394,12 @@ public class ReportProblemController {
     @RequestMapping(value = "/submitIssue", method = RequestMethod.POST)
     public ResponseEntity<MessageBody> submitIssue(@org.springframework.web.bind.annotation.RequestBody SubmitIssue submitIssue) throws IOException {
 
-        boolean isPicFound=false;
-        if (submitIssue.getAttachValue()!=null) {
+        boolean isPicFound = false;
+        if (submitIssue.getAttachValue() != null) {
             submitIssue.setAttachName(Utils.randomNumber(15) + ".jpg");
-            isPicFound=true;
+            isPicFound = true;
         }
+        String status="";
         String outputString = null;
         ReportProblemLog reportProblemLog = null;
         try {
@@ -421,7 +422,7 @@ public class ReportProblemController {
                     "      <SubItemID>-1</SubItemID>\n" +
                     "      <IssueTitle>Report a Problem</IssueTitle>\n" +
                     "      <IssueDescription>" + submitIssue.getDescription() + "</IssueDescription>\n" +
-                    "      <FailureType>" + submitIssue.getFailureType() + "</FailureType>\n" +
+                    "      <FailureType>" + submitIssue.getFailureTypeId() + "</FailureType>\n" +
                     "    </JEPCO_IssueSave>\n" +
                     "  </soap:Body>\n" +
                     "</soap:Envelope>");
@@ -432,8 +433,15 @@ public class ReportProblemController {
                     .addHeader("Cache-Control", "no-cache")
                     .build();
 
+            System.out.println(">>>>>>> body"+body);
+
             Response response = client.newCall(request).execute();
+
+            System.out.println(">>>>>>>> response" +response);
             outputString = response.body().string();
+
+            System.out.println(">>>>>>>>>>>>>>");
+            System.out.println(outputString);
 
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -467,17 +475,22 @@ public class ReportProblemController {
             reportProblemLog.setFailureType(submitIssue.getFailureType());
             reportProblemLog.setIssueTitle("Report a Problem");
             reportProblemLog.setDescription(submitIssue.getDescription());
-            if(isPicFound){
+            if (isPicFound) {
                 reportProblemLog.setImagePath("http://217.144.0.210:8085/ReportProblem-image/" + reportProblemService.storePic(submitIssue.getAttachValue(), submitIssue.getAttachName()));
             }
             reportProblemLog.setType("REPORT_PROBLEM");
-
+            System.out.println(">>>>>>>>>>"+ outputString.charAt(0));
+            System.out.println(">>>>>>>>>> "+response.code());
             if (response.code() == 200) {
-                if (outputString.contains("AMAN")) {
+                if ( String.valueOf(outputString.charAt(0)).equals("1")) {
+                    System.out.println("form success");
+                    outputString=outputString.substring(2);
                     reportProblemLog.setStatus(1);
-                    reportProblemLog.setRefNo(outputString.substring(34));
-                }else{
+                    reportProblemLog.setRefNo(outputString);
+                    status="success";
+                } else {
                     reportProblemLog.setStatus(0);
+                    status="error";
                 }
                 reportProblemService.saveLog(reportProblemLog);
             } else {
@@ -486,7 +499,7 @@ public class ReportProblemController {
                 MessageBody messageBody = MessageBody.getInstance();
                 messageBody.setStatus("error");
                 messageBody.setKey("error");
-                messageBody.setBody(outputString);
+                messageBody.setBody(outputString=outputString.substring(2));
                 return new ResponseEntity<>(messageBody, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
@@ -495,8 +508,8 @@ public class ReportProblemController {
         }
 
         MessageBody messageBody = MessageBody.getInstance();
-        messageBody.setStatus("success");
-        messageBody.setKey("success");
+        messageBody.setStatus(status);
+        messageBody.setKey("success_issue_save");
         messageBody.setBody(outputString);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
@@ -508,7 +521,7 @@ public class ReportProblemController {
 
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
-        messageBody.setKey("find_tips_success");
+        messageBody.setKey("success");
         messageBody.setBody(reportProblemLogs);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }

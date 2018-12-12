@@ -1,5 +1,7 @@
 package com.bi.jepco.controller;
 
+import com.bi.jepco.entities.PNCLog;
+import com.bi.jepco.entities.ReportProblemLog;
 import com.bi.jepco.utils.MessageBody;
 import com.bi.jepco.entities.CustPNCAccounts;
 import com.bi.jepco.entities.CustomerProfile;
@@ -11,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -56,6 +60,30 @@ public class PushNotificationController {
         messageBody.setStatus("success");
         messageBody.setKey("success");
         messageBody.setBody(pncResource);
+        return new ResponseEntity<>(messageBody, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/pnc/listPnc", method = RequestMethod.GET)
+    public ResponseEntity<MessageBody> findAll() {
+
+        List<CustPNCAccounts> custPNCAccountsList = custPNCAccountsService.find();
+
+        MessageBody messageBody = MessageBody.getInstance();
+        messageBody.setStatus("success");
+        messageBody.setKey("success");
+        messageBody.setBody(custPNCAccountsList);
+        return new ResponseEntity<>(messageBody, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/pnc/listLog", method = RequestMethod.GET)
+    public ResponseEntity<MessageBody> findLog() {
+
+        List<PNCLog> pncLogs = custPNCAccountsService.findLog();
+
+        MessageBody messageBody = MessageBody.getInstance();
+        messageBody.setStatus("success");
+        messageBody.setKey("success");
+        messageBody.setBody(pncLogs);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 

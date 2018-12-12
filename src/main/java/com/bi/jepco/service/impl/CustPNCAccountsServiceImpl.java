@@ -226,6 +226,11 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
     }
 
     @Override
+    public List<CustPNCAccounts> find() {
+        return custPNCAccountsDao.find();
+    }
+
+    @Override
     public String storePic(String pic, String picName)  {
 
         try{
@@ -243,6 +248,11 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
             e.printStackTrace();
         }
         return picName;
+    }
+
+    @Override
+    public List<PNCLog> findLog() {
+        return custPNCAccountsDao.findLog();
     }
 
 //    @Override

@@ -85,5 +85,10 @@ public class CustPNCAccountsDaoImpl implements CustPNCAccountsDao {
             throw new ResourceException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
+
+    @Override
+    public List<PNCLog> findLog() {
+        return sessionFactory.getCurrentSession().createQuery("from PNCLog ORDER BY id DESC").list();
+    }
 }
 

@@ -16,5 +16,6 @@ public interface CustPNCAccountsDao   {
     public List<CustPNCAccounts> find();
     public void delete(CustPNCAccounts custPNCAccounts);
     public PNCLog saveLog(PNCLog pncLog);
+    public List<PNCLog> findLog();
 
 }

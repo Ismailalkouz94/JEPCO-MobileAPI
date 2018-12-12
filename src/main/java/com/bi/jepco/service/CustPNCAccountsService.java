@@ -12,6 +12,8 @@ public interface CustPNCAccountsService {
     public CustPNCAccounts save(CustPNCAccounts custPNCAccounts);
     public PncResource send(PncResource pncResource);
     public List<CustPNCAccounts> find(String fileNumber);
+    public List<CustPNCAccounts> find();
     public String storePic(String pic,String picName) ;
+    public List<PNCLog> findLog();
 
 }
