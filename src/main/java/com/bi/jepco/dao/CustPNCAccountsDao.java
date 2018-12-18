@@ -14,6 +14,8 @@ public interface CustPNCAccountsDao   {
     public CustPNCAccounts find(CustomerProfile customerProfile);
     public CustPNCAccounts find(String token);
     public List<CustPNCAccounts> find();
+    public int findCount(String platform);
+    public int findLogCount();
     public void delete(CustPNCAccounts custPNCAccounts);
     public PNCLog saveLog(PNCLog pncLog);
     public List<PNCLog> findLog();

@@ -13,6 +13,8 @@ public interface CustPNCAccountsService {
     public PncResource send(PncResource pncResource);
     public List<CustPNCAccounts> find(String fileNumber);
     public List<CustPNCAccounts> find();
+    public int findCount(String platform);
+    public int findLogCount();
     public String storePic(String pic,String picName) ;
     public List<PNCLog> findLog();
 

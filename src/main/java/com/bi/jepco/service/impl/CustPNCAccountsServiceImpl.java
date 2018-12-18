@@ -231,6 +231,16 @@ public class CustPNCAccountsServiceImpl implements CustPNCAccountsService {
     }
 
     @Override
+    public int findCount(String platform) {
+        return custPNCAccountsDao.findCount(platform);
+    }
+
+    @Override
+    public int findLogCount() {
+        return custPNCAccountsDao.findLogCount();
+    }
+
+    @Override
     public String storePic(String pic, String picName)  {
 
         try{

@@ -66,6 +66,22 @@ public class CustPNCAccountsDaoImpl implements CustPNCAccountsDao {
     }
 
     @Override
+    public int findCount(String platform) {
+        int count=0;
+        if(platform == "all"){
+            count = ((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from CustPNCAccounts").uniqueResult()).intValue();
+        }else {
+            count = ((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from CustPNCAccounts where platform=:platform").setParameter("platform", platform).uniqueResult()).intValue();
+        }
+        return count;
+    }
+
+    @Override
+    public int findLogCount() {
+        return((Long)sessionFactory.getCurrentSession().createQuery("select count(*) from PNCLog").uniqueResult()).intValue();
+    }
+
+    @Override
     public void delete(CustPNCAccounts custPNCAccounts) {
         try {
             sessionFactory.getCurrentSession().delete(custPNCAccounts);

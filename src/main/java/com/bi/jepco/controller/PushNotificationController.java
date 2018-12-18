@@ -9,12 +9,16 @@ import com.bi.jepco.resources.PncResource;
 import com.bi.jepco.service.CustPNCAccountsService;
 import com.bi.jepco.service.CustomerProfileService;
 import com.bi.jepco.utils.Utils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -84,6 +88,22 @@ public class PushNotificationController {
         messageBody.setStatus("success");
         messageBody.setKey("success");
         messageBody.setBody(pncLogs);
+        return new ResponseEntity<>(messageBody, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/pnc/dashboardInfo", method = RequestMethod.GET)
+    public ResponseEntity<MessageBody> dashboardInfo() {
+
+        Map<String,Object> resBody = new HashMap<String,Object>();
+        resBody.put("allSubscriptions",custPNCAccountsService.findCount("all"));
+        resBody.put("androidSubscriptions",custPNCAccountsService.findCount("android"));
+        resBody.put("iosSubscriptions", custPNCAccountsService.findCount("ios"));
+        resBody.put("history", custPNCAccountsService.findLogCount());
+
+        MessageBody messageBody = MessageBody.getInstance();
+        messageBody.setStatus("success");
+        messageBody.setKey("success");
+        messageBody.setBody(resBody);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 

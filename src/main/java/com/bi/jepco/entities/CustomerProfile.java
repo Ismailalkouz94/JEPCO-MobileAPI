@@ -30,6 +30,8 @@ public class CustomerProfile implements Serializable {
     @Column(name = "CUST_LAST_NAME" ,nullable = false ,length = 30)
     private String lastName;
 
+    @Column(name = "CUST_EMAIL")
+    private String email;
 
     @Column(name = "CUST_STATUS" , length = 1)
     private Integer status;
@@ -125,6 +127,14 @@ public class CustomerProfile implements Serializable {
         int hash = 0;
         hash += (nationalNumber != null ? nationalNumber.hashCode() : 0);
         return hash;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
