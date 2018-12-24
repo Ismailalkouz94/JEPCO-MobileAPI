@@ -10,6 +10,8 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Random;
 
 public class Utils {
@@ -32,14 +34,14 @@ public class Utils {
 
     public static String formatE164(String countryCode, String number) {
         try {
-            PhoneNumberUtil util     = PhoneNumberUtil.getInstance();
-            int parsedCountryCode    = Integer.parseInt(countryCode);
+            PhoneNumberUtil util = PhoneNumberUtil.getInstance();
+            int parsedCountryCode = Integer.parseInt(countryCode);
             Phonenumber.PhoneNumber parsedNumber = util.parse(number,
                     util.getRegionCodeForCountryCode(parsedCountryCode));
 
             boolean validationFlag = PhoneNumberUtil.getInstance().isValidNumber(parsedNumber);
 
-            if(!validationFlag){
+            if (!validationFlag) {
                 throw new Exception();
             }
             return util.format(parsedNumber, PhoneNumberUtil.PhoneNumberFormat.E164);
@@ -49,32 +51,32 @@ public class Utils {
     }
 
 
-    public static CustomerSubAccount initFileNumberTokens(CustomerSubAccount customerSubAccount){
+    public static CustomerSubAccount initFileNumberTokens(CustomerSubAccount customerSubAccount) {
 
         String fileNumber = customerSubAccount.getFileNumber();
 
-        customerSubAccount.getCustomerSubInfoPK().setCity(Integer.parseInt(fileNumber.substring(0,2)));
-        customerSubAccount.getCustomerSubInfoPK().setRound(Integer.parseInt(fileNumber.substring(2 , 3)));
-        customerSubAccount.getCustomerSubInfoPK().setDept(Integer.parseInt(fileNumber.substring(3,5)));
-        customerSubAccount.getCustomerSubInfoPK().setColl(Integer.parseInt(fileNumber.substring(5 , 7)));
-        customerSubAccount.getCustomerSubInfoPK().setCons(Integer.parseInt(fileNumber.substring( 7)));
+        customerSubAccount.getCustomerSubInfoPK().setCity(Integer.parseInt(fileNumber.substring(0, 2)));
+        customerSubAccount.getCustomerSubInfoPK().setRound(Integer.parseInt(fileNumber.substring(2, 3)));
+        customerSubAccount.getCustomerSubInfoPK().setDept(Integer.parseInt(fileNumber.substring(3, 5)));
+        customerSubAccount.getCustomerSubInfoPK().setColl(Integer.parseInt(fileNumber.substring(5, 7)));
+        customerSubAccount.getCustomerSubInfoPK().setCons(Integer.parseInt(fileNumber.substring(7)));
 
         return customerSubAccount;
     }
 
-    public static boolean validateNationalNumber(String nationalNumber, Integer idType){
+    public static boolean validateNationalNumber(String nationalNumber, Integer idType) {
 
-        if(idType==2){
+        if (idType == 2) {
             return true;
         }
 
-        if(nationalNumber.length() != 10){
+        if (nationalNumber.length() != 10) {
             return false;
         }
 
-        String birthYear = nationalNumber.substring(0,3);
+        String birthYear = nationalNumber.substring(0, 3);
 
-        switch (birthYear){
+        switch (birthYear) {
             case "200":
                 return true;
             case "500":
@@ -83,15 +85,15 @@ public class Utils {
                 return true;
             default:
                 int year = Integer.parseInt(birthYear);
-                if( (year < 940) || (year >999)) {
+                if ((year < 940) || (year > 999)) {
                     return false;
                 }
-                int gender = Integer.parseInt(nationalNumber.substring(3,4));
-                if( (gender != 0) && (gender != 1)){
+                int gender = Integer.parseInt(nationalNumber.substring(3, 4));
+                if ((gender != 0) && (gender != 1)) {
                     return false;
                 }
-                int constant = Integer.parseInt(nationalNumber.substring(4,5));
-                if(constant != 0){
+                int constant = Integer.parseInt(nationalNumber.substring(4, 5));
+                if (constant != 0) {
                     return false;
                 }
                 return true;
@@ -105,7 +107,7 @@ public class Utils {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("http://corporatesms.jo.zain.com/http/send_sms_http.php?login_name=jepco&login_password=Jj@123456&msg="+(msg)+"&mobile_number="+mobileNumber+"&from=JEPCO&charset=UTF-8&unicode=0")
+                .url("http://corporatesms.jo.zain.com/http/send_sms_http.php?login_name=jepco&login_password=Jj@123456&msg=" + (msg) + "&mobile_number=" + mobileNumber + "&from=JEPCO&charset=UTF-8&unicode=0")
                 .get()
                 .addHeader("cache-control", "no-cache")
                 .addHeader("charset", "UTF-8")
@@ -114,6 +116,14 @@ public class Utils {
         Response response = client.newCall(request).execute();
 
         return response.code();
+    }
+
+    public static String generateReferenceNo() {
+        String year = String.valueOf(LocalDateTime.now().getYear());
+        String month = String.valueOf(LocalDateTime.now().getMonthValue());
+        String day = String.valueOf(LocalDateTime.now().getDayOfMonth());
+        String nano = String.valueOf(LocalDateTime.now().getNano()).substring(0, 3);
+        return String.valueOf(year + month + day + nano + randomNumber(4));
     }
 
 }

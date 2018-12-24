@@ -396,7 +396,7 @@ public class ReportProblemController {
 
         boolean isPicFound = false;
         if (submitIssue.getAttachValue() != null) {
-            submitIssue.setAttachName(Utils.randomNumber(15) + ".jpg");
+            submitIssue.setAttachName(Utils.generateReferenceNo() + ".jpg");
             isPicFound = true;
         }
         String status="";
