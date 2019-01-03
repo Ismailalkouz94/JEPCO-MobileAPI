@@ -25,17 +25,6 @@ public class CustomerProfileController {
     @Autowired
     private BillParfService billParfService;
 
-    @GetMapping("/irf")
-    public ResponseEntity<MessageBody> getIRF() {
-
-        MessageBody messageBody = MessageBody.getInstance();
-        messageBody.setStatus("success");
-        messageBody.setKey("success");
-        messageBody.setBody("0");
-        return new ResponseEntity<>(messageBody, HttpStatus.OK);
-    }
-
-
     @PostMapping("/profile/create")
     public ResponseEntity<MessageBody> createProfile(@RequestBody CustomerProfile customerProfile) {
 
@@ -60,7 +49,6 @@ public class CustomerProfileController {
         messageBody.setBody(customerProfile);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
-
 
     @PostMapping("/profile/verify")
     public ResponseEntity<MessageBody> verifyProfile(@RequestBody CustomerProfile customerProfile) {
