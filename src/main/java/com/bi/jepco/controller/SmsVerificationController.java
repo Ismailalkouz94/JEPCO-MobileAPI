@@ -42,7 +42,7 @@ public class SmsVerificationController {
 
         try {
             int status = Utils.sendSms("Your JEPCO Code is: " + smsVerification.getCode() + " Close this message and enter into JEPCO to activate your account", smsVerification.getMobileNumber());
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
 
         MessageBody messageBody = MessageBody.getInstance();
@@ -52,11 +52,13 @@ public class SmsVerificationController {
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 
+    // for SAP (hakam)
     @GetMapping("/sms/send")
     public ResponseEntity<MessageBody> sendSms(@RequestParam("mobile") String mobile, @RequestParam("text") String text) {
-
+        int status;
         try {
-            int status = Utils.sendSms(text, mobile);
+            String mobileValidator = Utils.formatE164("+962", mobile);
+            status = Utils.sendSms(text, mobileValidator);
         } catch (Exception ex) {
             throw new ResourceException(HttpStatus.INTERNAL_SERVER_ERROR, "Server error");
         }
@@ -64,7 +66,7 @@ public class SmsVerificationController {
         MessageBody messageBody = MessageBody.getInstance();
         messageBody.setStatus("success");
         messageBody.setKey("send_sms_success");
-        messageBody.setBody(null);
+        messageBody.setBody(status);
         return new ResponseEntity<>(messageBody, HttpStatus.OK);
     }
 
