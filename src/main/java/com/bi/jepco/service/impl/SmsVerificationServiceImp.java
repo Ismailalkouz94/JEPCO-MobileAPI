@@ -67,7 +67,7 @@ public class SmsVerificationServiceImp implements SmsVerificationService {
 
         SmsVerification currentSmsVerification = smsVerificationDao.find(smsVerification.getMobileNumber(), 1);
         if (currentSmsVerification != null) {
-            if(currentSmsVerification.getMobileNumber().equals("+962792822098")){
+            if(currentSmsVerification.getMobileNumber().equals("+962790000000")){
                 currentSmsVerification.setCode("0000");
             }else{
                 currentSmsVerification.setCode(Utils.randomNumber(4));
@@ -78,7 +78,7 @@ public class SmsVerificationServiceImp implements SmsVerificationService {
             currentSmsVerification.setStatus(1);
             return currentSmsVerification;
         } else {
-            if(smsVerification.getMobileNumber().equals("+962792822098")){
+            if(smsVerification.getMobileNumber().equals("+962790000000")){
                 smsVerification.setCode("0000");
             }else{
                 smsVerification.setCode(Utils.randomNumber(4));
