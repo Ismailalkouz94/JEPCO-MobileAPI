@@ -21,11 +21,11 @@ public class SmsVerificationController {
     @PostMapping("/sms/send/{mobileNumber}")
     public ResponseEntity<MessageBody> createSms(@PathVariable String mobileNumber) {
 
-        if (mobileNumber == null ||mobileNumber.isEmpty()) {
+        if (mobileNumber == null || mobileNumber.isEmpty()) {
 
             throw new ResourceException(HttpStatus.BAD_REQUEST, "validation_error");
         }
-        System.out.println(">> mob no "+mobileNumber);
+        System.out.println(">> mob no " + mobileNumber);
         String mobileValidator = Utils.formatE164("+962", mobileNumber);
 
         if (mobileValidator.equals("0")) {
